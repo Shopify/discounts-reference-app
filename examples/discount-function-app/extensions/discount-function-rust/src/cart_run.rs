@@ -1,4 +1,4 @@
-// [START discount-function.cart_run.rs]
+// [START discount-function.cart_run]
 use serde::Deserialize;
 
 use shopify_function::prelude::*;
@@ -367,4 +367,4 @@ mod tests {
         Ok(())
     }
 }
-// [END discount-function.cart_run.rs]
+// [END discount-function.cart_run]
