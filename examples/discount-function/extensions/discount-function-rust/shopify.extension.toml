@@ -1,12 +1,12 @@
 api_version = "unstable"
 
-# [START discount-function-shopify.extension.toml]
+# [START discount-function-shopify.extension.toml-metadata]
 [[extensions]]
 name = "t:name"
 handle = "discount-function-rust"
 type = "function"
 description = "t:description"
-# [END discount-function-shopify.extension.toml]
+# [END discount-function-shopify.extension.toml-metadata]
 
 # [START discount-function-shopify.extension.toml-targets]
   [[extensions.targeting]]

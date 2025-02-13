@@ -1,3 +1,4 @@
+// [START discount-function.delivery-run.rs]
 use serde::Deserialize;
 
 use shopify_function::prelude::*;
@@ -156,8 +157,9 @@ fn delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult
         selection_strategy: DeliveryDiscountSelectionStrategy::ALL,
         candidates,
     }));
-
+    // [START discount-function.delivery_run.output]
     Ok(FunctionDeliveryRunResult { operations })
+    // [END discount-function.delivery_run.output]
 }
 
 fn create_order_discount(metafield: &Metafield, available_discount_code: &str) -> CartOperation {
@@ -365,3 +367,4 @@ mod tests {
         Ok(())
     }
 }
+// [END discount-function.delivery-run.rs]
