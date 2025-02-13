@@ -14,7 +14,7 @@
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
-  "author": "tom",
+  "author": "shopify",
   "private": true,
   "workspaces": [
     "extensions/*"
