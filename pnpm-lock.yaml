@@ -9384,7 +9384,7 @@ packages:
         integrity: sha512-bVcMJy4X5Og6VZfdOZstSexlEy20Sr0k/p/b2IlQJlfdKAQuMpiv5w2Ccxb8sKdRUNAG1PnHVHjFSdRDVS6NlQ==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /is-map@2.0.3:
@@ -9541,7 +9541,7 @@ packages:
         integrity: sha512-44pxmxAvnnAOwBg4tHPnkfvgjPwbc5QIsSstNU+YcJ1ovxVzCWpSGosPJOZh/a1tdl81fbgnLc9LLv+x2ywbPQ==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /is-weakmap@2.0.2:
@@ -10745,7 +10745,7 @@ packages:
         integrity: sha512-EVm/rR94FJTZi3zefZ82fLWab+GX14LJN4HrWBcuo6Evmsl9hEfnqxgcHCKb9q+mNf6EVdsjx/qucYFIIB84pg==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /lower-case@2.0.2:
@@ -13786,7 +13786,7 @@ packages:
         integrity: sha512-dblb9Et4DAtiZ5YSUZHLl4XhH4uK80GhAZrVXdN4O2P4gQ40Wa5UIOPUHlA/nFd2PLblBZWUioLMMAVrgpoYcA==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /sprintf-js@1.0.3:
@@ -14131,7 +14131,7 @@ packages:
         integrity: sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /sync-fetch@0.6.0-2:
@@ -14275,7 +14275,7 @@ packages:
         integrity: sha512-e1zGYRvbffpcHIrnuqT0Dh+gEJtDaxDSoG4JAIpq4oDFyooziLBIiYQv0GBT4FUAnUop5uZ1hiIAj7oAF6sOCA==,
       }
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.6.3
     dev: false
 
   /tmp@0.0.33:

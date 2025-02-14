@@ -5,6 +5,7 @@ pub mod delivery_run;
 pub mod cart_fetch;
 pub mod delivery_fetch;
 // [END discount-function.main]
+
 fn main() {
     eprintln!("Please invoke a named export.");
     process::exit(1);
