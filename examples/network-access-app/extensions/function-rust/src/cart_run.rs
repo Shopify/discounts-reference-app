@@ -43,7 +43,7 @@ struct Metafield {
 
 #[shopify_function_target(
     target = "cart_run",
-    query_path = "src/run.graphql",
+    query_path = "src/cart_run.graphql",
     schema_path = "schema.graphql"
 )]
 fn cart_run(input: CartResponseData) -> Result<FunctionCartRunResult> {

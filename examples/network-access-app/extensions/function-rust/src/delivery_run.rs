@@ -41,15 +41,8 @@ struct Metafield {
 }
 
 #[shopify_function_target(
-    target = "cart_run",
-    query_path = "src/run.graphql",
-    schema_path = "schema.graphql"
-)]
-
-
-#[shopify_function_target(
     target = "delivery_run",
-    query_path = "src/run.graphql",
+    query_path = "src/delivery_run.graphql",
     schema_path = "schema.graphql"
 )]
 fn delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult> {

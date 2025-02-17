@@ -23,7 +23,7 @@ struct MetafieldConfigDelivery {
 
 
 #[shopify_function_target(
-    query_path = "src/fetch.graphql",
+    query_path = "src/delivery_fetch.graphql",
     schema_path = "schema.graphql",
     target = "delivery_fetch"
 )]
