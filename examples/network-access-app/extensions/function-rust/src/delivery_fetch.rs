@@ -55,6 +55,7 @@ fn configuration_delivery_metafield_fetch(
         .as_ref()
         .context("No configuration metafield found.")
 }
+// [END discount-function.delivery_fetch]
 
 #[cfg(test)]
 mod tests {
@@ -114,4 +115,3 @@ mod tests {
     }
 }
 
-// [END discount-function.delivery_fetch]

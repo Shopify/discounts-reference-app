@@ -137,7 +137,7 @@ fn create_product_discount(
         }],
     })
 }
-
+// [END discount-function.cart_run]
 
 #[cfg(test)]
 mod tests {
@@ -234,4 +234,4 @@ mod tests {
         Ok(())
     }
 }
-// [END discount-function.cart_run]
+

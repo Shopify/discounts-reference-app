@@ -51,7 +51,7 @@ fn configuration_cart_metafield_fetch(
         .as_ref()
         .context("No configuration metafield found.")
 }
-
+// [END discount-function.cart_fetch]
 
 
 #[cfg(test)]
@@ -113,4 +113,4 @@ mod tests {
     }
 }
 
-// [END discount-function.cart_fetch]
+

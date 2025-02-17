@@ -103,7 +103,7 @@ fn create_delivery_discount_candidate(
         }),
     }
 }
-
+// [END discount-function.delivery_run]
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -189,4 +189,4 @@ mod tests {
         Ok(())
     }
 }
-// [END discount-function.delivery_run]
+
