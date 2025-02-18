@@ -1,4 +1,8 @@
+
+
+# [START discount-function-shopify.extension.api-version]
 api_version = "unstable"
+# [END discount-function-shopify.extension.api-version]
 
 # [START discount-function-shopify.extension.toml-metadata]
 [[extensions]]
@@ -23,7 +27,7 @@ description = "t:description"
 # [START discount-function-shopify.extension.toml-build]
   [extensions.build]
   command = "cargo build --target=wasm32-wasip1 --release"
-  path = "target/wasm32-wasip1/release/discount-function-rust.wasm"
+  path = "target/wasm32-wasip1/release/function-rust.wasm"
   watch = [ "src/**/*.rs" ]
 # [END discount-function-shopify.extension.toml-build]
 
