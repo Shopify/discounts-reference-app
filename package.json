@@ -39,7 +39,7 @@
     "@remix-run/testing": "2.15.3",
     "@shopify/api-codegen-preset": "1.1.4",
     "@shopify/app-bridge-react": "4.1.6",
-    "@shopify/cli": "3.75.2",
+    "@shopify/cli": "3.75.3",
     "@shopify/discount-app-components": "3.0.1",
     "@shopify/i18n": "2.1.0",
     "@shopify/polaris": "13.9.2",
@@ -63,7 +63,7 @@
     "vite": "5.4.11",
     "vite-plugin-dts": "4.5.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.0.5",
+    "vitest": "3.0.6",
     "vitest-mock-extended": "2.0.2",
     "minimatch": "10.0.1"
   },
