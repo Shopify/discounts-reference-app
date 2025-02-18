@@ -12,7 +12,7 @@ type = "function"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]
 
-# [START discount-function-shopify.extension.toml-targets-new-tag]
+# [START discount-function-shopify.extension.toml-targets]
   [[extensions.targeting]]
   target = "purchase.discount.cart_run"
   input_query = "src/cart_run.graphql"
@@ -22,7 +22,7 @@ description = "t:description"
   target = "purchase.discount.delivery_run"
   input_query = "src/delivery_run.graphql"
   export = "delivery_run"
-# [END discount-function-shopify.extension.toml-targets-new-tag]
+# [END discount-function-shopify.extension.toml-targets]
 
 # [START discount-function-shopify.extension.toml-build]
   [extensions.build]
