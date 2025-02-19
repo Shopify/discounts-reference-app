@@ -1,4 +1,4 @@
-# [START discount-function.cart-run.graphql]
+# [START discount-function.graphql.cart]
 query Input {
   fetchResult {
     body
@@ -26,4 +26,4 @@ query Input {
     }
   }
 }
-# [END discount-function.cart-run.graphql]
+# [END discount-function.graphql.cart]
