@@ -1,4 +1,4 @@
-// [START discount-function.cart_run]
+// [START discount-function.cart.run]
 use serde::Deserialize;
 
 use shopify_function::prelude::*;
@@ -137,7 +137,7 @@ fn create_product_discount(
         }],
     })
 }
-// [END discount-function.cart_run]
+// [END discount-function.cart.run]
 
 #[cfg(test)]
 mod tests {

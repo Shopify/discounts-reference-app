@@ -1,4 +1,4 @@
-// [START discount-function.delivery_fetch]
+// [START discount-function.fetch.delivery]
 use anyhow::{Context, Result};
 use serde::Deserialize;
 use shopify_function;
@@ -55,7 +55,7 @@ fn configuration_delivery_metafield_fetch(
         .as_ref()
         .context("No configuration metafield found.")
 }
-// [END discount-function.delivery_fetch]
+// [END discount-function.fetch.delivery]
 
 #[cfg(test)]
 mod tests {

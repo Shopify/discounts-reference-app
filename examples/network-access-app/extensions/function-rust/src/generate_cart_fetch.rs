@@ -1,4 +1,4 @@
-// [START discount-function.fetch.cart]
+// [START discount-function.cart.fetch]
 use anyhow::{Context, Result};
 use serde::Deserialize;
 use shopify_function;

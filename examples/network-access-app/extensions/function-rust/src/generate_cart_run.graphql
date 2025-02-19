@@ -1,4 +1,4 @@
-# [START discount-function.cart-run.graphql]
+# [START discount-function.graphql.cart.run]
 query Input {
   cart {
     deliveryGroups {
@@ -27,4 +27,4 @@ query Input {
   }
 }
 
-# [END discount-function.cart-run.graphql]
+# [END discount-function.graphql.run.cart]
