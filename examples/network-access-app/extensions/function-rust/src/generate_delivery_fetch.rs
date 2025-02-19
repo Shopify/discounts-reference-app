@@ -1,3 +1,4 @@
+
 // [START discount-function.delivery.fetch]
 use anyhow::{Context, Result};
 use serde::Deserialize;
