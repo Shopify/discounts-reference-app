@@ -1,4 +1,4 @@
-// [START discount-function.delivery_run]
+// [START discount-function.run.delivery]
 use serde::Deserialize;
 
 use shopify_function::prelude::*;
@@ -80,9 +80,9 @@ fn delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult
         selection_strategy: DeliveryDiscountSelectionStrategy::ALL,
         candidates,
     }));
-    // [START discount-function.delivery_run.output]
+    // [discount-function.run.delivery.output]
     Ok(FunctionDeliveryRunResult { operations })
-    // [END discount-function.delivery_run.output]
+    // [END discount-function.run.delivery.output]
 }
 
 
@@ -106,7 +106,7 @@ fn create_delivery_discount_candidate(
         }),
     }
 }
-// [END discount-function.delivery_run]
+// [END discount-function.run.delivery]
 
 #[cfg(test)]
 mod tests {
