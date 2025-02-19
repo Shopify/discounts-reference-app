@@ -1,4 +1,4 @@
-// [START discount-function.cart_fetch]
+// [START discount-function.fetch.cart]
 use anyhow::{Context, Result};
 use serde::Deserialize;
 use shopify_function;
@@ -7,11 +7,11 @@ use shopify_function::prelude::*;
 type JSON = serde_json::Value;
 use serde_json::json;
 
-use cart_fetch::input::{
+use generate_cart_fetch::input::{
     InputDiscountNodeMetafield as CartFetchInputDiscountNodeMetafield,
     ResponseData as CartFetchResponseData,
 };
-use cart_fetch::output::{FunctionCartFetchResult, HttpRequest as CartFetchHttpRequest};
+use generate_cart_fetch::output::{FunctionCartFetchResult, HttpRequest as CartFetchHttpRequest};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -21,11 +21,11 @@ struct MetafieldConfigCart {
 
 
 #[shopify_function_target(
-    query_path = "src/cart_fetch.graphql",
+    query_path = "src/generate_cart_fetch.graphql",
     schema_path = "schema.graphql",
     target = "cart_fetch"
 )]
-fn cart_fetch(input: CartFetchResponseData) -> shopify_function::Result<FunctionCartFetchResult> {
+fn generate_cart_fetch(input: CartFetchResponseData) -> shopify_function::Result<FunctionCartFetchResult> {
     let entered_discount_codes = &input.entered_discount_codes;
     let mut request = serde_json::from_str::<MetafieldConfigCart>(
         &configuration_cart_metafield_fetch(&input)?.value,
@@ -51,13 +51,13 @@ fn configuration_cart_metafield_fetch(
         .as_ref()
         .context("No configuration metafield found.")
 }
-// [END discount-function.cart_fetch]
+// [END discount-function.fetch.cart]
 
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cart_fetch::output::{
+    use generate_cart_fetch::output::{
         HttpRequestHeader as CartFetchHttpRequestHeader,
         HttpRequestMethod as CartFetchHttpRequestMethod,
         HttpRequestPolicy as CartFetchHttpRequestPolicy,
@@ -89,7 +89,7 @@ mod tests {
         }})
         .to_string();
 
-        let result = run_function_with_input(cart_fetch, &input)?;
+        let result = run_function_with_input(generate_cart_fetch, &input)?;
         let json_body = json!({ "enteredDiscountCodes": [] });
         let expected = FunctionCartFetchResult {
             request: Some(CartFetchHttpRequest {

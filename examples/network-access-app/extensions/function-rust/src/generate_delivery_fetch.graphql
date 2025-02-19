@@ -1,3 +1,4 @@
+# [START discount-function.graphql.delivery]
 query Input {
   discountNode {
     metafield(namespace: "default", key: "function-configuration") {
@@ -6,3 +7,4 @@ query Input {
   }
   enteredDiscountCodes
 }
+# [END discount-function.graphql.delivery]

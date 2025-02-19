@@ -1,9 +1,9 @@
 use std::process;
-pub mod cart_run;
-pub mod delivery_run;
+pub mod generate_cart_run;
+pub mod generate_delivery_run;
 // [START discount-function.main]
-pub mod cart_fetch;
-pub mod delivery_fetch;
+pub mod generate_cart_fetch;
+pub mod generate_delivery_fetch;
 // [END discount-function.main]
 
 fn main() {

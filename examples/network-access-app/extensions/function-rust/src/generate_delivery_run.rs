@@ -5,7 +5,7 @@ use shopify_function::prelude::*;
 use shopify_function::Result;
 
 
-use delivery_run::output::{
+use generate_delivery_run::output::{
     AssociatedDiscountCode as DeliveryAssociatedDiscountCode, DeliveryDiscountCandidate,
     DeliveryDiscountCandidateTarget, DeliveryDiscountCandidateValue,
     DeliveryDiscountSelectionStrategy, DeliveryDiscounts, DeliveryGroupTarget, DeliveryOperation,
@@ -14,7 +14,7 @@ use delivery_run::output::{
     ValidDiscountCodes as DeliveryValidDiscountCodes,
 };
 
-type DeliveryResponseData = delivery_run::input::ResponseData;
+type DeliveryResponseData = generate_delivery_run::input::ResponseData;
 
 impl DeliveryResponseData {
     fn metafield(&self) -> Result<Metafield> {
@@ -42,10 +42,10 @@ struct Metafield {
 
 #[shopify_function_target(
     target = "delivery_run",
-    query_path = "src/delivery_run.graphql",
+    query_path = "src/generate_delivery_run.graphql",
     schema_path = "schema.graphql"
 )]
-fn delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult> {
+fn generate_delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult> {
     let codes = input.valid_discount_codes()?;
     let available_discount_code = codes.first();
     let metafield = input.metafield()?;
@@ -108,7 +108,7 @@ fn create_delivery_discount_candidate(
 mod tests {
     use super::*;
 
-    use delivery_run::output::{
+    use generate_delivery_run::output::{
         DeliveryDiscountSelectionStrategy, DeliveryDiscounts, DeliveryOperation,
         FunctionDeliveryRunResult,
     };
@@ -183,7 +183,7 @@ mod tests {
         };
 
         assert_eq!(
-            run_function_with_input(delivery_run, &get_run_input())?,
+            run_function_with_input(generate_delivery_run, &get_run_input())?,
             expected
         );
         Ok(())

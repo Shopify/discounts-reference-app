@@ -1,4 +1,3 @@
-
 # [START discount-function-shopify.extension.api-version]
 api_version = "unstable"
 # [END discount-function-shopify.extension.api-version]
@@ -14,24 +13,24 @@ description = "t:description"
 
   [[extensions.targeting]]
   target = "purchase.discount.cart_run"
-  input_query = "src/cart_run.graphql"
-  export = "cart_run"
+  input_query = "src/generate_cart_run.graphql"
+  export = "generate_cart_run"
 
   [[extensions.targeting]]
   target = "purchase.discount.delivery_run"
-  input_query = "src/delivery_run.graphql"
-  export = "delivery_run"
+  input_query = "src/generate_delivery_run.graphql"
+  export = "generate_delivery_run"
 
 # [START discount-function-shopify.extension.toml-targets]
   [[extensions.targeting]]
   target = "purchase.discount.cart_fetch"
-  input_query = "src/cart_fetch.graphql"
-  export = "cart_fetch"
+  input_query = "src/generate_cart_fetch.graphql"
+  export = "generate_cart_fetch"
 
   [[extensions.targeting]]
   target = "purchase.discount.delivery_fetch"
-  input_query = "src/delivery_fetch.graphql"
-  export = "delivery_fetch"
+  input_query = "src/generate_delivery_fetch.graphql"
+  export = "generate_delivery_fetch"
 # [END discount-function-shopify.extension.toml-targets]
 
 # [START discount-function-shopify.extension.toml-build]

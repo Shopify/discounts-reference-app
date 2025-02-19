@@ -4,7 +4,7 @@ use serde::Deserialize;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-use cart_run::output::{
+use generate_cart_run::output::{
     AssociatedDiscountCode as CartAssociatedDiscountCode, CartLineTarget, CartOperation,
     FunctionCartRunResult, OrderDiscountCandidate, OrderDiscountCandidateTarget,
     OrderDiscountCandidateValue, OrderDiscountSelectionStrategy, OrderDiscounts,
@@ -15,7 +15,7 @@ use cart_run::output::{
 };
 
 
-type CartResponseData = cart_run::input::ResponseData;
+type CartResponseData = generate_cart_run::input::ResponseData;
 
 impl CartResponseData {
     fn metafield(&self) -> Result<Metafield> {
@@ -43,10 +43,10 @@ struct Metafield {
 
 #[shopify_function_target(
     target = "cart_run",
-    query_path = "src/cart_run.graphql",
+    query_path = "src/generate_cart_run.graphql",
     schema_path = "schema.graphql"
 )]
-fn cart_run(input: CartResponseData) -> Result<FunctionCartRunResult> {
+fn generate_cart_run(input: CartResponseData) -> Result<FunctionCartRunResult> {
     let codes = input.valid_discount_codes()?;
     let available_discount_code = codes.first();
 
@@ -142,7 +142,7 @@ fn create_product_discount(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cart_run::output::{
+    use generate_cart_run::output::{
         CartOperation, OrderDiscountSelectionStrategy, OrderDiscounts,
         ProductDiscountSelectionStrategy, ProductDiscounts,
     };
@@ -228,7 +228,7 @@ mod tests {
         };
 
         assert_eq!(
-            run_function_with_input(cart_run, &get_run_input())?,
+            run_function_with_input(generate_cart_run, &get_run_input())?,
             expected
         );
         Ok(())

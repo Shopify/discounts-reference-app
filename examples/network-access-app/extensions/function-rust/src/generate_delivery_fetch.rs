@@ -7,11 +7,11 @@ use shopify_function::prelude::*;
 type JSON = serde_json::Value;
 use serde_json::json;
 
-use delivery_fetch::input::{
+use generate_delivery_fetch::input::{
     InputDiscountNodeMetafield as DeliveryFetchInputDiscountNodeMetafield,
     ResponseData as DeliveryFetchResponseData,
 };
-use delivery_fetch::output::{
+use generate_delivery_fetch::output::{
     FunctionDeliveryFetchResult, HttpRequest as DeliveryFetchHttpRequest,
 };
 
@@ -23,11 +23,11 @@ struct MetafieldConfigDelivery {
 
 
 #[shopify_function_target(
-    query_path = "src/delivery_fetch.graphql",
+    query_path = "src/generate_delivery_fetch.graphql",
     schema_path = "schema.graphql",
     target = "delivery_fetch"
 )]
-fn delivery_fetch(
+fn generate_delivery_fetch(
     input: DeliveryFetchResponseData,
 ) -> shopify_function::Result<FunctionDeliveryFetchResult> {
     let entered_discount_codes = &input.entered_discount_codes;
@@ -60,7 +60,7 @@ fn configuration_delivery_metafield_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use delivery_fetch::output::{
+    use generate_delivery_fetch::output::{
         HttpRequestHeader as DeliveryFetchHttpRequestHeader,
         HttpRequestMethod as DeliveryFetchHttpRequestMethod,
         HttpRequestPolicy as DeliveryFetchHttpRequestPolicy,
@@ -91,7 +91,7 @@ mod tests {
         }})
         .to_string();
 
-        let result = run_function_with_input(delivery_fetch, &input)?;
+        let result = run_function_with_input(generate_delivery_fetch, &input)?;
         let json_body = json!({ "enteredDiscountCodes": ["ABC"] });
         let expected = FunctionDeliveryFetchResult {
             request: Some(DeliveryFetchHttpRequest {
