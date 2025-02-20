@@ -81,6 +81,13 @@ export default [
       "no-console": OFF, // Allow console.log in reference-app-builder
     },
   },
+  // Reference app builder specific rules
+  {
+    files: ["examples/mock-http-server/**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "no-console": OFF, // Allow console.log in mock-http-server
+    },
+  },
   // Markdown specific rules
   {
     files: ["**/*.md/**"],
