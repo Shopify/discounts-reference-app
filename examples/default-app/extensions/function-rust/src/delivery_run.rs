@@ -4,7 +4,6 @@ use serde::Deserialize;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-
 use delivery_run::output::{
     AssociatedDiscountCode as DeliveryAssociatedDiscountCode, DeliveryDiscountCandidate,
     DeliveryDiscountCandidateTarget, DeliveryDiscountCandidateValue,
@@ -15,7 +14,6 @@ use delivery_run::output::{
 };
 
 type DeliveryResponseData = delivery_run::input::ResponseData;
-
 
 impl DeliveryResponseData {
     fn metafield(&self) -> Result<Metafield> {
@@ -40,7 +38,6 @@ impl DeliveryResponseData {
 struct Metafield {
     delivery_percentage: Option<Decimal>,
 }
-
 
 #[shopify_function_target(
     target = "delivery_run",
@@ -80,11 +77,10 @@ fn delivery_run(input: DeliveryResponseData) -> Result<FunctionDeliveryRunResult
         selection_strategy: DeliveryDiscountSelectionStrategy::ALL,
         candidates,
     }));
-    // [discount-function.run.delivery.output]
+    // [START discount-function.run.delivery.output]
     Ok(FunctionDeliveryRunResult { operations })
     // [END discount-function.run.delivery.output]
 }
-
 
 fn create_delivery_discount_candidate(
     delivery_group_id: &str,

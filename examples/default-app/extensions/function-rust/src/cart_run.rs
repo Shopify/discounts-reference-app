@@ -86,9 +86,9 @@ fn cart_run(input: CartResponseData) -> Result<FunctionCartRunResult> {
             available_discount_code,
         ));
     }
-    // [START discount-function.cart_run.output]
+    // [START discount-function.run.cart.output]
     Ok(FunctionCartRunResult { operations })
-    // [END discount-function.cart_run.output]
+    // [END discount-function.run.cart.output]
 }
 
 fn create_order_discount(metafield: &Metafield, available_discount_code: &str) -> CartOperation {
@@ -229,4 +229,3 @@ mod tests {
         Ok(())
     }
 }
-
