@@ -1,4 +1,3 @@
-// [START discount-function.run.delivery]
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
@@ -10,6 +9,7 @@ use delivery_run::output::{
 
 use delivery_run::input::ResponseData;
 
+// [START discount-function.run.delivery]
 #[shopify_function_target(
     target = "delivery_run",
     query_path = "src/generate_delivery_run.graphql",
@@ -17,7 +17,7 @@ use delivery_run::input::ResponseData;
 )]
 fn generate_delivery_run(input: ResponseData) -> Result<FunctionDeliveryRunResult> {
     let delivery_groups = input.cart.delivery_groups.iter();
-    // [START discount-function.run.delivery.output]
+
     Ok(FunctionDeliveryRunResult {
         operations: vec![DeliveryOperation::AddDeliveryDiscounts(DeliveryDiscounts {
             selection_strategy: DeliveryDiscountSelectionStrategy::ALL,
@@ -37,6 +37,5 @@ fn generate_delivery_run(input: ResponseData) -> Result<FunctionDeliveryRunResul
                 .collect(),
         })],
     })
-    // [END discount-function.run.delivery.output]
 }
 // [END discount-function.run.delivery]

@@ -1,4 +1,3 @@
-// [START discount-function.run.cart]
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
@@ -12,6 +11,7 @@ use cart_run::output::{
 
 use cart_run::input::ResponseData;
 
+// [START discount-function.run.cart]
 #[shopify_function_target(
     target = "cart_run",
     query_path = "src/generate_cart_run.graphql",
@@ -19,7 +19,7 @@ use cart_run::input::ResponseData;
 )]
 fn generate_cart_run(input: ResponseData) -> Result<FunctionCartRunResult> {
     let cart_lines = input.cart.lines.iter();
-    // [START discount-function.run.cart.output]
+
     Ok(FunctionCartRunResult {
         operations: vec![
             CartOperation::AddOrderDiscounts(OrderDiscounts {
@@ -56,6 +56,5 @@ fn generate_cart_run(input: ResponseData) -> Result<FunctionCartRunResult> {
             }),
         ],
     })
-    // [END discount-function.run.cart.output]
 }
 // [END discount-function.run.cart]
