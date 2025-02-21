@@ -29,7 +29,7 @@ fn generate_cart_fetch(input: CartFetchResponseData) -> shopify_function::Result
             read_timeout_ms: 2000,
         },
         // [START discount-function.cart.fetch.url]
-        url: "https://example.com/discount-function-network-access".to_string(),
+        url: "<external server url>".to_string(),
         // [END discount-function.cart.fetch.url]
         body: None,
         json_body: None,
@@ -77,7 +77,7 @@ mod tests {
                 policy: CartFetchHttpRequestPolicy {
                     read_timeout_ms: 2000,
                 },
-                url: "https://example.com/discount-function-network-access"
+                url: "<external server url>"
                     .to_string(),
                 json_body: Some(json_body.clone()),
                 body: Some(json_body.to_string()),

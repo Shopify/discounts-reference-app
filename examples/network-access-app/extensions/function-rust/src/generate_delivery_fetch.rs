@@ -31,7 +31,7 @@ fn generate_delivery_fetch(
             read_timeout_ms: 2000,
         },
         // [START discount-function.delivery.fetch.url]
-        url: "https://delaygateway.shopifycloud.com/discount-function-network-calls".to_string(),
+        url: "<external server url>".to_string(),
         // [END discount-function.delivery.fetch.url]
         body: None,
         json_body: None,
@@ -78,7 +78,7 @@ mod tests {
                 policy: DeliveryFetchHttpRequestPolicy {
                     read_timeout_ms: 2000,
                 },
-                url: "https://delaygateway.shopifycloud.com/discount-function-network-calls"
+                url: "<external server url>"
                     .to_string(),
                 json_body: Some(json_body.clone()),
                 body: Some(json_body.to_string()),
