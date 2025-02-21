@@ -1,27 +1,16 @@
-
 // [START discount-function.delivery.fetch]
-use anyhow::{Context, Result};
-use serde::Deserialize;
 use shopify_function;
 use shopify_function::prelude::*;
-
-type JSON = serde_json::Value;
 use serde_json::json;
 
-use generate_delivery_fetch::input::{
-    InputDiscountNodeMetafield as DeliveryFetchInputDiscountNodeMetafield,
-    ResponseData as DeliveryFetchResponseData,
+use delivery_fetch::input::ResponseData as DeliveryFetchResponseData;
+use delivery_fetch::output::{
+    FunctionDeliveryFetchResult,
+    HttpRequest as DeliveryFetchHttpRequest,
+    HttpRequestHeader as DeliveryFetchHttpRequestHeader,
+    HttpRequestMethod as DeliveryFetchHttpRequestMethod,
+    HttpRequestPolicy as DeliveryFetchHttpRequestPolicy,
 };
-use generate_delivery_fetch::output::{
-    FunctionDeliveryFetchResult, HttpRequest as DeliveryFetchHttpRequest,
-};
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct MetafieldConfigDelivery {
-    request: DeliveryFetchHttpRequest,
-}
-
 
 #[shopify_function_target(
     query_path = "src/generate_delivery_fetch.graphql",
@@ -41,8 +30,11 @@ fn generate_delivery_fetch(
         policy: DeliveryFetchHttpRequestPolicy {
             read_timeout_ms: 2000,
         },
-        url: "https://delaygateway.shopifycloud.com/discount-function-network-calls"
-            .to_string(),
+        // [START discount-function.delivery.fetch.url]
+        url: "https://delaygateway.shopifycloud.com/discount-function-network-calls".to_string(),
+        // [END discount-function.delivery.fetch.url]
+        body: None,
+        json_body: None,
     };
 
     let json_body = json!({ "body": { "enteredDiscountCodes": entered_discount_codes } });
@@ -58,7 +50,9 @@ fn generate_delivery_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use generate_delivery_fetch::output::{
+    use delivery_fetch::output::{
+        FunctionDeliveryFetchResult,
+        HttpRequest as DeliveryFetchHttpRequest,
         HttpRequestHeader as DeliveryFetchHttpRequestHeader,
         HttpRequestMethod as DeliveryFetchHttpRequestMethod,
         HttpRequestPolicy as DeliveryFetchHttpRequestPolicy,
@@ -73,7 +67,7 @@ mod tests {
         .to_string();
 
         let result = run_function_with_input(generate_delivery_fetch, &input)?;
-        let json_body = json!({ "enteredDiscountCodes": ["ABC"] });
+        let json_body = json!({ "body": { "enteredDiscountCodes": ["ABC"] } });
         let expected = FunctionDeliveryFetchResult {
             request: Some(DeliveryFetchHttpRequest {
                 headers: vec![DeliveryFetchHttpRequestHeader {

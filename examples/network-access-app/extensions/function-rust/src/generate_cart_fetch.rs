@@ -1,18 +1,16 @@
 // [START discount-function.cart.fetch]
-use anyhow::{Context, Result};
-use serde::Deserialize;
 use shopify_function;
 use shopify_function::prelude::*;
-
-type JSON = serde_json::Value;
 use serde_json::json;
 
-use generate_cart_fetch::input::{
-    InputDiscountNodeMetafield as CartFetchInputDiscountNodeMetafield,
-    ResponseData as CartFetchResponseData,
+use cart_fetch::input::ResponseData as CartFetchResponseData;
+use cart_fetch::output::{
+    FunctionCartFetchResult,
+    HttpRequest as CartFetchHttpRequest,
+    HttpRequestHeader as CartFetchHttpRequestHeader,
+    HttpRequestMethod as CartFetchHttpRequestMethod,
+    HttpRequestPolicy as CartFetchHttpRequestPolicy,
 };
-use generate_cart_fetch::output::{FunctionCartFetchResult, HttpRequest as CartFetchHttpRequest};
-
 
 #[shopify_function_target(
     query_path = "src/generate_cart_fetch.graphql",
@@ -30,8 +28,11 @@ fn generate_cart_fetch(input: CartFetchResponseData) -> shopify_function::Result
         policy: CartFetchHttpRequestPolicy {
             read_timeout_ms: 2000,
         },
-        url: "https://example.com/discount-function-network-access"
-            .to_string(),
+        // [START discount-function.cart.fetch.url]
+        url: "https://example.com/discount-function-network-access".to_string(),
+        // [END discount-function.cart.fetch.url]
+        body: None,
+        json_body: None,
     };
 
     let json_body = json!({ "body": { "enteredDiscountCodes": entered_discount_codes } });
@@ -48,12 +49,13 @@ fn generate_cart_fetch(input: CartFetchResponseData) -> shopify_function::Result
 #[cfg(test)]
 mod tests {
     use super::*;
-    use generate_cart_fetch::output::{
+    use cart_fetch::output::{
+        FunctionCartFetchResult,
+        HttpRequest as CartFetchHttpRequest,
         HttpRequestHeader as CartFetchHttpRequestHeader,
         HttpRequestMethod as CartFetchHttpRequestMethod,
         HttpRequestPolicy as CartFetchHttpRequestPolicy,
     };
-
     use shopify_function::{run_function_with_input, Result};
 
     #[test]
@@ -64,7 +66,7 @@ mod tests {
         .to_string();
 
         let result = run_function_with_input(generate_cart_fetch, &input)?;
-        let json_body = json!({ "enteredDiscountCodes": [] });
+        let json_body = json!({ "body": { "enteredDiscountCodes": [] } });
         let expected = FunctionCartFetchResult {
             request: Some(CartFetchHttpRequest {
                 headers: vec![CartFetchHttpRequestHeader {

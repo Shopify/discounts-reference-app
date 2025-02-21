@@ -5,7 +5,7 @@ api_version = "unstable"
 # [START discount-function-shopify.extension.toml-metadata]
 [[extensions]]
 name = "t:name"
-handle = "discount-function-rust"
+handle = "function-rust"
 type = "function"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]
@@ -40,7 +40,3 @@ description = "t:description"
   watch = [ "src/**/*.rs" ]
 # [END discount-function-shopify.extension.toml-build]
 
-# [START discount-function-shopify.extension.toml-ui]
-  [extensions.ui]
-  handle = "discount-function-ui-extension"
-# [END discount-function-shopify.extension.toml-ui]

@@ -1,5 +1,5 @@
 [package]
-name = "discount-function-rust"
+name = "function-rust"
 version = "1.0.0"
 edition = "2021"
 

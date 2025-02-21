@@ -1,5 +1,27 @@
-# This file stores configurations for your Shopify app.
-# It must exist at the root of your app.
-# [START discount-function.access-scopes]
-scopes = "write_discounts"
-# [END discount-function.access-scopes]
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "fec70a988f73eb28f076e9ca1c3abeca"
+application_url = "https://clock-mighty-electron-deadly.trycloudflare.com"
+embedded = true
+name = "discount-testing-1"
+handle = "discount-testing-8"
+
+[webhooks]
+api_version = "2025-01"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_discounts,write_discounts_allocator_functions,write_products"
+
+[auth]
+redirect_urls = [
+  "https://clock-mighty-electron-deadly.trycloudflare.com/auth/callback",
+  "https://clock-mighty-electron-deadly.trycloudflare.com/auth/shopify/callback",
+  "https://clock-mighty-electron-deadly.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = false
+
+[build]
+include_config_on_deploy = true
