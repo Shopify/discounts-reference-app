@@ -56,7 +56,7 @@ The server processes the request by:
 
 #### Response Body
 
-Returns a JSON object with product, order and shipping discount operations.
+Returns a JSON object with product, order and shipping discount operations. [TODO: Link to Schema Reference]()
 
 ## Development
 

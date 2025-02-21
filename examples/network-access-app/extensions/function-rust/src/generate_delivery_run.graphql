@@ -8,22 +8,6 @@ query Input {
     deliveryGroups {
       id
     }
-    lines {
-      id
-      cost {
-        subtotalAmount {
-          amount
-        }
-      }
-    }
-  }
-  discountNode {
-    metafield(
-      namespace: "$app:discount-function-rust"
-      key: "function-configuration"
-    ) {
-      value
-    }
   }
 }
 # [END discount-function.graphql.delivery.fetch]

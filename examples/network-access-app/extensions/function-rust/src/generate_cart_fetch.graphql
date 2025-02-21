@@ -1,10 +1,5 @@
 # [START discount-function.graphql.cart.fetch]
 query Input {
-  discountNode {
-    metafield(namespace: "default", key: "function-configuration") {
-      value
-    }
-  }
   enteredDiscountCodes
 }
 # [END discount-function.graphql.cart.fetch]

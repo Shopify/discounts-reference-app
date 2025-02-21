@@ -32,11 +32,18 @@ fn generate_delivery_fetch(
     input: DeliveryFetchResponseData,
 ) -> shopify_function::Result<FunctionDeliveryFetchResult> {
     let entered_discount_codes = &input.entered_discount_codes;
-    let mut request = serde_json::from_str::<MetafieldConfigDelivery>(
-        &configuration_delivery_metafield_fetch(&input)?.value,
-    )
-    .context("Failed to parse metafield configuration")?
-    .request;
+    let mut request = DeliveryFetchHttpRequest {
+        headers: vec![DeliveryFetchHttpRequestHeader {
+            name: "accept".to_string(),
+            value: "application/json".to_string(),
+        }],
+        method: DeliveryFetchHttpRequestMethod::POST,
+        policy: DeliveryFetchHttpRequestPolicy {
+            read_timeout_ms: 2000,
+        },
+        url: "https://delaygateway.shopifycloud.com/discount-function-network-calls"
+            .to_string(),
+    };
 
     let json_body = json!({ "body": { "enteredDiscountCodes": entered_discount_codes } });
     request.json_body = Some(json_body.clone());
@@ -45,16 +52,6 @@ fn generate_delivery_fetch(
     Ok(FunctionDeliveryFetchResult {
         request: Some(request),
     })
-}
-
-fn configuration_delivery_metafield_fetch(
-    response_data: &DeliveryFetchResponseData,
-) -> Result<&DeliveryFetchInputDiscountNodeMetafield> {
-    response_data
-        .discount_node
-        .metafield
-        .as_ref()
-        .context("No configuration metafield found.")
 }
 // [END discount-function.delivery.fetch]
 
@@ -72,24 +69,7 @@ mod tests {
     fn adds_entered_discount_codes_to_body_for_delivery() -> Result<()> {
         let input = json!({
             "enteredDiscountCodes": ["ABC"],
-            "discountNode": {
-              "metafield": {
-                "value": json!({"request": {
-                  "headers": [
-                    {
-                      "name": "accept",
-                      "value": "application/json",
-                    },
-                  ],
-                  "method": "POST",
-                  "policy": {
-                    "readTimeoutMs": 2000,
-                  },
-                  "body": "".to_string(),
-                  "url": "https://delaygateway.shopifycloud.com/discount-function-network-calls",
-                }}).to_string()
-            }
-        }})
+            })
         .to_string();
 
         let result = run_function_with_input(generate_delivery_fetch, &input)?;

@@ -1,9 +1,10 @@
 # [START discount-function.graphql.cart.run]
 query Input {
+  fetchResult {
+    body
+    status
+  }
   cart {
-    deliveryGroups {
-      id
-    }
     lines {
       id
       cost {
@@ -12,18 +13,6 @@ query Input {
         }
       }
     }
-  }
-  discountNode {
-    metafield(
-      namespace: "$app:discount-function-rust"
-      key: "function-configuration"
-    ) {
-      value
-    }
-  }
-  fetchResult {
-    body
-    status
   }
 }
 
