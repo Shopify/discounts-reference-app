@@ -1,3 +1,4 @@
+# [START discount-function.graphql.delivery]
 query DeliveryInput {
   cart {
     deliveryGroups {
@@ -5,3 +6,4 @@ query DeliveryInput {
     }
   }
 }
+# [END discount-function.graphql.delivery]
