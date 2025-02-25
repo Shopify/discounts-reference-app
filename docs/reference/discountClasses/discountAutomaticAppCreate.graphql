@@ -1,0 +1,24 @@
+# [START discount-automatic-app-create]
+mutation {
+  discountAutomaticAppCreate(
+    automaticAppDiscount: {
+      title: "Cart line, Order, Shipping discount"
+      # [START discount-automatic-app-create.add-function-id]
+      functionId: "YOUR_FUNCTION_ID_HERE"
+      # [END discount-automatic-app-create.add-function-id]
+      # [START discount-automatic-app-create.add-discount-classes]
+      discountClasses: ["PRODUCT", "ORDER", "SHIPPING"]
+      # [END discount-automatic-app-create.add-discount-classes]
+      startsAt: "2025-01-01T00:00:00"
+    }
+  ) {
+    automaticAppDiscount {
+      discountId
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+# [END discount-automatic-app-create]
