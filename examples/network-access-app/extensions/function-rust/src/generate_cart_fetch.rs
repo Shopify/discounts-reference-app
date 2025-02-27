@@ -24,7 +24,7 @@ fn generate_cart_fetch(input: CartFetchResponseData) -> shopify_function::Result
             name: "accept".to_string(),
             value: "application/json".to_string(),
         }],
-        method: CartFetchHttpRequestMethod::POST,
+        method: CartFetchHttpRequestMethod::GET,
         policy: CartFetchHttpRequestPolicy {
             read_timeout_ms: 2000,
         },

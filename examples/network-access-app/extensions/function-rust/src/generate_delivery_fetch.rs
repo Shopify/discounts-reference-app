@@ -26,7 +26,7 @@ fn generate_delivery_fetch(
             name: "accept".to_string(),
             value: "application/json".to_string(),
         }],
-        method: DeliveryFetchHttpRequestMethod::POST,
+        method: DeliveryFetchHttpRequestMethod::GET,
         policy: DeliveryFetchHttpRequestPolicy {
             read_timeout_ms: 2000,
         },
