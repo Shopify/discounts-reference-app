@@ -1,4 +1,4 @@
 packages:
-  - 'extensions/*'
-  - 'examples/*'
-  - 'examples/ui-extension/extensions/default-extension'
+  - "extensions/*"
+  - "examples/*"
+  - "examples/ui-extension/extensions/default-extension"

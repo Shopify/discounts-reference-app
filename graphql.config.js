@@ -1,2 +1,2 @@
-require('ts-node').register();
-module.exports = require('./.graphqlrc.ts');
+require("ts-node").register();
+module.exports = require("./.graphqlrc.ts");

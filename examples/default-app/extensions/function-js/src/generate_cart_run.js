@@ -2,7 +2,7 @@
 import {
   OrderDiscountSelectionStrategy,
   ProductDiscountSelectionStrategy,
-} from '../generated/api';
+} from "../generated/api";
 
 /**
  * @typedef {import("../generated/api").CartInput} RunInput
@@ -21,7 +21,7 @@ export function generateCartRun(input) {
         addOrderDiscounts: {
           candidates: [
             {
-              message: '10% OFF ORDER',
+              message: "10% OFF ORDER",
               targets: [
                 {
                   orderSubtotal: {
@@ -41,8 +41,8 @@ export function generateCartRun(input) {
       },
       {
         addProductDiscounts: {
-          candidates: input.cart.lines.map(line => ({
-            message: '20% OFF PRODUCT',
+          candidates: input.cart.lines.map((line) => ({
+            message: "20% OFF PRODUCT",
             targets: [
               {
                 cartLine: {
