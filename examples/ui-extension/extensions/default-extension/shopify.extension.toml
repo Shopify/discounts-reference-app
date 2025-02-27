@@ -8,7 +8,9 @@ type = "ui_extension"
 
 
 # Only 1 target can be specified for each Admin block extension
+# [START discount-ui-extension.target-configuration]
 [[extensions.targeting]]
 module = "./src/DiscountFunctionSettings.tsx"
 # The target used here must match the target used in the module file (./src/DiscountFunctionSettings.tsx)
 target = "admin.discount-details.function-settings.render"
+# [END discount-ui-extension.target-configuration]
