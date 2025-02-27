@@ -1,0 +1,9 @@
+# [START discount-function.graphql.delivery]
+query Input {
+  cart {
+    deliveryGroups {
+      id
+    }
+  }
+}
+# [END discount-function.graphql.delivery]
