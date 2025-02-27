@@ -1928,10 +1928,7 @@ enum CurrencyCode {
   """
   Belarusian Ruble (BYR).
   """
-  BYR
-    @deprecated(
-      reason: "`BYR` is deprecated. Use `BYN` available from version `2021-01` onwards instead."
-    )
+  BYR @deprecated(reason: "`BYR` is deprecated. Use `BYN` available from version `2021-01` onwards instead.")
 
   """
   Belize Dollar (BZD).
@@ -2456,10 +2453,7 @@ enum CurrencyCode {
   """
   Sao Tome And Principe Dobra (STD).
   """
-  STD
-    @deprecated(
-      reason: "`STD` is deprecated. Use `STN` available from version `2022-07` onwards instead."
-    )
+  STD @deprecated(reason: "`STD` is deprecated. Use `STN` available from version `2022-07` onwards instead.")
 
   """
   Sao Tome And Principe Dobra (STN).
@@ -2554,10 +2548,7 @@ enum CurrencyCode {
   """
   Venezuelan Bolivares (VEF).
   """
-  VEF
-    @deprecated(
-      reason: "`VEF` is deprecated. Use `VES` available from version `2020-10` onwards instead."
-    )
+  VEF @deprecated(reason: "`VEF` is deprecated. Use `VES` available from version `2020-10` onwards instead.")
 
   """
   Venezuelan Bolivares Soberanos (VES).
@@ -3090,8 +3081,7 @@ type GateSubject {
     """
     The appId of the gate configurations to search for.
     """
-    appId: String
-      @deprecated(reason: "Use GateSubject.handle to filter gates instead.")
+    appId: String @deprecated(reason: "Use GateSubject.handle to filter gates instead.")
   ): GateConfiguration!
 
   """
@@ -3323,19 +3313,13 @@ type Input {
   Discount codes entered by the buyer as an array of strings, excluding gift cards.
   Codes are not validated in any way other than gift card filtering.
   """
-  enteredDiscountCodes: [String!]!
-    @restrictTarget(
-      only: ["purchase.discount.cart_fetch", "purchase.discount.delivery_fetch"]
-    )
+  enteredDiscountCodes: [String!]! @restrictTarget(only: ["purchase.discount.cart_fetch", "purchase.discount.delivery_fetch"])
 
   """
   The result of the fetch target. Refer to [network access](https://shopify.dev/apps/build/functions/input-output/network-access/graphql)
   for Shopify Functions.
   """
-  fetchResult: HttpResponse
-    @restrictTarget(
-      only: ["purchase.discount.cart_run", "purchase.discount.delivery_run"]
-    )
+  fetchResult: HttpResponse @restrictTarget(only: ["purchase.discount.cart_run", "purchase.discount.delivery_run"])
 
   """
   The localization of the Function execution context.

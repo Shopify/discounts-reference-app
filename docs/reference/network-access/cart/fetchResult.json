@@ -1,41 +1,41 @@
 {
-  "operations": [
-    {
-      "addValidDiscountCodes": {
-        "codes": [
-          {
-            "code": "1OFFPRODUCT"
-          },
-          {
-            "code": "20OFFORDER"
-          }
-        ]
-      }
-    },
-    {
-      "addOrderDiscounts": {
-        "selectionStrategy": "FIRST",
-        "candidates": [
-          {
-            "associatedDiscountCode": {
-              "code": "20OFFORDER"
-            },
-            "message": "20% off your order",
-            "targets": [
-              {
-                "orderSubtotal": {
-                  "excludedVariantIds": []
-                }
-              }
-            ],
-            "value": {
-              "percentage": {
-                "value": 20
-              }
+    "operations": [
+        {
+            "addValidDiscountCodes": {
+                "codes": [
+                    {
+                        "code": "1OFFPRODUCT"
+                    },
+                    {
+                        "code": "20OFFORDER"
+                    }
+                ]
             }
-          }
-        ]
-      }
-    }
-  ]
+        },
+        {
+            "addOrderDiscounts": {
+                "selectionStrategy": "FIRST",
+                "candidates": [
+                    {
+                        "associatedDiscountCode": {
+                            "code": "20OFFORDER"
+                        },
+                        "message": "20% off your order",
+                        "targets": [
+                            {
+                                "orderSubtotal": {
+                                    "excludedVariantIds": []
+                                }
+                            }
+                        ],
+                        "value": {
+                            "percentage": {
+                                "value": 20
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
 }

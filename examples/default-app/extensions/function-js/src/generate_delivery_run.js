@@ -1,5 +1,5 @@
 // @ts-check
-import { DeliveryDiscountSelectionStrategy } from "../generated/api";
+import {DeliveryDiscountSelectionStrategy} from '../generated/api';
 
 /**
  * @typedef {import("../generated/api").DeliveryInput} RunInput
@@ -16,8 +16,8 @@ export function generateDeliveryRun(input) {
     operations: [
       {
         addDeliveryDiscounts: {
-          candidates: input.cart.deliveryGroups.map((group) => ({
-            message: "30% OFF SHIPPING",
+          candidates: input.cart.deliveryGroups.map(group => ({
+            message: '30% OFF SHIPPING',
             targets: [
               {
                 deliveryGroup: {
