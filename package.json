@@ -15,7 +15,8 @@
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "shopify": "shopify",
     "prisma": "prisma",
-    "graphql-codegen": "graphql-codegen",
+    "graphql-codegen": "graphql-codegen --config .graphqlrc.ts --verbose",
+    "typegen": "pnpm -r exec graphql-code-generator --config package.json",
     "test": "vitest",
     "type-check": "tsc --noEmit",
     "vite": "vite",
@@ -79,14 +80,18 @@
     "@types/react": "18.0.0",
     "@types/react-dom": "18.0.0",
     "@typescript-eslint/eslint-plugin": "8.24.1",
-    "eslint-config-prettier": "10.0.1",
+    "eslint-config-prettier": "10.0.2",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-react": "7.37.4",
     "eslint-plugin-react-hooks": "5.1.0",
     "happy-dom": "17.1.8",
     "jest": "29.7.0",
     "prettier": "3.5.2",
-    "typescript": "5.7.3"
+    "ts-node": "10.9.2",
+    "typescript": "5.7.3",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript-operations": "4.0.1"
   },
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"

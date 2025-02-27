@@ -9,6 +9,27 @@ const WARN = 1;
 const ERROR = 2;
 
 export default [
+  {
+    ignores: [
+      "**/dist/**",
+      "**/dist",
+      "extensions/**/dist/**",
+      "extensions/**/dist",
+      "**/node_modules/**",
+      "build",
+      "public/build",
+      "shopify-app-remix",
+      "*.yml",
+      ".shopify/**",
+      "**/generated/**/*.{ts,js}",
+      "**/*.generated.{ts,js}",
+      "**/*.d.ts",
+      "**/types/**/*.d.ts",
+      "**/admin.*.d.ts",
+      "app/types/admin.*.d.ts",
+      "app/types/*.d.ts",
+    ],
+  },
   // Base configuration for all files
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
@@ -63,16 +84,6 @@ export default [
         },
       ],
     },
-    ignores: [
-      "node_modules",
-      "build",
-      "public/build",
-      "shopify-app-remix",
-      "*.yml",
-      ".shopify",
-      "extensions/**/dist/**",
-      "extensions/**/api.ts",
-    ],
   },
   // Reference app builder specific rules
   {

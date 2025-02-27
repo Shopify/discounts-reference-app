@@ -1,3 +1,4 @@
+
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
@@ -19,7 +20,6 @@ use cart_run::input::ResponseData;
 )]
 fn generate_cart_run(input: ResponseData) -> Result<FunctionCartRunResult> {
     let cart_lines = input.cart.lines.iter();
-
     Ok(FunctionCartRunResult {
         operations: vec![
             CartOperation::AddOrderDiscounts(OrderDiscounts {

@@ -1,3 +1,4 @@
+
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
@@ -17,7 +18,6 @@ use delivery_run::input::ResponseData;
 )]
 fn generate_delivery_run(input: ResponseData) -> Result<FunctionDeliveryRunResult> {
     let delivery_groups = input.cart.delivery_groups.iter();
-
     Ok(FunctionDeliveryRunResult {
         operations: vec![DeliveryOperation::AddDeliveryDiscounts(DeliveryDiscounts {
             selection_strategy: DeliveryDiscountSelectionStrategy::ALL,

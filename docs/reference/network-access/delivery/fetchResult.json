@@ -1,0 +1,40 @@
+// [START fetch-result.delivery.json]
+{
+  "operations": [
+    {
+      "addValidDiscountCodes": {
+        "codes": [
+          {
+            "code": "FREESHIPPING"
+          }
+        ]
+      }
+    },
+    {
+      "addDeliveryDiscounts": {
+        "selectionStrategy": "ALL",
+        "candidates": [
+          {
+            "associatedDiscountCode": {
+              "code": "FREESHIPPING"
+            },
+            "message": "Free shipping on your order",
+            "value": {
+              "percentage": {
+                "value": 100
+              }
+            },
+            "targets": [
+              {
+                "deliveryGroup": {
+                  "id": "gid://shopify/DeliveryGroup/0"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+// [END fetch-result.delivery.json]
