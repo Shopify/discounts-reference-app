@@ -1,5 +1,3 @@
-//
-// [START fetch-result.cart.json]
 {
   "operations": [
     {
@@ -41,4 +39,3 @@
     }
   ]
 }
-// [END fetch-result.cart.json]

@@ -1,4 +1,5 @@
 // [START discount-ui-extension.ui-extension]
+// [START discount-ui-extension.ui-components]
 import {
   reactExtension,
   useApi,
@@ -12,6 +13,7 @@ import {
   InlineStack,
   Heading,
 } from "@shopify/ui-extensions-react/admin";
+// // [END discount-ui-extension.ui-components]
 import { useState, useEffect } from "react";
 // [START discount-ui-extension.target]
 const TARGET = "admin.discount-details.function-settings.render";
@@ -43,6 +45,7 @@ function PercentageField({ label, defaultValue, value, onChange, name }) {
     </Box>
   );
 }
+// [START discount-ui-extension.app-component]
 function App() {
   const {
     loading,
@@ -117,6 +120,7 @@ function App() {
     </>
   );
 }
+// [END discount-ui-extension.app-component]
 function useExtensionData() {
   const { applyMetafieldChange, i18n, data } = useApi(TARGET);
   const initialMetafields = data?.metafields || [];
@@ -152,6 +156,7 @@ function useExtensionData() {
       [type]: Number(value),
     }));
   };
+  // [START discount-ui-extension.apply-extension-metafield-change]
   async function applyExtensionMetafieldChange() {
     await applyMetafieldChange({
       type: "updateMetafield",
@@ -161,6 +166,7 @@ function useExtensionData() {
       valueType: "json",
     });
   }
+  // [END discount-ui-extension.apply-extension-metafield-change]
   const resetForm = () => {
     setPercentages(initialPercentages);
   };
@@ -174,6 +180,7 @@ function useExtensionData() {
     resetForm,
   };
 }
+// [START discount-ui-extension.metafields]
 const METAFIELD_NAMESPACE = "$app:example-discounts--ui-extension";
 const METAFIELD_KEY = "function-configuration";
 async function getMetafieldDefinition(adminApiQuery) {
@@ -213,6 +220,7 @@ async function createMetafieldDefinition(adminApiQuery) {
   const result = await adminApiQuery(query, { variables });
   return result?.data?.metafieldDefinitionCreate?.createdDefinition;
 }
+// [END discount-ui-extension.metafields]
 function parsePercentageMetafield(value) {
   try {
     const parsed = JSON.parse(value);
