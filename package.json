@@ -18,6 +18,7 @@
     "graphql-codegen": "graphql-codegen --config .graphqlrc.ts --verbose",
     "typegen": "pnpm -r exec graphql-code-generator --config package.json",
     "test": "vitest",
+    "transpile-tsx": "node scripts/transpile-tsx-to-jsx.js",
     "type-check": "tsc --noEmit",
     "vite": "vite",
     "generate-cli-token": "node scripts/generate-cli-token.mjs",
