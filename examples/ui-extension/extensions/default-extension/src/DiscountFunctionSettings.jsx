@@ -13,7 +13,7 @@ import {
   InlineStack,
   Heading,
 } from "@shopify/ui-extensions-react/admin";
-// // [END discount-ui-extension.ui-components]
+// [END discount-ui-extension.ui-components]
 import { useState, useEffect } from "react";
 // [START discount-ui-extension.target]
 const TARGET = "admin.discount-details.function-settings.render";
