@@ -1,3 +1,4 @@
+// [START discount-ui-extension.ui-extension]
 import {
   reactExtension,
   useApi,
@@ -12,7 +13,10 @@ import {
   Heading,
 } from "@shopify/ui-extensions-react/admin";
 import { useState, useEffect } from "react";
+
+// [START discount-ui-extension.target]
 const TARGET = "admin.discount-details.function-settings.render";
+// [END discount-ui-extension.target]
 
 export default reactExtension(TARGET, async (api) => {
   const existingDefinition = await getMetafieldDefinition(api.query);
@@ -257,3 +261,4 @@ function parsePercentageMetafield(value) {
     return { product: 0, order: 0, shipping: 0 };
   }
 }
+// [END discount-ui-extension.ui-extension]
