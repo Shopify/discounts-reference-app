@@ -85,9 +85,12 @@ export default [
       ],
     },
   },
-  // Reference app builder specific rules
+  // Reference app builder and scripts specific rules
   {
-    files: ["reference-app-builder/**/*.{js,jsx,ts,tsx}"],
+    files: [
+      "reference-app-builder/**/*.{js,jsx,ts,tsx}",
+      "scripts/**/*.{js,jsx,ts,tsx}",
+    ],
     rules: {
       "no-console": OFF, // Allow console.log in reference-app-builder
     },

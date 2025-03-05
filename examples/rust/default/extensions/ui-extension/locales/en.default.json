@@ -1,0 +1,19 @@
+{
+  "name": "Discount UI extension",
+  "description": "Discount UI extension",
+  "title": "Discount that applies to product, order and shipping",
+  "percentage": {
+    "descriptionProduct": "Percentage to apply on products",
+    "descriptionOrder": "Percentage to apply on order subtotal",
+    "descriptionShipping": "Percentage to apply on shipping",
+    "Product": "On products",
+    "Order": "On order subtotal",
+    "Shipping": "On shipping"
+  },
+  "discountClasses": {
+    "description": "Discount classes to apply at checkout",
+    "Product": "Product",
+    "Order": "Order",
+    "Shipping": "Shipping"
+  }
+}

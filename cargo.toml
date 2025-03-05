@@ -1,0 +1,12 @@
+# For `rust-analyzer` to work, we need to have a root cargo.toml specifying workspace members.
+
+[workspace]
+members = [
+    "extensions/output-passthrough-multi-class-discount",
+    "extensions/output-passthrough-network-call-discount",
+    "extensions/output-passthrough-order-discount",
+    "extensions/output-passthrough-product-discount",
+    "extensions/output-passthrough-shipping-discount",
+    "extensions/example__discount-network-rs",
+    "extensions/example__discount-multiclass-rs"
+]

@@ -1,0 +1,5 @@
+# [START discount-function.graphql.cart.fetch]
+query InputCartFetch {
+  enteredDiscountCodes
+}
+# [END discount-function.graphql.cart.fetch]

@@ -1,3 +1,4 @@
+// [START fetch-result.delivery.json]
 {
   "operations": [
     {
@@ -36,3 +37,4 @@
     }
   ]
 }
+// [END fetch-result.delivery.json]

@@ -1,0 +1,35 @@
+
+
+# [START discount-function-shopify.extension.api-version]
+api_version = "unstable"
+# [END discount-function-shopify.extension.api-version]
+
+# [START discount-function.toml.metadata]
+[[extensions]]
+name = "t:name"
+handle = "discount-function-rust"
+type = "function"
+description = "t:description"
+# [END discount-function.toml.metadata]
+
+# [START discount-function.toml.targets]
+  [[extensions.targeting]]
+  target = "purchase.discount.cart_run"
+  input_query = "src/generate_cart_run.graphql"
+  export = "generate_cart_run"
+
+  [[extensions.targeting]]
+  target = "purchase.discount.delivery_run"
+  input_query = "src/generate_delivery_run.graphql"
+  export = "generate_delivery_run"
+# [END discount-function.toml.targets]
+
+# [START discount-function.toml.build]
+  [extensions.build]
+  command = "cargo build --target=wasm32-wasip1 --release"
+  path = "target/wasm32-wasip1/release/discount-function-rust.wasm"
+  watch = [ "src/**/*.rs" ]
+# [END discount-function.toml.build]
+
+[extensions.ui]
+handle = "ui-extension-rs";

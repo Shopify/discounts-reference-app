@@ -1,0 +1,5 @@
+# [START discount-function.graphql.delivery.fetch]
+query InputDeliveryFetch {
+  enteredDiscountCodes
+}
+# [END discount-function.graphql.delivery.fetch]
