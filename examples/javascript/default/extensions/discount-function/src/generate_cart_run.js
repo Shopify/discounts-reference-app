@@ -3,7 +3,6 @@ import {
   ProductDiscountSelectionStrategy,
 } from "../generated/api";
 
-
 // [START discount-function.run.cart]
 export function generateCartRun(input) {
   if (!input.cart.lines.length) {

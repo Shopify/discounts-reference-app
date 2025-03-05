@@ -1,6 +1,5 @@
 import { DeliveryDiscountSelectionStrategy } from "../generated/api";
 
-
 // [START discount-function.run.delivery]
 export function generateDeliveryRun(input) {
   const firstDeliveryGroup = input.cart.deliveryGroups[0];
