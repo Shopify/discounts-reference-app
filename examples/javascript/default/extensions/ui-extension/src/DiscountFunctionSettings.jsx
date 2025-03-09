@@ -1,5 +1,4 @@
 // [START discount-ui-extension.ui-extension]
-
 // [START discount-ui-extension.ui-components]
 import {
   reactExtension,
@@ -15,58 +14,21 @@ import {
   Heading,
 } from "@shopify/ui-extensions-react/admin";
 // [END discount-ui-extension.ui-components]
-
 import { useState, useEffect, useMemo } from "react";
-
 // [START discount-ui-extension.target]
 const TARGET = "admin.discount-details.function-settings.render";
-// [END discount-ui-extension.target]
-
-interface GraphQLResponseData {
-  data?: {
-    metafieldDefinitions?: {
-      nodes: Array<{ id: string }>;
-    };
-    metafieldDefinitionCreate?: {
-      createdDefinition: { id: string };
-    };
-  };
-}
-
-interface PercentageConfig {
-  product: number;
-  order: number;
-  shipping: number;
-}
-
 export default reactExtension(TARGET, async (api) => {
   const existingDefinition = await getMetafieldDefinition(api.query);
   if (!existingDefinition) {
     // Create a metafield definition for persistence if no pre-existing definition exists
     const metafieldDefinition = await createMetafieldDefinition(api.query);
-
     if (!metafieldDefinition) {
       throw new Error("Failed to create metafield definition");
     }
   }
   return <App />;
 });
-
-type DiscountType = "product" | "order" | "shipping";
-
-function PercentageField({
-  label,
-  defaultValue,
-  value,
-  onChange,
-  name,
-}: {
-  label: string;
-  defaultValue: string;
-  value: string;
-  onChange: (value: string) => void;
-  name: DiscountType;
-}) {
+function PercentageField({ label, defaultValue, value, onChange, name }) {
   return (
     <Box>
       <BlockStack gap="base">
@@ -82,7 +44,6 @@ function PercentageField({
     </Box>
   );
 }
-
 // [START discount-ui-extension.app-component]
 function App() {
   const {
@@ -94,7 +55,6 @@ function App() {
     percentages,
     resetForm,
   } = useExtensionData();
-
   return (
     <>
       {loading ? (
@@ -160,7 +120,6 @@ function App() {
   );
 }
 // [END discount-ui-extension.app-component]
-
 // [START discount-ui-extension.use-extension-data]
 function useExtensionData() {
   const { applyMetafieldChange, i18n, data } = useApi(TARGET);
@@ -180,32 +139,26 @@ function useExtensionData() {
     order: 0,
     shipping: 0,
   });
-
   useEffect(() => {
     async function fetchInitialData() {
       setLoading(true);
-
       const config = parsePercentageMetafield(
         savedMetafields.find(
           (metafield) => metafield.key === "function-configuration",
         )?.value,
       );
-
       setInitialPercentages(config);
       setPercentages(config);
-
       setLoading(false);
     }
     fetchInitialData();
   }, [initialMetafields, savedMetafields]);
-
-  const onPercentageValueChange = async (type: DiscountType, value: string) => {
+  const onPercentageValueChange = async (type, value) => {
     setPercentages((prev) => ({
       ...prev,
       [type]: Number(value),
     }));
   };
-
   // [START discount-ui-extension.apply-extension-metafield-change]
   async function applyExtensionMetafieldChange() {
     await applyMetafieldChange({
@@ -217,11 +170,9 @@ function useExtensionData() {
     });
   }
   // [END discount-ui-extension.apply-extension-metafield-change]
-
   const resetForm = () => {
     setPercentages(initialPercentages);
   };
-
   return {
     loading,
     applyExtensionMetafieldChange,
@@ -236,13 +187,7 @@ function useExtensionData() {
 // [START discount-ui-extension.metafields]
 const METAFIELD_NAMESPACE = "$app:example-discounts--ui-extension";
 const METAFIELD_KEY = "function-configuration";
-
-type AdminApiQuery = (
-  query: string,
-  options?: { variables?: Record<string, unknown> },
-) => Promise<GraphQLResponseData>;
-
-async function getMetafieldDefinition(adminApiQuery: AdminApiQuery) {
+async function getMetafieldDefinition(adminApiQuery) {
   const query = `#graphql
     query GetMetafieldDefinition {
       metafieldDefinitions(first: 1, ownerType: DISCOUNT, namespace: "${METAFIELD_NAMESPACE}", key: "${METAFIELD_KEY}") {
@@ -252,12 +197,10 @@ async function getMetafieldDefinition(adminApiQuery: AdminApiQuery) {
       }
     }
   `;
-
   const result = await adminApiQuery(query);
-
   return result?.data?.metafieldDefinitions?.nodes[0];
 }
-async function createMetafieldDefinition(adminApiQuery: AdminApiQuery) {
+async function createMetafieldDefinition(adminApiQuery) {
   const definition = {
     access: {
       admin: "MERCHANT_READ_WRITE",
@@ -268,7 +211,6 @@ async function createMetafieldDefinition(adminApiQuery: AdminApiQuery) {
     ownerType: "DISCOUNT",
     type: "json",
   };
-
   const query = `#graphql
     mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
       metafieldDefinitionCreate(definition: $definition) {
@@ -278,17 +220,12 @@ async function createMetafieldDefinition(adminApiQuery: AdminApiQuery) {
         }
       }
   `;
-
   const variables = { definition };
   const result = await adminApiQuery(query, { variables });
-
   return result?.data?.metafieldDefinitionCreate?.createdDefinition;
 }
 // [END discount-ui-extension.metafields]
-
-function parsePercentageMetafield(
-  value: string | undefined | null,
-): PercentageConfig {
+function parsePercentageMetafield(value) {
   try {
     const parsed = JSON.parse(value || "{}");
     return {

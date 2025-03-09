@@ -117,16 +117,10 @@ export type BuyerIdentity = {
   phone?: Maybe<Scalars["String"]["output"]>;
   /** The purchasing company associated with the cart. */
   purchasingCompany?: Maybe<PurchasingCompany>;
-  /**
-   * Represents the [Shop User](https://help.shopify.com/en/manual/online-sales-channels/shop/sign-in-features)
-   *  corresponding to the customer within the shop, if the buyer is a Shop User. Can be used to request [Shop User
-   *  metafields](https://shopify.dev/docs/api/shop-user-custom-data).
-   */
-  shopUser?: Maybe<ShopUser>;
 };
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
-export type Cart = HasMetafields & {
+export type Cart = {
   __typename?: "Cart";
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
   attribute?: Maybe<Attribute>;
@@ -142,8 +136,6 @@ export type Cart = HasMetafields & {
   lines: Array<CartLine>;
   /** The localized fields available for the cart. */
   localizedFields: Array<LocalizedField>;
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
 };
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
@@ -154,12 +146,6 @@ export type CartAttributeArgs = {
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
 export type CartLocalizedFieldsArgs = {
   keys?: Array<LocalizedFieldKey>;
-};
-
-/** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
-export type CartMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** The cost that the buyer will pay at checkout. */
@@ -380,8 +366,6 @@ export type CompanyLocation = HasMetafields & {
   metafield?: Maybe<Metafield>;
   /** The name of the company location. */
   name: Scalars["String"]["output"];
-  /** The number of orders placed at this company location. */
-  orderCount: Scalars["Int"]["output"];
   /**
    * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))
    * at which the company location was last modified.
@@ -882,8 +866,6 @@ export enum CountryCode {
   Ug = "UG",
   /** U.S. Outlying Islands. */
   Um = "UM",
-  /** Unknown country code. */
-  Unknown = "UNKNOWN__",
   /** United States. */
   Us = "US",
   /** Uruguay. */
@@ -1687,6 +1669,11 @@ export type Input = {
   presentmentCurrencyRate: Scalars["Decimal"]["output"];
   /** Information about the shop. */
   shop: Shop;
+  /**
+   * The discount code entered by the buyer that caused the Function to run.
+   * This input is only available in the cart_run and delivery_run extension targets.
+   */
+  triggeringDiscountCode?: Maybe<Scalars["String"]["output"]>;
 };
 
 /** A language. */
@@ -2040,7 +2027,10 @@ export type Localization = {
   country: Country;
   /** The language of the active localized experience. */
   language: Language;
-  /** The market of the active localized experience. */
+  /**
+   * The market of the active localized experience.
+   * @deprecated This `market` field will be removed in a future version of the API.
+   */
   market: Market;
 };
 
@@ -2159,7 +2149,10 @@ export type MailingAddress = {
   latitude?: Maybe<Scalars["Float"]["output"]>;
   /** The approximate longitude of the address. */
   longitude?: Maybe<Scalars["Float"]["output"]>;
-  /** The market of the address. */
+  /**
+   * The market of the address.
+   * @deprecated This `market` field will be removed in a future version of the API.
+   */
   market?: Maybe<Market>;
   /** The full name of the customer, based on firstName and lastName. */
   name?: Maybe<Scalars["String"]["output"]>;
@@ -2185,8 +2178,6 @@ export type Market = HasMetafields & {
   handle: Scalars["Handle"]["output"];
   /** A globally-unique identifier. */
   id: Scalars["ID"]["output"];
-  /** The manager of the market, if the accessing app is the market’s manager. Otherwise, this will be null. */
-  manager?: Maybe<MarketManager>;
   /** Returns a metafield by namespace and key that belongs to the resource. */
   metafield?: Maybe<Metafield>;
   /** A geographic region which comprises a market. */
@@ -2204,16 +2195,6 @@ export type Market = HasMetafields & {
 export type MarketMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** The entity that manages a particular market. */
-export type MarketManager = {
-  __typename?: "MarketManager";
-  /**
-   * The identity of the manager. This can either be `merchant` if the market is
-   * manually managed by the merchant or an ID of the app responsible for managing the market.
-   */
-  identifier: Scalars["String"]["output"];
 };
 
 /** Represents a region. */
@@ -2608,19 +2589,6 @@ export type Shop = HasMetafields & {
 
 /** Information about the shop. */
 export type ShopMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUser = HasMetafields & {
-  __typename?: "ShopUser";
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
-};
-
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUserMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
 };

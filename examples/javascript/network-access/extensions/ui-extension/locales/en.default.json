@@ -1,5 +1,5 @@
 {
-  "name": "Discount UI extension",
+  "name": "[Example] Discount UI extension",
   "description": "Discount UI extension",
   "title": "Discount that applies to product, order and shipping",
   "percentage": {

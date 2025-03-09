@@ -38,7 +38,7 @@ fn generate_cart_run(input: ResponseData) -> Result<FunctionCartRunResult> {
                 candidates: vec![OrderDiscountCandidate {
                     targets: vec![OrderDiscountCandidateTarget::OrderSubtotal(
                         OrderSubtotalTarget {
-                            excluded_variant_ids: vec![],
+                            excluded_cart_line_ids: vec![],
                         },
                     )],
                     message: Some("10% OFF ORDER".to_string()),
