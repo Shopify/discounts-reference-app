@@ -1,6 +1,5 @@
 import { Card, Checkbox, Text, BlockStack } from "@shopify/polaris";
 import React, { useState, useCallback } from "react";
-// Define discount classes as a plain object instead of an enum
 const DiscountClass = {
   Product: "PRODUCT",
   Order: "ORDER",
