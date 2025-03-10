@@ -22,7 +22,7 @@ const DISCOUNT_CLASS_LABELS = {
  * @returns A Polaris Card containing discount class selection checkboxes
  */
 function DiscountClasses(props) {
-  const { discountClasses = [], onChange } = props;
+  const { discountClasses = [DiscountClass.Product], onChange } = props;
   const [selectedClasses, setSelectedClasses] = useState(
     discountClasses.length > 0 ? discountClasses : [DiscountClass.Product],
   );

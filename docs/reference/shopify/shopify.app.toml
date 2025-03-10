@@ -1,0 +1,5 @@
+# This file stores configurations for your Shopify app.
+# It must exist at the root of your app.
+# [START discount-function.access-scopes]
+scopes = "write_discounts"
+# [END discount-function.access-scopes]
