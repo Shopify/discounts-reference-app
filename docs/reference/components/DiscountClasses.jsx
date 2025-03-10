@@ -1,4 +1,4 @@
-import { Card, Checkbox, Text, BlockStack } from "@shopify/polaris";
+import { Card, Checkbox, Text, BlockStack, Box } from "@shopify/polaris";
 import React, { useState, useCallback } from "react";
 const DiscountClass = {
   Product: "PRODUCT",
@@ -52,7 +52,7 @@ function DiscountClasses(props) {
         one must be selected.
       </Text>
 
-      <div style={{ marginTop: "16px" }}>
+      <Box paddingBlockStart="400">
         <BlockStack gap="200">
           {Object.values(DiscountClass).map((discountClass) => {
             const isChecked = selectedClasses.includes(discountClass);
@@ -68,7 +68,7 @@ function DiscountClasses(props) {
             );
           })}
         </BlockStack>
-      </div>
+      </Box>
     </Card>
   );
 }

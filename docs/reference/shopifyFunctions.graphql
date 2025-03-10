@@ -11,4 +11,4 @@ query {
     }
   }
 }
-# [END find-function-query]
+# [END shopify-functions-query]
