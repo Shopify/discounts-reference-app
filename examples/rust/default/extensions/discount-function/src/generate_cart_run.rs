@@ -1,7 +1,7 @@
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-use cart_run::output::{
+use cart_lines_discounts_generate_run::output::{
     CartLineTarget, CartOperation, FunctionCartRunResult, OrderDiscountCandidate,
     OrderDiscountCandidateTarget, OrderDiscountCandidateValue, OrderDiscountSelectionStrategy,
     OrderDiscounts, OrderSubtotalTarget, Percentage, ProductDiscountCandidate,
@@ -9,11 +9,11 @@ use cart_run::output::{
     ProductDiscountSelectionStrategy, ProductDiscounts,
 };
 
-use cart_run::input::ResponseData;
+use cart_lines_discounts_generate_run::input::ResponseData;
 
 // [START discount-function.run.cart]
 #[shopify_function_target(
-    target = "cart_run",
+    target = "cartLinesDiscountsGenerateRun",
     query_path = "src/generate_cart_run.graphql",
     schema_path = "schema.graphql"
 )]

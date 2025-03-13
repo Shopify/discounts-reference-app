@@ -337,6 +337,12 @@ The operations that can be performed to apply discounts to the cart.
 """
 input CartOperation @oneOf {
   """
+  A list of valid discount codes that correspond to external discounts. This can
+  only be used by Functions with network access.
+  """
+  addDiscountCodeValidations: ValidDiscountCodes
+
+  """
   A group of order discounts that share a selection strategy.
   """
   addOrderDiscounts: OrderDiscounts
@@ -345,12 +351,6 @@ input CartOperation @oneOf {
   A group of product discounts that share a selection strategy.
   """
   addProductDiscounts: ProductDiscounts
-
-  """
-  A list of valid discount codes that correspond to external discounts. This can
-  only be used by Functions with network access.
-  """
-  addValidDiscountCodes: ValidDiscountCodes
 }
 
 """
@@ -2886,7 +2886,7 @@ input DeliveryOperation @oneOf {
   A list of valid discount codes that correspond to external discounts. This can
   only be used by Functions with network access.
   """
-  addValidDiscountCodes: ValidDiscountCodes
+  addDiscountCodeValidations: ValidDiscountCodes
 }
 
 """
@@ -2897,6 +2897,31 @@ input DeliveryOptionTarget {
   The handle of the target delivery option.
   """
   handle: Handle!
+}
+
+"""
+The discount that invoked the Function.
+"""
+type Discount implements HasMetafields {
+  """
+  The discount classes supported by the discount node.
+  """
+  discountClasses: [DiscountClass!]!
+
+  """
+  Returns a metafield by namespace and key that belongs to the resource.
+  """
+  metafield(
+    """
+    The key for the metafield.
+    """
+    key: String!
+
+    """
+    The container the metafield belongs to. If omitted, the app-reserved namespace will be used.
+    """
+    namespace: String
+  ): Metafield
 }
 
 """
@@ -2924,31 +2949,6 @@ enum DiscountClass {
   class.
   """
   SHIPPING
-}
-
-"""
-A discount wrapper node.
-"""
-type DiscountNode implements HasMetafields {
-  """
-  The discount classes supported by the discount node.
-  """
-  discountClasses: [DiscountClass!]!
-
-  """
-  Returns a metafield by namespace and key that belongs to the resource.
-  """
-  metafield(
-    """
-    The key for the metafield.
-    """
-    key: String!
-
-    """
-    The container the metafield belongs to. If omitted, the app-reserved namespace will be used.
-    """
-    namespace: String
-  ): Metafield
 }
 
 """
@@ -3278,7 +3278,7 @@ type Input {
   """
   The discount node executing the Function.
   """
-  discountNode: DiscountNode!
+  discount: Discount!
 
   """
   Discount codes entered by the buyer as an array of strings, excluding gift cards.
@@ -3286,7 +3286,10 @@ type Input {
   """
   enteredDiscountCodes: [String!]!
     @restrictTarget(
-      only: ["purchase.discount.cart_fetch", "purchase.discount.delivery_fetch"]
+      only: [
+        "cart.lines.discounts.generate.fetch"
+        "cart.delivery-options.discounts.generate.fetch"
+      ]
     )
 
   """
@@ -3295,7 +3298,10 @@ type Input {
   """
   fetchResult: HttpResponse
     @restrictTarget(
-      only: ["purchase.discount.cart_run", "purchase.discount.delivery_run"]
+      only: [
+        "cart.lines.discounts.generate.run"
+        "cart.delivery-options.discounts.generate.run"
+      ]
     )
 
   """
@@ -3315,11 +3321,15 @@ type Input {
 
   """
   The discount code entered by the buyer that caused the Function to run.
-  This input is only available in the cart_run and delivery_run extension targets.
+  This input is only available in the cart.lines.discounts.generate.run
+  and cart.delivery-options.discounts.generate.run extension targets.
   """
   triggeringDiscountCode: String
     @restrictTarget(
-      only: ["purchase.discount.cart_run", "purchase.discount.delivery_run"]
+      only: [
+        "cart.lines.discounts.generate.run"
+        "cart.delivery-options.discounts.generate.run"
+      ]
     )
 }
 
@@ -4570,29 +4580,9 @@ The root mutation for the API.
 """
 type MutationRoot {
   """
-  Handles the Function result for the purchase.discount.cart_fetch target.
+  Handles the Function result for the cart.delivery-options.discounts.generate.fetch target.
   """
-  cartFetch(
-    """
-    The result of the Function.
-    """
-    result: FunctionCartFetchResult!
-  ): Void!
-
-  """
-  Handles the Function result for the purchase.discount.cart_run target.
-  """
-  cartRun(
-    """
-    The result of the Function.
-    """
-    result: FunctionCartRunResult!
-  ): Void!
-
-  """
-  Handles the Function result for the purchase.discount.delivery_fetch target.
-  """
-  deliveryFetch(
+  cartDeliveryOptionsDiscountsGenerateFetch(
     """
     The result of the Function.
     """
@@ -4600,13 +4590,33 @@ type MutationRoot {
   ): Void!
 
   """
-  Handles the Function result for the purchase.discount.delivery_run target.
+  Handles the Function result for the cart.delivery-options.discounts.generate.run target.
   """
-  deliveryRun(
+  cartDeliveryOptionsDiscountsGenerateRun(
     """
     The result of the Function.
     """
     result: FunctionDeliveryRunResult!
+  ): Void!
+
+  """
+  Handles the Function result for the cart.lines.discounts.generate.fetch target.
+  """
+  cartLinesDiscountsGenerateFetch(
+    """
+    The result of the Function.
+    """
+    result: FunctionCartFetchResult!
+  ): Void!
+
+  """
+  Handles the Function result for the cart.lines.discounts.generate.run target.
+  """
+  cartLinesDiscountsGenerateRun(
+    """
+    The result of the Function.
+    """
+    result: FunctionCartRunResult!
   ): Void!
 }
 

@@ -4,29 +4,9 @@ schema {
 }
 
 """
-Only allow the field to be queried when targeting one of the specified targets.
-"""
-directive @restrictTarget(only: [String!]!) on FIELD_DEFINITION
-
-"""
 Scale the Functions resource limits based on the field's length.
 """
 directive @scaleLimits(rate: Float!) on FIELD_DEFINITION
-
-"""
-Requires that exactly one field must be supplied and that field must not be `null`.
-"""
-directive @oneOf on INPUT_OBJECT
-
-"""
-A discount code that is associated with a discount candidate.
-"""
-input AssociatedDiscountCode {
-  """
-  The discount code.
-  """
-  code: String!
-}
 
 """
 Represents a generic custom attribute, such as whether an order is a customer's first.
@@ -282,75 +262,16 @@ type CartLineCost {
   totalAmount: MoneyV2!
 }
 
-"""
-The condition for checking the minimum quantity of products across a group of cart lines.
-"""
-input CartLineMinimumQuantity {
+type CartLineTarget {
   """
-  Cart line IDs with a merchandise line price that's included to calculate the
-  minimum quantity purchased to receive the discount.
+  The ID of the line to be discounted.
   """
-  ids: [ID!]!
+  cartLineId: ID!
 
   """
-  The minimum quantity of a product.
+  The quantity of the items on this line to be discounted.
   """
-  minimumQuantity: Int!
-}
-
-"""
-The condition for checking the minimum subtotal of products across a group of cart lines.
-"""
-input CartLineMinimumSubtotal {
-  """
-  Cart line IDs with a merchandise line price that's included to calculate the
-  minimum subtotal purchased to receive the discount.
-  """
-  ids: [ID!]!
-
-  """
-  The minimum subtotal amount of the product.
-  """
-  minimumAmount: Decimal!
-}
-
-"""
-A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit.
-"""
-input CartLineTarget {
-  """
-  The ID of the targeted cart line.
-  """
-  id: ID!
-
-  """
-  The number of line items that are being discounted.
-  The default value is `null`, which represents the quantity of the matching line items.
-
-  The value is validated against: > 0.
-  """
-  quantity: Int
-}
-
-"""
-The operations that can be performed to apply discounts to the cart.
-"""
-input CartOperation @oneOf {
-  """
-  A list of valid discount codes that correspond to external discounts. This can
-  only be used by Functions with network access.
-  """
-  addDiscountCodeValidations: ValidDiscountCodes
-
-  """
-  A group of order discounts that share a selection strategy.
-  """
-  addOrderDiscounts: OrderDiscounts
-
-  """
-  A group of product discounts that share a selection strategy.
-  """
-  addProductDiscounts: ProductDiscounts
+  quantity: Int!
 }
 
 """
@@ -495,26 +416,6 @@ type CompanyLocation implements HasMetafields {
   at which the company location was last modified.
   """
   updatedAt: DateTime!
-}
-
-"""
-The condition to apply the discount candidate.
-"""
-input Condition @oneOf {
-  """
-  The condition for checking the minimum quantity of products across a group of cart lines.
-  """
-  cartLineMinimumQuantity: CartLineMinimumQuantity
-
-  """
-  The condition for checking the minimum subtotal of products across a group of cart lines.
-  """
-  cartLineMinimumSubtotal: CartLineMinimumSubtotal
-
-  """
-  The condition for checking the minimum subtotal amount of the order.
-  """
-  orderMinimumSubtotal: OrderMinimumSubtotal
 }
 
 """
@@ -2748,97 +2649,6 @@ type DeliverableCartLine {
 }
 
 """
-The delivery discount candidate to be applied.
-"""
-input DeliveryDiscountCandidate {
-  """
-  The discount code associated with this discount candidate, for code-based discounts.
-  """
-  associatedDiscountCode: AssociatedDiscountCode
-
-  """
-  The discount message.
-  """
-  message: String
-
-  """
-  The targets of the delivery discount candidate.
-  """
-  targets: [DeliveryDiscountCandidateTarget!]!
-
-  """
-  The value of the delivery discount candidate.
-  """
-  value: DeliveryDiscountCandidateValue!
-}
-
-"""
-The target of the delivery discount candidate.
-"""
-input DeliveryDiscountCandidateTarget @oneOf {
-  """
-  The target delivery group.
-  """
-  deliveryGroup: DeliveryGroupTarget
-
-  """
-  The target delivery option.
-  """
-  deliveryOption: DeliveryOptionTarget
-}
-
-"""
-The delivery discount candidate value.
-"""
-input DeliveryDiscountCandidateValue @oneOf {
-  """
-  A fixed amount value.
-  """
-  fixedAmount: FixedAmount
-
-  """
-  A percentage value.
-  """
-  percentage: Percentage
-}
-
-"""
-The strategy that's applied to the list of delivery discount candidates.
-"""
-enum DeliveryDiscountSelectionStrategy {
-  """
-  Apply all delivery discount candidates with conditions that are satisfied. This does not override
-  discount combination or stacking rules.
-  """
-  ALL
-}
-
-"""
-A group of delivery discounts that share a selection strategy.
-"""
-input DeliveryDiscounts {
-  """
-  The list of delivery discount candidates to be applied.
-  """
-  candidates: [DeliveryDiscountCandidate!]!
-
-  """
-  The strategy that's applied to the list of discounts.
-  """
-  selectionStrategy: DeliveryDiscountSelectionStrategy!
-}
-
-"""
-The target delivery group.
-"""
-input DeliveryGroupTarget {
-  """
-  The ID of the target delivery group.
-  """
-  id: ID!
-}
-
-"""
 List of different delivery method types.
 """
 enum DeliveryMethod {
@@ -2873,40 +2683,31 @@ enum DeliveryMethod {
   SHIPPING
 }
 
-"""
-The operations that can be performed to apply discounts to the delivery lines.
-"""
-input DeliveryOperation @oneOf {
-  """
-  A group of delivery discounts that share a selection strategy.
-  """
-  addDeliveryDiscounts: DeliveryDiscounts
-
-  """
-  A list of valid discount codes that correspond to external discounts. This can
-  only be used by Functions with network access.
-  """
-  addDiscountCodeValidations: ValidDiscountCodes
-}
-
-"""
-The target delivery option.
-"""
-input DeliveryOptionTarget {
-  """
-  The handle of the target delivery option.
-  """
-  handle: Handle!
-}
-
-"""
-The discount that invoked the Function.
-"""
 type Discount implements HasMetafields {
   """
-  The discount classes supported by the discount node.
+  The discount code, for code-based discounts.
   """
-  discountClasses: [DiscountClass!]!
+  code: String
+
+  """
+  The strategy to use when considering discounts proposals.
+  """
+  discountApplicationStrategy: DiscountApplicationStrategy!
+
+  """
+  The class of the discount.
+  """
+  discountClass: DiscountClass!
+
+  """
+  Proposals to evaluate as part of this discount.
+  """
+  discountProposals: [DiscountProposal!]!
+
+  """
+  The ID of the discount.
+  """
+  id: ID!
 
   """
   Returns a metafield by namespace and key that belongs to the resource.
@@ -2922,87 +2723,114 @@ type Discount implements HasMetafields {
     """
     namespace: String
   ): Metafield
+
+  """
+  The discount title.
+  """
+  title: String!
 }
 
 """
-The [discount class](https://help.shopify.com/manual/discounts/combining-discounts/discount-combinations)
-that's used to control how discounts can be combined.
+The strategy that's applied to the list of discounts.
+"""
+enum DiscountApplicationStrategy {
+  """
+  Apply all discounts with conditions that are satisfied. This does not override discount combination or stacking rules.
+  """
+  ALL
+
+  """
+  Only apply the first discount with conditions that are satisfied.
+  """
+  FIRST
+
+  """
+  Only apply the discount that offers the maximum reduction.
+  """
+  MAXIMUM
+}
+
+"""
+List of the classes of discounts.
 """
 enum DiscountClass {
   """
-  The discount is combined with an
-  [order discount](https://help.shopify.com/manual/discounts/combining-discounts/discount-combinations)
-  class.
+  A discount that applies to the order.
   """
   ORDER
 
   """
-  The discount is combined with a
-  [product discount](https://help.shopify.com/manual/discounts/combining-discounts/discount-combinations)
-  class.
+  A discount that applies to products.
   """
   PRODUCT
+}
+
+"""
+The input object for the Function.
+"""
+type DiscountProposal {
+  """
+  The handle of the discount proposal.
+  """
+  handle: Handle!
 
   """
-  The discount is combined with a
-  [shipping discount](https://help.shopify.com/manual/discounts/combining-discounts/discount-combinations)
-  class.
+  The message for this proposal.
   """
-  SHIPPING
+  message: String
+
+  """
+  The line items to which the discount proposal applies.
+  """
+  targets: [CartLineTarget!]!
+
+  """
+  The value of the discount.
+  """
+  value: Value!
+}
+
+input DisplayableError {
+  """
+  The ID of the discount that caused this violation.
+  """
+  discountId: ID!
+
+  """
+  The error message in the user's locale.
+  """
+  reason: String!
 }
 
 """
 A fixed amount value.
 """
-input FixedAmount {
+type FixedAmount {
   """
   The fixed amount value of the discount, in the currency of the cart.
-
-  The amount must be greater than or equal to 0.
   """
   amount: Decimal!
+
+  """
+  Allocation method of the discount, will be allocated on each line if it's
+  true, else will be allocated across target lines.
+  """
+  appliesToEachItem: Boolean!
 }
 
 """
-The cart.fetch target result. Refer to [network access]
-(https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
+The run target result.
 """
-input FunctionCartFetchResult {
+input FunctionRunResult {
   """
-  The http request.
+  The list of displayable errors.
   """
-  request: HttpRequest
-}
+  displayableErrors: [DisplayableError!]
 
-"""
-The cart.run target result.
-"""
-input FunctionCartRunResult {
   """
-  The list of operations to apply discounts to the cart.
+  The list of applied line discounts.
   """
-  operations: [CartOperation!]!
-}
-
-"""
-The delivery.fetch target result. Refer to
-[network access](https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
-"""
-input FunctionDeliveryFetchResult {
-  """
-  The http request.
-  """
-  request: HttpRequest
-}
-
-"""
-The delivery.run target result.
-"""
-input FunctionDeliveryRunResult {
-  """
-  The list of operations to apply discounts to the delivery lines.
-  """
-  operations: [DeliveryOperation!]!
+  lineDiscounts: [LineDiscount!]
 }
 
 """
@@ -3119,146 +2947,6 @@ type HasTagResponse {
 }
 
 """
-The attributes associated with an HTTP request.
-"""
-input HttpRequest {
-  """
-  The HTTP request body as a plain string.
-  Use this field when the body isn't in JSON format.
-  """
-  body: String
-
-  """
-  The HTTP headers.
-  """
-  headers: [HttpRequestHeader!]!
-
-  """
-  The HTTP request body as a JSON object.
-  Use this field when the body's in JSON format, to reduce function instruction consumption
-  and to ensure the body's formatted in logs.
-  Don't use this field together with the `body` field. If both are provided, then the `body` field
-  will take precedence.
-  If this field is specified and no `Content-Type` header is included, then the header will
-  automatically be set to `application/json`.
-  """
-  jsonBody: JSON
-
-  """
-  The HTTP method.
-  """
-  method: HttpRequestMethod!
-
-  """
-  Policy attached to the HTTP request.
-  """
-  policy: HttpRequestPolicy!
-
-  """
-  The HTTP url (eg.: https://example.com). The scheme needs to be HTTPS.
-  """
-  url: URL!
-}
-
-"""
-The attributes associated with an HTTP request header.
-"""
-input HttpRequestHeader {
-  """
-  Header name.
-  """
-  name: String!
-
-  """
-  Header value.
-  """
-  value: String!
-}
-
-"""
-The HTTP request available methods.
-"""
-enum HttpRequestMethod {
-  """
-  Http GET.
-  """
-  GET
-
-  """
-  Http POST.
-  """
-  POST
-}
-
-"""
-The attributes associated with an HTTP request policy.
-"""
-input HttpRequestPolicy {
-  """
-  Read timeout in milliseconds.
-  """
-  readTimeoutMs: Int!
-}
-
-"""
-The attributes associated with an HTTP response.
-"""
-type HttpResponse {
-  """
-  The HTTP response body as a plain string.
-  Use this field when the body is not in JSON format.
-  """
-  body: String
-
-  """
-  An HTTP header.
-  """
-  header(
-    """
-    A case-insensitive header name.
-    """
-    name: String!
-  ): HttpResponseHeader
-
-  """
-  The HTTP headers.
-  """
-  headers: [HttpResponseHeader!]! @deprecated(reason: "Use `header` instead.")
-
-  """
-  The HTTP response body parsed as JSON.
-  If the body is valid JSON, it will be parsed and returned as a JSON object.
-  If parsing fails, then raw body is returned as a string.
-  Use this field when you expect the response to be JSON, or when you're dealing
-  with mixed response types, meaning both JSON and non-JSON.
-  Using this field reduces function instruction consumption and ensures that the data is formatted in logs.
-  To prevent increasing the function target input size unnecessarily, avoid querying
-  both `body` and `jsonBody` simultaneously.
-  """
-  jsonBody: JSON
-
-  """
-  The HTTP status code.
-  """
-  status: Int!
-}
-
-"""
-The attributes associated with an HTTP response header.
-"""
-type HttpResponseHeader {
-  """
-  Header name.
-  """
-  name: String!
-
-  """
-  Header value.
-  """
-  value: String!
-}
-
-"""
 Represents a unique identifier, often used to refetch an object.
 The ID type appears in a JSON response as a String, but it is not intended to be human-readable.
 
@@ -3276,33 +2964,9 @@ type Input {
   cart: Cart!
 
   """
-  The discount node executing the Function.
+  The list of discounts to be allocated.
   """
-  discount: Discount!
-
-  """
-  Discount codes entered by the buyer as an array of strings, excluding gift cards.
-  Codes are not validated in any way other than gift card filtering.
-  """
-  enteredDiscountCodes: [String!]!
-    @restrictTarget(
-      only: [
-        "cart.lines.discounts.generate.fetch"
-        "cart.delivery-options.discounts.generate.fetch"
-      ]
-    )
-
-  """
-  The result of the fetch target. Refer to [network access](https://shopify.dev/apps/build/functions/input-output/network-access/graphql)
-  for Shopify Functions.
-  """
-  fetchResult: HttpResponse
-    @restrictTarget(
-      only: [
-        "cart.lines.discounts.generate.run"
-        "cart.delivery-options.discounts.generate.run"
-      ]
-    )
+  discounts: [Discount!]
 
   """
   The localization of the Function execution context.
@@ -3318,19 +2982,6 @@ type Input {
   Information about the shop.
   """
   shop: Shop!
-
-  """
-  The discount code entered by the buyer that caused the Function to run.
-  This input is only available in the cart.lines.discounts.generate.run
-  and cart.delivery-options.discounts.generate.run extension targets.
-  """
-  triggeringDiscountCode: String
-    @restrictTarget(
-      only: [
-        "cart.lines.discounts.generate.run"
-        "cart.delivery-options.discounts.generate.run"
-      ]
-    )
 }
 
 """
@@ -4070,6 +3721,23 @@ enum LanguageCode {
   ZU
 }
 
+input LineDiscount {
+  """
+  The output allocations for this line discount.
+  """
+  allocations: [OutputAllocations!]!
+
+  """
+  The ID of the cart line associated to this discount.
+  """
+  cartLineId: ID!
+
+  """
+  The quantity to which this line discount will apply.
+  """
+  quantity: Int!
+}
+
 """
 Represents limited information about the current time relative to the parent object.
 """
@@ -4580,165 +4248,34 @@ The root mutation for the API.
 """
 type MutationRoot {
   """
-  Handles the Function result for the cart.delivery-options.discounts.generate.fetch target.
+  Handles the Function result for the purchase.discounts-allocator.run target.
   """
-  cartDeliveryOptionsDiscountsGenerateFetch(
+  run(
     """
     The result of the Function.
     """
-    result: FunctionDeliveryFetchResult!
-  ): Void!
-
-  """
-  Handles the Function result for the cart.delivery-options.discounts.generate.run target.
-  """
-  cartDeliveryOptionsDiscountsGenerateRun(
-    """
-    The result of the Function.
-    """
-    result: FunctionDeliveryRunResult!
-  ): Void!
-
-  """
-  Handles the Function result for the cart.lines.discounts.generate.fetch target.
-  """
-  cartLinesDiscountsGenerateFetch(
-    """
-    The result of the Function.
-    """
-    result: FunctionCartFetchResult!
-  ): Void!
-
-  """
-  Handles the Function result for the cart.lines.discounts.generate.run target.
-  """
-  cartLinesDiscountsGenerateRun(
-    """
-    The result of the Function.
-    """
-    result: FunctionCartRunResult!
+    result: FunctionRunResult!
   ): Void!
 }
 
-"""
-The order discount candidate to be applied.
-"""
-input OrderDiscountCandidate {
+input OutputAllocations {
   """
-  The discount code associated with this discount candidate, for code-based discounts.
+  The money amount that's allocated to a line based on the associated discount.
   """
-  associatedDiscountCode: AssociatedDiscountCode
+  amount: Decimal!
 
   """
-  The conditions that must be satisfied to apply the order discount candidate.
+  The ID of the source discount proposal.
   """
-  conditions: [Condition!]
-
-  """
-  The discount message.
-  """
-  message: String
-
-  """
-  The targets of the order discount candidate.
-  """
-  targets: [OrderDiscountCandidateTarget!]!
-
-  """
-  The value of the order discount candidate.
-  """
-  value: OrderDiscountCandidateValue!
-}
-
-"""
-A target of a order discount candidate.
-"""
-input OrderDiscountCandidateTarget @oneOf {
-  """
-  If used, the discount targets the entire order subtotal after product discounts are applied.
-  """
-  orderSubtotal: OrderSubtotalTarget
-}
-
-"""
-The order discount candidate value.
-"""
-input OrderDiscountCandidateValue @oneOf {
-  """
-  A fixed amount value.
-  """
-  fixedAmount: FixedAmount
-
-  """
-  A percentage value.
-  """
-  percentage: Percentage
-}
-
-"""
-The strategy that's applied to the list of order discount candidates.
-"""
-enum OrderDiscountSelectionStrategy {
-  """
-  Only apply the first order discount candidate with conditions that are satisfied.
-  """
-  FIRST
-
-  """
-  Only apply the order discount candidate that offers the maximum reduction.
-  """
-  MAXIMUM
-}
-
-"""
-A group of order discounts that share a selection strategy.
-"""
-input OrderDiscounts {
-  """
-  The list of order discount candidates to be applied.
-  """
-  candidates: [OrderDiscountCandidate!]!
-
-  """
-  The strategy that's applied to the list of discounts.
-  """
-  selectionStrategy: OrderDiscountSelectionStrategy!
-}
-
-"""
-The condition for checking the minimum subtotal amount of the order.
-"""
-input OrderMinimumSubtotal {
-  """
-  Cart line IDs with a merchandise line price that's excluded to calculate the minimum subtotal amount of the order.
-  """
-  excludedCartLineIds: [ID!]!
-
-  """
-  The minimum subtotal amount of the order.
-  """
-  minimumAmount: Decimal!
-}
-
-"""
-If used, the discount targets the entire order subtotal after product discounts are applied.
-"""
-input OrderSubtotalTarget {
-  """
-  The list of excluded cart line IDs. These cart lines are excluded from the order
-  subtotal calculation when calculating the maximum value of the discount.
-  """
-  excludedCartLineIds: [ID!]!
+  discountProposalId: Handle!
 }
 
 """
 A percentage value.
 """
-input Percentage {
+type Percentage {
   """
   The percentage value.
-
-  The value is validated against: >= 0 and <= 100.
   """
   value: Decimal!
 }
@@ -4841,117 +4378,6 @@ type Product implements HasGates & HasMetafields {
   The name of the product's vendor.
   """
   vendor: String
-}
-
-"""
-The product discount candidate to be applied.
-"""
-input ProductDiscountCandidate {
-  """
-  The discount code associated with this discount candidate, for code-based discounts.
-  """
-  associatedDiscountCode: AssociatedDiscountCode
-
-  """
-  The discount message.
-  """
-  message: String
-
-  """
-  The targets of the product discount candidate.
-  """
-  targets: [ProductDiscountCandidateTarget!]!
-
-  """
-  The value of the product discount candidate.
-  """
-  value: ProductDiscountCandidateValue!
-}
-
-"""
-A product discount candidate fixed amount value.
-"""
-input ProductDiscountCandidateFixedAmount {
-  """
-  The fixed amount value of the product discount candidate, in the currency of the cart.
-
-  The amount must be greater than or equal to 0.
-  """
-  amount: Decimal!
-
-  """
-  Whether to apply the value to each entitled item.
-
-  The default value is `false`, which causes the value to be applied once across the entitled items.
-  When the value is `true`, the value will be applied to each of the entitled items.
-  """
-  appliesToEachItem: Boolean = false
-}
-
-"""
-A target of a product discount candidate, which determines which cart line(s) the discount will affect.
-
-Multiple targets with the same type and ID are the same as a single target of that type and ID with their
-quantities added together, or `null` if any of those targets have a quantity of `null`.
-
-See the [Discounts API reference](https://shopify.dev/docs/api/functions/reference/product-discounts/graphql#functionrunresult) for examples.
-"""
-input ProductDiscountCandidateTarget @oneOf {
-  """
-  A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit.
-  """
-  cartLine: CartLineTarget
-}
-
-"""
-The value of the product discount candidate.
-"""
-input ProductDiscountCandidateValue @oneOf {
-  """
-  A product discount candidate fixed amount value.
-  """
-  fixedAmount: ProductDiscountCandidateFixedAmount
-
-  """
-  A percentage value.
-  """
-  percentage: Percentage
-}
-
-"""
-The strategy that's applied to the list of product discount candidates.
-"""
-enum ProductDiscountSelectionStrategy {
-  """
-  Apply all product discount candidates with conditions that are satisfied. This
-  does not override discount combination or stacking rules.
-  """
-  ALL
-
-  """
-  Only apply the first product discount candidate with conditions that are satisfied.
-  """
-  FIRST
-
-  """
-  Only apply the product discount candidate that offers the maximum reduction.
-  """
-  MAXIMUM
-}
-
-"""
-A group of product discounts that share a selection strategy.
-"""
-input ProductDiscounts {
-  """
-  The list of product discount candidates to be applied.
-  """
-  candidates: [ProductDiscountCandidate!]!
-
-  """
-  The strategy that's applied to the list of product discount candidates.
-  """
-  selectionStrategy: ProductDiscountSelectionStrategy!
 }
 
 """
@@ -5145,35 +4571,9 @@ For example, "05:43:21".
 scalar TimeWithoutTimezone
 
 """
-Represents an [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) and
-[RFC 3987](https://datatracker.ietf.org/doc/html/rfc3987)-compliant URI string.
-
-For example, `"https://example.myshopify.com"` is a valid URL. It includes a scheme (`https`) and a host
-(`example.myshopify.com`).
+The value of the discount.
 """
-scalar URL
-
-"""
-A discount code that corresponds to a valid external discount.
-This can only be used by Functions with network access.
-"""
-input ValidDiscountCode {
-  """
-  The discount code.
-  """
-  code: String!
-}
-
-"""
-A list of valid discount codes that correspond to external discounts. This can
-only be used by Functions with network access.
-"""
-input ValidDiscountCodes {
-  """
-  The list of valid discount codes.
-  """
-  codes: [ValidDiscountCode!]!
-}
+union Value = FixedAmount | Percentage
 
 """
 A void type that can be used to return a null value from a mutation.

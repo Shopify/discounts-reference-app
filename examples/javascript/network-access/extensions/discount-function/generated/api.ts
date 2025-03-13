@@ -117,16 +117,10 @@ export type BuyerIdentity = {
   phone?: Maybe<Scalars["String"]["output"]>;
   /** The purchasing company associated with the cart. */
   purchasingCompany?: Maybe<PurchasingCompany>;
-  /**
-   * Represents the [Shop User](https://help.shopify.com/en/manual/online-sales-channels/shop/sign-in-features)
-   *  corresponding to the customer within the shop, if the buyer is a Shop User. Can be used to request [Shop User
-   *  metafields](https://shopify.dev/docs/api/shop-user-custom-data).
-   */
-  shopUser?: Maybe<ShopUser>;
 };
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
-export type Cart = HasMetafields & {
+export type Cart = {
   __typename?: "Cart";
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
   attribute?: Maybe<Attribute>;
@@ -142,8 +136,6 @@ export type Cart = HasMetafields & {
   lines: Array<CartLine>;
   /** The localized fields available for the cart. */
   localizedFields: Array<LocalizedField>;
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
 };
 
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
@@ -154,12 +146,6 @@ export type CartAttributeArgs = {
 /** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
 export type CartLocalizedFieldsArgs = {
   keys?: Array<LocalizedFieldKey>;
-};
-
-/** A cart represents the merchandise that a buyer intends to purchase, and the cost associated with the cart. */
-export type CartMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** The cost that the buyer will pay at checkout. */
@@ -252,6 +238,28 @@ export type CartLineCost = {
   totalAmount: MoneyV2;
 };
 
+/** The condition for checking the minimum quantity of products across a group of cart lines. */
+export type CartLineMinimumQuantity = {
+  /**
+   * Cart line IDs with a merchandise line price that's included to calculate the
+   * minimum quantity purchased to receive the discount.
+   */
+  ids: Array<Scalars["ID"]["input"]>;
+  /** The minimum quantity of a product. */
+  minimumQuantity: Scalars["Int"]["input"];
+};
+
+/** The condition for checking the minimum subtotal of products across a group of cart lines. */
+export type CartLineMinimumSubtotal = {
+  /**
+   * Cart line IDs with a merchandise line price that's included to calculate the
+   * minimum subtotal purchased to receive the discount.
+   */
+  ids: Array<Scalars["ID"]["input"]>;
+  /** The minimum subtotal amount of the product. */
+  minimumAmount: Scalars["Decimal"]["input"];
+};
+
 /** A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit. */
 export type CartLineTarget = {
   /** The ID of the targeted cart line. */
@@ -267,24 +275,24 @@ export type CartLineTarget = {
 
 /** The operations that can be performed to apply discounts to the cart. */
 export type CartOperation =
-  /** A group of order discounts that share a selection strategy. */
-  | {
-      addOrderDiscounts: OrderDiscounts;
-      addProductDiscounts?: never;
-      addValidDiscountCodes?: never;
-    } /** A group of product discounts that share a selection strategy. */
-  | {
-      addOrderDiscounts?: never;
-      addProductDiscounts: ProductDiscounts;
-      addValidDiscountCodes?: never;
-    } /**
+  /**
    * A list of valid discount codes that correspond to external discounts. This can
    * only be used by Functions with network access.
    */
   | {
+      addDiscountCodeValidations: ValidDiscountCodes;
       addOrderDiscounts?: never;
       addProductDiscounts?: never;
-      addValidDiscountCodes: ValidDiscountCodes;
+    } /** A group of order discounts that share a selection strategy. */
+  | {
+      addDiscountCodeValidations?: never;
+      addOrderDiscounts: OrderDiscounts;
+      addProductDiscounts?: never;
+    } /** A group of product discounts that share a selection strategy. */
+  | {
+      addDiscountCodeValidations?: never;
+      addOrderDiscounts?: never;
+      addProductDiscounts: ProductDiscounts;
     };
 
 /** Represents whether the product is a member of the given collection. */
@@ -358,8 +366,6 @@ export type CompanyLocation = HasMetafields & {
   metafield?: Maybe<Metafield>;
   /** The name of the company location. */
   name: Scalars["String"]["output"];
-  /** The number of orders placed at this company location. */
-  orderCount: Scalars["Int"]["output"];
   /**
    * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))
    * at which the company location was last modified.
@@ -375,21 +381,21 @@ export type CompanyLocationMetafieldArgs = {
 
 /** The condition to apply the discount candidate. */
 export type Condition =
-  /** The condition for checking the minimum subtotal amount of the order. */
+  /** The condition for checking the minimum quantity of products across a group of cart lines. */
   | {
+      cartLineMinimumQuantity: CartLineMinimumQuantity;
+      cartLineMinimumSubtotal?: never;
+      orderMinimumSubtotal?: never;
+    } /** The condition for checking the minimum subtotal of products across a group of cart lines. */
+  | {
+      cartLineMinimumQuantity?: never;
+      cartLineMinimumSubtotal: CartLineMinimumSubtotal;
+      orderMinimumSubtotal?: never;
+    } /** The condition for checking the minimum subtotal amount of the order. */
+  | {
+      cartLineMinimumQuantity?: never;
+      cartLineMinimumSubtotal?: never;
       orderMinimumSubtotal: OrderMinimumSubtotal;
-      productMinimumQuantity?: never;
-      productMinimumSubtotal?: never;
-    } /** The condition for checking the minimum quantity of a product. */
-  | {
-      orderMinimumSubtotal?: never;
-      productMinimumQuantity: ProductMinimumQuantity;
-      productMinimumSubtotal?: never;
-    } /** The condition for checking the minimum subtotal amount of the product. */
-  | {
-      orderMinimumSubtotal?: never;
-      productMinimumQuantity?: never;
-      productMinimumSubtotal: ProductMinimumSubtotal;
     };
 
 /** A country. */
@@ -860,8 +866,6 @@ export enum CountryCode {
   Ug = "UG",
   /** U.S. Outlying Islands. */
   Um = "UM",
-  /** Unknown country code. */
-  Unknown = "UNKNOWN__",
   /** United States. */
   Us = "US",
   /** Uruguay. */
@@ -1391,17 +1395,35 @@ export type DeliveryOperation =
   /** A group of delivery discounts that share a selection strategy. */
   | {
       addDeliveryDiscounts: DeliveryDiscounts;
-      addValidDiscountCodes?: never;
+      addDiscountCodeValidations?: never;
     } /**
    * A list of valid discount codes that correspond to external discounts. This can
    * only be used by Functions with network access.
    */
-  | { addDeliveryDiscounts?: never; addValidDiscountCodes: ValidDiscountCodes };
+  | {
+      addDeliveryDiscounts?: never;
+      addDiscountCodeValidations: ValidDiscountCodes;
+    };
 
 /** The target delivery option. */
 export type DeliveryOptionTarget = {
   /** The handle of the target delivery option. */
   handle: Scalars["Handle"]["input"];
+};
+
+/** The discount that invoked the Function. */
+export type Discount = HasMetafields & {
+  __typename?: "Discount";
+  /** The discount classes supported by the discount node. */
+  discountClasses: Array<DiscountClass>;
+  /** Returns a metafield by namespace and key that belongs to the resource. */
+  metafield?: Maybe<Metafield>;
+};
+
+/** The discount that invoked the Function. */
+export type DiscountMetafieldArgs = {
+  key: Scalars["String"]["input"];
+  namespace?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -1428,21 +1450,6 @@ export enum DiscountClass {
    */
   Shipping = "SHIPPING",
 }
-
-/** A discount wrapper node. */
-export type DiscountNode = HasMetafields & {
-  __typename?: "DiscountNode";
-  /** The discount classes supported by the discount node. */
-  discountClasses: Array<DiscountClass>;
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
-};
-
-/** A discount wrapper node. */
-export type DiscountNodeMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /** A fixed amount value. */
 export type FixedAmount = {
@@ -1648,7 +1655,7 @@ export type Input = {
   /** The cart. */
   cart: Cart;
   /** The discount node executing the Function. */
-  discountNode: DiscountNode;
+  discount: Discount;
   /**
    * Discount codes entered by the buyer as an array of strings, excluding gift cards.
    * Codes are not validated in any way other than gift card filtering.
@@ -1665,6 +1672,12 @@ export type Input = {
   presentmentCurrencyRate: Scalars["Decimal"]["output"];
   /** Information about the shop. */
   shop: Shop;
+  /**
+   * The discount code entered by the buyer that caused the Function to run.
+   * This input is only available in the cart.lines.discounts.generate.run
+   * and cart.delivery-options.discounts.generate.run extension targets.
+   */
+  triggeringDiscountCode?: Maybe<Scalars["String"]["output"]>;
 };
 
 /** A language. */
@@ -2018,7 +2031,10 @@ export type Localization = {
   country: Country;
   /** The language of the active localized experience. */
   language: Language;
-  /** The market of the active localized experience. */
+  /**
+   * The market of the active localized experience.
+   * @deprecated This `market` field will be removed in a future version of the API.
+   */
   market: Market;
 };
 
@@ -2137,7 +2153,10 @@ export type MailingAddress = {
   latitude?: Maybe<Scalars["Float"]["output"]>;
   /** The approximate longitude of the address. */
   longitude?: Maybe<Scalars["Float"]["output"]>;
-  /** The market of the address. */
+  /**
+   * The market of the address.
+   * @deprecated This `market` field will be removed in a future version of the API.
+   */
   market?: Maybe<Market>;
   /** The full name of the customer, based on firstName and lastName. */
   name?: Maybe<Scalars["String"]["output"]>;
@@ -2163,8 +2182,6 @@ export type Market = HasMetafields & {
   handle: Scalars["Handle"]["output"];
   /** A globally-unique identifier. */
   id: Scalars["ID"]["output"];
-  /** The manager of the market, if the accessing app is the market’s manager. Otherwise, this will be null. */
-  manager?: Maybe<MarketManager>;
   /** Returns a metafield by namespace and key that belongs to the resource. */
   metafield?: Maybe<Metafield>;
   /** A geographic region which comprises a market. */
@@ -2182,16 +2199,6 @@ export type Market = HasMetafields & {
 export type MarketMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** The entity that manages a particular market. */
-export type MarketManager = {
-  __typename?: "MarketManager";
-  /**
-   * The identity of the manager. This can either be `merchant` if the market is
-   * manually managed by the merchant or an ID of the app responsible for managing the market.
-   */
-  identifier: Scalars["String"]["output"];
 };
 
 /** Represents a region. */
@@ -2245,34 +2252,34 @@ export type MoneyV2 = {
 /** The root mutation for the API. */
 export type MutationRoot = {
   __typename?: "MutationRoot";
-  /** Handles the Function result for the purchase.discount.cart_fetch target. */
-  cartFetch: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.cart_run target. */
-  cartRun: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.delivery_fetch target. */
-  deliveryFetch: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.delivery_run target. */
-  deliveryRun: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.delivery-options.discounts.generate.fetch target. */
+  cartDeliveryOptionsDiscountsGenerateFetch: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.delivery-options.discounts.generate.run target. */
+  cartDeliveryOptionsDiscountsGenerateRun: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.lines.discounts.generate.fetch target. */
+  cartLinesDiscountsGenerateFetch: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.lines.discounts.generate.run target. */
+  cartLinesDiscountsGenerateRun: Scalars["Void"]["output"];
 };
 
 /** The root mutation for the API. */
-export type MutationRootCartFetchArgs = {
-  result: FunctionCartFetchResult;
-};
-
-/** The root mutation for the API. */
-export type MutationRootCartRunArgs = {
-  result: FunctionCartRunResult;
-};
-
-/** The root mutation for the API. */
-export type MutationRootDeliveryFetchArgs = {
+export type MutationRootCartDeliveryOptionsDiscountsGenerateFetchArgs = {
   result: FunctionDeliveryFetchResult;
 };
 
 /** The root mutation for the API. */
-export type MutationRootDeliveryRunArgs = {
+export type MutationRootCartDeliveryOptionsDiscountsGenerateRunArgs = {
   result: FunctionDeliveryRunResult;
+};
+
+/** The root mutation for the API. */
+export type MutationRootCartLinesDiscountsGenerateFetchArgs = {
+  result: FunctionCartFetchResult;
+};
+
+/** The root mutation for the API. */
+export type MutationRootCartLinesDiscountsGenerateRunArgs = {
+  result: FunctionCartRunResult;
 };
 
 /** The order discount candidate to be applied. */
@@ -2283,30 +2290,16 @@ export type OrderDiscountCandidate = {
   conditions?: InputMaybe<Array<Condition>>;
   /** The discount message. */
   message?: InputMaybe<Scalars["String"]["input"]>;
-  /**
-   * The targets of the order discount candidate.
-   *
-   * The value is validated against: targets should contain only one type of `OrderDiscountCandidateTarget`.
-   * Only a list that contains either a single `OrderSubtotalTarget` or one or more
-   * `ProductVariantTarget`s is valid.
-   */
+  /** The targets of the order discount candidate. */
   targets: Array<OrderDiscountCandidateTarget>;
   /** The value of the order discount candidate. */
   value: OrderDiscountCandidateValue;
 };
 
-/**
- * A target of a order discount candidate.
- *
- * An `OrderDiscountCandidate` can either have a single `OrderSubtotalTarget`, or one or more `ProductVariantTarget`s.
- */
+/** A target of a order discount candidate. */
 export type OrderDiscountCandidateTarget =
   /** If used, the discount targets the entire order subtotal after product discounts are applied. */
-  | { orderSubtotal: OrderSubtotalTarget; productVariant?: never } /**
-   * A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that can apply to any cart lines for a specific product variant, up to an
-   * optional quantity limit.
-   */
-  | { orderSubtotal?: never; productVariant: ProductVariantTarget };
+  { orderSubtotal: OrderSubtotalTarget };
 
 /** The order discount candidate value. */
 export type OrderDiscountCandidateValue =
@@ -2332,8 +2325,8 @@ export type OrderDiscounts = {
 
 /** The condition for checking the minimum subtotal amount of the order. */
 export type OrderMinimumSubtotal = {
-  /** Variant IDs with a merchandise line price that's excluded to calculate the minimum subtotal amount of the order. */
-  excludedVariantIds: Array<Scalars["ID"]["input"]>;
+  /** Cart line IDs with a merchandise line price that's excluded to calculate the minimum subtotal amount of the order. */
+  excludedCartLineIds: Array<Scalars["ID"]["input"]>;
   /** The minimum subtotal amount of the order. */
   minimumAmount: Scalars["Decimal"]["input"];
 };
@@ -2341,10 +2334,10 @@ export type OrderMinimumSubtotal = {
 /** If used, the discount targets the entire order subtotal after product discounts are applied. */
 export type OrderSubtotalTarget = {
   /**
-   * The list of excluded product variant IDs. Cart lines for these product variants are excluded from the order
+   * The list of excluded cart line IDs. These cart lines are excluded from the order
    * subtotal calculation when calculating the maximum value of the discount.
    */
-  excludedVariantIds: Array<Scalars["ID"]["input"]>;
+  excludedCartLineIds: Array<Scalars["ID"]["input"]>;
 };
 
 /** A percentage value. */
@@ -2424,10 +2417,7 @@ export type ProductDiscountCandidate = {
   associatedDiscountCode?: InputMaybe<AssociatedDiscountCode>;
   /** The discount message. */
   message?: InputMaybe<Scalars["String"]["input"]>;
-  /**
-   * The targets of the product discount candidate.
-   * This argument accepts a collection of either `ProductVariantTarget`s or `CartLineTarget`s, but not both.
-   */
+  /** The targets of the product discount candidate. */
   targets: Array<ProductDiscountCandidateTarget>;
   /** The value of the product discount candidate. */
   value: ProductDiscountCandidateValue;
@@ -2453,8 +2443,6 @@ export type ProductDiscountCandidateFixedAmount = {
 /**
  * A target of a product discount candidate, which determines which cart line(s) the discount will affect.
  *
- * A `ProductDiscountCandidate` can have a collection of either `ProductVariantTarget`s or `CartLineTarget`s, but not both.
- *
  * Multiple targets with the same type and ID are the same as a single target of that type and ID with their
  * quantities added together, or `null` if any of those targets have a quantity of `null`.
  *
@@ -2462,11 +2450,7 @@ export type ProductDiscountCandidateFixedAmount = {
  */
 export type ProductDiscountCandidateTarget =
   /** A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit. */
-  | { cartLine: CartLineTarget; productVariant?: never } /**
-   * A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that can apply to any cart lines for a specific product variant, up to an
-   * optional quantity limit.
-   */
-  | { cartLine?: never; productVariant: ProductVariantTarget };
+  { cartLine: CartLineTarget };
 
 /** The value of the product discount candidate. */
 export type ProductDiscountCandidateValue =
@@ -2498,22 +2482,6 @@ export type ProductDiscounts = {
   selectionStrategy: ProductDiscountSelectionStrategy;
 };
 
-/** The condition for checking the minimum quantity of a product. */
-export type ProductMinimumQuantity = {
-  /** Variant IDs with a merchandise line price that's included to calculate the minimum quantity of the product. */
-  ids: Array<Scalars["ID"]["input"]>;
-  /** The minimum quantity of a product. */
-  minimumQuantity: Scalars["Int"]["input"];
-};
-
-/** The condition for checking the minimum subtotal amount of the product. */
-export type ProductMinimumSubtotal = {
-  /** Variant IDs with a merchandise line price that's included to calculate the minimum subtotal amount of a product. */
-  ids: Array<Scalars["ID"]["input"]>;
-  /** The minimum subtotal amount of the product. */
-  minimumAmount: Scalars["Decimal"]["input"];
-};
-
 /** Represents a product variant. */
 export type ProductVariant = HasMetafields & {
   __typename?: "ProductVariant";
@@ -2539,22 +2507,6 @@ export type ProductVariant = HasMetafields & {
 export type ProductVariantMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that can apply to any cart lines for a specific product variant, up to an
- * optional quantity limit.
- */
-export type ProductVariantTarget = {
-  /** The ID of the targeted product variant. */
-  id: Scalars["ID"]["input"];
-  /**
-   * The maximum number of line item units to be discounted.
-   * The default value is `null`, which represents the total quantity of the matching line items.
-   *
-   * The value is validated against: > 0.
-   */
-  quantity?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Represents information about the buyer that is interacting with the cart. */
@@ -2641,19 +2593,6 @@ export type Shop = HasMetafields & {
 
 /** Information about the shop. */
 export type ShopMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUser = HasMetafields & {
-  __typename?: "ShopUser";
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
-};
-
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUserMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
 };

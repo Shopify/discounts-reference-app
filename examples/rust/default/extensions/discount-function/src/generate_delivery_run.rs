@@ -1,17 +1,17 @@
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-use delivery_run::output::{
+use cart_delivery_options_discounts_generate_run::output::{
     DeliveryDiscountCandidate, DeliveryDiscountCandidateTarget, DeliveryDiscountCandidateValue,
     DeliveryDiscountSelectionStrategy, DeliveryDiscounts, DeliveryGroupTarget, DeliveryOperation,
     FunctionDeliveryRunResult, Percentage,
 };
 
-use delivery_run::input::ResponseData;
+use cart_delivery_options_discounts_generate_run::input::ResponseData;
 
 // [START discount-function.run.delivery]
 #[shopify_function_target(
-    target = "delivery_run",
+    target = "cartDeliveryOptionsDiscountsGenerateRun",
     query_path = "src/generate_delivery_run.graphql",
     schema_path = "schema.graphql"
 )]

@@ -3,8 +3,8 @@ use serde_json::json;
 use shopify_function;
 use shopify_function::prelude::*;
 
-use delivery_fetch::input::ResponseData as DeliveryFetchResponseData;
-use delivery_fetch::output::{
+use cart_delivery_options_discounts_generate_fetch::input::ResponseData as DeliveryFetchResponseData;
+use cart_delivery_options_discounts_generate_fetch::output::{
     FunctionDeliveryFetchResult, HttpRequest as DeliveryFetchHttpRequest,
     HttpRequestHeader as DeliveryFetchHttpRequestHeader,
     HttpRequestMethod as DeliveryFetchHttpRequestMethod,
@@ -14,7 +14,7 @@ use delivery_fetch::output::{
 #[shopify_function_target(
     query_path = "src/generate_delivery_fetch.graphql",
     schema_path = "schema.graphql",
-    target = "delivery_fetch"
+    target = "cartDeliveryOptionsDiscountsGenerateFetch"
 )]
 fn generate_delivery_fetch(
     input: DeliveryFetchResponseData,
@@ -47,7 +47,7 @@ fn generate_delivery_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use delivery_fetch::output::{
+    use cart_delivery_options_discounts_generate_fetch::output::{
         FunctionDeliveryFetchResult, HttpRequest as DeliveryFetchHttpRequest,
         HttpRequestHeader as DeliveryFetchHttpRequestHeader,
         HttpRequestMethod as DeliveryFetchHttpRequestMethod,

@@ -1,7 +1,7 @@
 {
   "operations": [
     {
-      "addValidDiscountCodes": {
+      "addDiscountCodeValidations": {
         "codes": [
           {
             "code": "FREESHIPPING"

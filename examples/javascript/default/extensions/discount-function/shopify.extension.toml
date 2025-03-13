@@ -12,12 +12,12 @@ description = "t:description"
 
 # [START discount-function.toml.targets]
   [[extensions.targeting]]
-  target = "purchase.discount.cart_run"
+  target = "cart.lines.discounts.generate.run"
   input_query = "src/generate_cart_run.graphql"
   export = "generate-cart-run"
 
   [[extensions.targeting]]
-  target = "purchase.discount.delivery_run"
+  target = "cart.delivery-options.discounts.generate.run"
   input_query = "src/generate_delivery_run.graphql"
   export = "generate-delivery-run"
 # [END discount-function.toml.targets]

@@ -3,8 +3,8 @@ use serde_json::json;
 use shopify_function;
 use shopify_function::prelude::*;
 
-use cart_fetch::input::ResponseData as CartFetchResponseData;
-use cart_fetch::output::{
+use cart_lines_discounts_generate_fetch::input::ResponseData as CartFetchResponseData;
+use cart_lines_discounts_generate_fetch::output::{
     FunctionCartFetchResult, HttpRequest as CartFetchHttpRequest,
     HttpRequestHeader as CartFetchHttpRequestHeader,
     HttpRequestMethod as CartFetchHttpRequestMethod,
@@ -14,7 +14,7 @@ use cart_fetch::output::{
 #[shopify_function_target(
     query_path = "src/generate_cart_fetch.graphql",
     schema_path = "schema.graphql",
-    target = "cart_fetch"
+    target = "cartLinesDiscountsGenerateFetch"
 )]
 fn generate_cart_fetch(
     input: CartFetchResponseData,
@@ -47,7 +47,7 @@ fn generate_cart_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cart_fetch::output::{
+    use cart_lines_discounts_generate_fetch::output::{
         FunctionCartFetchResult, HttpRequest as CartFetchHttpRequest,
         HttpRequestHeader as CartFetchHttpRequestHeader,
         HttpRequestMethod as CartFetchHttpRequestMethod,

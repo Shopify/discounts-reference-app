@@ -3,11 +3,11 @@ use serde::Deserialize;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-use cart_run::output::{
+use cart_lines_discounts_generate_run::output::{
     CartOperation, FunctionCartRunResult, OrderDiscounts, ProductDiscounts, ValidDiscountCodes,
 };
 
-use cart_run::input::ResponseData;
+use cart_lines_discounts_generate_run::input::ResponseData;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -27,7 +27,7 @@ struct Operations {
 }
 
 #[shopify_function_target(
-    target = "cart_run",
+    target = "cartLinesDiscountsGenerateRun",
     query_path = "src/generate_cart_run.graphql",
     schema_path = "schema.graphql"
 )]
@@ -44,7 +44,7 @@ fn generate_cart_run(input: ResponseData) -> Result<FunctionCartRunResult> {
     let mut operations = Vec::new();
 
     if let Some(validations) = response.operations.add_discount_code_validations {
-        operations.push(CartOperation::AddValidDiscountCodes(validations));
+        operations.push(CartOperation::AddDiscountCodeValidations(validations));
     }
 
     if let Some(product_discounts) = response.operations.add_product_discounts {

@@ -275,24 +275,24 @@ export type CartLineTarget = {
 
 /** The operations that can be performed to apply discounts to the cart. */
 export type CartOperation =
-  /** A group of order discounts that share a selection strategy. */
-  | {
-      addOrderDiscounts: OrderDiscounts;
-      addProductDiscounts?: never;
-      addValidDiscountCodes?: never;
-    } /** A group of product discounts that share a selection strategy. */
-  | {
-      addOrderDiscounts?: never;
-      addProductDiscounts: ProductDiscounts;
-      addValidDiscountCodes?: never;
-    } /**
+  /**
    * A list of valid discount codes that correspond to external discounts. This can
    * only be used by Functions with network access.
    */
   | {
+      addDiscountCodeValidations: ValidDiscountCodes;
       addOrderDiscounts?: never;
       addProductDiscounts?: never;
-      addValidDiscountCodes: ValidDiscountCodes;
+    } /** A group of order discounts that share a selection strategy. */
+  | {
+      addDiscountCodeValidations?: never;
+      addOrderDiscounts: OrderDiscounts;
+      addProductDiscounts?: never;
+    } /** A group of product discounts that share a selection strategy. */
+  | {
+      addDiscountCodeValidations?: never;
+      addOrderDiscounts?: never;
+      addProductDiscounts: ProductDiscounts;
     };
 
 /** Represents whether the product is a member of the given collection. */
@@ -1395,17 +1395,35 @@ export type DeliveryOperation =
   /** A group of delivery discounts that share a selection strategy. */
   | {
       addDeliveryDiscounts: DeliveryDiscounts;
-      addValidDiscountCodes?: never;
+      addDiscountCodeValidations?: never;
     } /**
    * A list of valid discount codes that correspond to external discounts. This can
    * only be used by Functions with network access.
    */
-  | { addDeliveryDiscounts?: never; addValidDiscountCodes: ValidDiscountCodes };
+  | {
+      addDeliveryDiscounts?: never;
+      addDiscountCodeValidations: ValidDiscountCodes;
+    };
 
 /** The target delivery option. */
 export type DeliveryOptionTarget = {
   /** The handle of the target delivery option. */
   handle: Scalars["Handle"]["input"];
+};
+
+/** The discount that invoked the Function. */
+export type Discount = HasMetafields & {
+  __typename?: "Discount";
+  /** The discount classes supported by the discount node. */
+  discountClasses: Array<DiscountClass>;
+  /** Returns a metafield by namespace and key that belongs to the resource. */
+  metafield?: Maybe<Metafield>;
+};
+
+/** The discount that invoked the Function. */
+export type DiscountMetafieldArgs = {
+  key: Scalars["String"]["input"];
+  namespace?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -1432,21 +1450,6 @@ export enum DiscountClass {
    */
   Shipping = "SHIPPING",
 }
-
-/** A discount wrapper node. */
-export type DiscountNode = HasMetafields & {
-  __typename?: "DiscountNode";
-  /** The discount classes supported by the discount node. */
-  discountClasses: Array<DiscountClass>;
-  /** Returns a metafield by namespace and key that belongs to the resource. */
-  metafield?: Maybe<Metafield>;
-};
-
-/** A discount wrapper node. */
-export type DiscountNodeMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /** A fixed amount value. */
 export type FixedAmount = {
@@ -1652,7 +1655,7 @@ export type Input = {
   /** The cart. */
   cart: Cart;
   /** The discount node executing the Function. */
-  discountNode: DiscountNode;
+  discount: Discount;
   /**
    * Discount codes entered by the buyer as an array of strings, excluding gift cards.
    * Codes are not validated in any way other than gift card filtering.
@@ -1671,7 +1674,8 @@ export type Input = {
   shop: Shop;
   /**
    * The discount code entered by the buyer that caused the Function to run.
-   * This input is only available in the cart_run and delivery_run extension targets.
+   * This input is only available in the cart.lines.discounts.generate.run
+   * and cart.delivery-options.discounts.generate.run extension targets.
    */
   triggeringDiscountCode?: Maybe<Scalars["String"]["output"]>;
 };
@@ -2248,34 +2252,34 @@ export type MoneyV2 = {
 /** The root mutation for the API. */
 export type MutationRoot = {
   __typename?: "MutationRoot";
-  /** Handles the Function result for the purchase.discount.cart_fetch target. */
-  cartFetch: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.cart_run target. */
-  cartRun: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.delivery_fetch target. */
-  deliveryFetch: Scalars["Void"]["output"];
-  /** Handles the Function result for the purchase.discount.delivery_run target. */
-  deliveryRun: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.delivery-options.discounts.generate.fetch target. */
+  cartDeliveryOptionsDiscountsGenerateFetch: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.delivery-options.discounts.generate.run target. */
+  cartDeliveryOptionsDiscountsGenerateRun: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.lines.discounts.generate.fetch target. */
+  cartLinesDiscountsGenerateFetch: Scalars["Void"]["output"];
+  /** Handles the Function result for the cart.lines.discounts.generate.run target. */
+  cartLinesDiscountsGenerateRun: Scalars["Void"]["output"];
 };
 
 /** The root mutation for the API. */
-export type MutationRootCartFetchArgs = {
-  result: FunctionCartFetchResult;
-};
-
-/** The root mutation for the API. */
-export type MutationRootCartRunArgs = {
-  result: FunctionCartRunResult;
-};
-
-/** The root mutation for the API. */
-export type MutationRootDeliveryFetchArgs = {
+export type MutationRootCartDeliveryOptionsDiscountsGenerateFetchArgs = {
   result: FunctionDeliveryFetchResult;
 };
 
 /** The root mutation for the API. */
-export type MutationRootDeliveryRunArgs = {
+export type MutationRootCartDeliveryOptionsDiscountsGenerateRunArgs = {
   result: FunctionDeliveryRunResult;
+};
+
+/** The root mutation for the API. */
+export type MutationRootCartLinesDiscountsGenerateFetchArgs = {
+  result: FunctionCartFetchResult;
+};
+
+/** The root mutation for the API. */
+export type MutationRootCartLinesDiscountsGenerateRunArgs = {
+  result: FunctionCartRunResult;
 };
 
 /** The order discount candidate to be applied. */

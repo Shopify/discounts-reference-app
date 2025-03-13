@@ -1,14 +1,13 @@
 // [START discount-function.delivery.run]
+use serde::Deserialize;
 use shopify_function::prelude::*;
 use shopify_function::Result;
-use serde::{Deserialize};
 
-use delivery_run::output::{
-    DeliveryOperation, FunctionDeliveryRunResult, DeliveryDiscounts,
-    ValidDiscountCodes,
+use cart_delivery_options_discounts_generate_run::output::{
+    DeliveryDiscounts, DeliveryOperation, FunctionDeliveryRunResult, ValidDiscountCodes,
 };
 
-use delivery_run::input::ResponseData;
+use cart_delivery_options_discounts_generate_run::input::ResponseData;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -26,26 +25,24 @@ struct Operations {
 }
 
 #[shopify_function_target(
-    target = "delivery_run",
+    target = "cartDeliveryOptionsDiscountsGenerateRun",
     query_path = "src/generate_delivery_run.graphql",
     schema_path = "schema.graphql"
 )]
 fn generate_delivery_run(input: ResponseData) -> Result<FunctionDeliveryRunResult> {
     // [START discount-function.delivery.run.body]
-    let fetch_result = input.fetch_result
-        .ok_or("Missing fetch result")?;
-    let body = fetch_result.body
-        .ok_or("Missing response body")?;
+    let fetch_result = input.fetch_result.ok_or("Missing fetch result")?;
+    let body = fetch_result.body.ok_or("Missing response body")?;
 
     // Parse the response body directly into our types
-    let response: DiscountResponse = serde_json::from_str(&body)
-        .map_err(|e| format!("Failed to parse JSON: {}", e))?;
+    let response: DiscountResponse =
+        serde_json::from_str(&body).map_err(|e| format!("Failed to parse JSON: {}", e))?;
 
     // Convert the response into operations
     let mut operations = Vec::new();
 
     if let Some(validations) = response.operations.add_discount_code_validations {
-        operations.push(DeliveryOperation::AddValidDiscountCodes(validations));
+        operations.push(DeliveryOperation::AddDiscountCodeValidations(validations));
     }
 
     if let Some(delivery_discounts) = response.operations.add_delivery_discounts {
