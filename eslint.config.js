@@ -22,6 +22,7 @@ export default [
       "*.yml",
       ".shopify/**",
       "**/generated/**/*.{ts,js}",
+      "examples/mock-http-server/src/types/generated.ts",
       "**/*.generated.{ts,js}",
       "**/*.d.ts",
       "**/types/**/*.d.ts",
@@ -85,11 +86,12 @@ export default [
       ],
     },
   },
-  // Reference app builder and scripts specific rules
+  // Reference app builder, scripts, and mock-http-server specific rules
   {
     files: [
       "reference-app-builder/**/*.{js,jsx,ts,tsx}",
       "scripts/**/*.{js,jsx,ts,tsx}",
+      "examples/mock-http-server/**/*.{js,jsx,ts,tsx}",
     ],
     rules: {
       "no-console": OFF, // Allow console.log in reference-app-builder
