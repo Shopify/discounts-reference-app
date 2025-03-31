@@ -1,0 +1,30 @@
+{
+  "name": "discount-functions-testing",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.15.5"
+  },
+  "dependencies": {
+    "@shopify/polaris": "13.9.4",
+    "eslint": "9.22.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "9.6.1",
+    "@typescript-eslint/eslint-plugin": "8.26.1",
+    "eslint-config-prettier": "10.1.1",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-react": "7.37.4",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "prettier": "3.5.3"
+  },
+  "resolutions": {
+    "ws": "8.17.1"
+  },
+  "overrides": {
+    "ws": "^8.17.1"
+  },
+  "author": "mathiusjohnson",
+  "packageManager": "pnpm@8.15.5"
+}

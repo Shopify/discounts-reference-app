@@ -1,0 +1,36 @@
+# [START discount-function.graphql.cart]
+# [START discount-function.graphql.cart.collection_ids]
+query CartInput($collectionIds: [ID!]) {
+  # [END discount-function.graphql.cart.collection_ids]
+  cart {
+    lines {
+      id
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          product {
+            # [START discount-function.graphql.cart.product.in_any_collection]
+            inAnyCollection(ids: $collectionIds)
+            # [END discount-function.graphql.cart.product.in_any_collection]
+          }
+        }
+      }
+    }
+  }
+  # [START discount-function.graphql.cart.discount]
+  discount {
+    metafield(
+      namespace: "$app:example-discounts--ui-extension"
+      key: "function-configuration"
+    ) {
+      value
+    }
+  }
+  # [END discount-function.graphql.cart.discount]
+}
+# [END discount-function.graphql.cart]

@@ -1,0 +1,64 @@
+{
+  "name": "modern-sponsorship-app",
+  "private": true,
+  "scripts": {
+    "build": "remix vite:build",
+    "dev": "shopify app dev",
+    "config:link": "shopify app config link",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "config:use": "shopify app config use",
+    "env": "shopify app env",
+    "start": "remix-serve ./build/server/index.js",
+    "docker-start": "npm run setup && npm run start",
+    "setup": "prisma generate && prisma migrate deploy",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "shopify": "shopify",
+    "prisma": "prisma",
+    "graphql-codegen": "graphql-codegen",
+    "vite": "vite",
+    "type-check": "tsc --noEmit"
+  },
+  "type": "module",
+  "engines": {
+    "node": "^18.20 || ^20.10 || >=21.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "6.4.1",
+    "@remix-run/dev": "2.16.2",
+    "@remix-run/fs-routes": "2.16.2",
+    "@remix-run/node": "2.16.2",
+    "@remix-run/react": "2.16.2",
+    "@remix-run/serve": "2.16.2",
+    "@shopify/app-bridge-react": "4.1.7",
+    "@shopify/polaris": "12.27.0",
+    "@shopify/polaris-icons": "9.3.1",
+    "@shopify/shopify-app-remix": "3.8.1",
+    "@shopify/shopify-app-session-storage-prisma": "6.0.3",
+    "isbot": "5.1.25",
+    "prisma": "6.5.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "vite-tsconfig-paths": "5.1.4"
+  },
+  "devDependencies": {
+    "@remix-run/eslint-config": "2.16.2",
+    "@remix-run/route-config": "2.16.2",
+    "@shopify/api-codegen-preset": "1.1.6",
+    "@typescript-eslint/eslint-plugin": "8.28.0",
+    "@typescript-eslint/parser": "8.28.0",
+    "@types/eslint": "9.6.1",
+    "@types/node": "22.13.13",
+    "@types/react": "18.3.20",
+    "@types/react-dom": "18.3.5",
+    "eslint": "9.23.0",
+    "eslint-config-prettier": "10.1.1",
+    "prettier": "3.5.3",
+    "typescript": "5.8.2",
+    "vite": "6.2.3"
+  },
+  "trustedDependencies": [
+    "@shopify/plugin-cloudflare"
+  ],
+  "author": "tom"
+}

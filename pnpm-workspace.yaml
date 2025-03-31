@@ -1,0 +1,5 @@
+packages:
+  - "extensions/*"
+  - "**/ui-extension"
+  - "examples/mock-http-server"
+  - "examples/remix-app"
