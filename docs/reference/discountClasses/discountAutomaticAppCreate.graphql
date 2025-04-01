@@ -3,10 +3,10 @@ mutation {
   discountAutomaticAppCreate(
     automaticAppDiscount: {
       title: "Cart line, Order, Shipping discount"
-      # [START discount-automatic-app-create.add-function-id]
       functionId: "YOUR_FUNCTION_ID_HERE"
+      # [START discount-automatic-app-create.discount-classes]
       discountClasses: [PRODUCT, ORDER, SHIPPING]
-      # [END discount-automatic-app-create.add-function-id]
+      # [END discount-automatic-app-create.discount-classes]
       startsAt: "2025-01-01T00:00:00"
     }
   ) {

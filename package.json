@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@shopify/polaris": "13.9.4",
-    "eslint": "9.22.0"
+    "eslint": "9.23.0"
   },
   "devDependencies": {
     "@types/eslint": "9.6.1",

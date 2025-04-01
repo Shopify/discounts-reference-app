@@ -1,5 +1,6 @@
 {
   "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "build", "public", "dist", "examples/remix-app"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "strict": true,

@@ -7,7 +7,6 @@ description = "t:description"
 # [END discount-function.name_and_description]
 handle = "discount-function-meta-js"
 type = "function"
-description = "t:description"
 
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
