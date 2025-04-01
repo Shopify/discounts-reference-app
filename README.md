@@ -22,7 +22,6 @@ This project provides examples and reference implementations for Shopify Discoun
 │   ├── remix-app/  # Remix application examples
 │   ├── rust/       # Rust examples
 │   └── mock-http-server/ # Mock server for testing
-└── extensions/     # Shopify app extensions
 ```
 
 ## Getting Started
