@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
     "noEmit": true,
     "allowJs": true,
     "resolveJsonModule": true,
@@ -16,6 +17,9 @@
     "moduleResolution": "Bundler",
     "target": "ES2022",
     "baseUrl": ".",
-    "types": ["node"]
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+    "types": ["node", "@remix-run/node"]
   }
 }
