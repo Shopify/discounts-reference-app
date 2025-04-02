@@ -28,9 +28,8 @@ This project provides examples and reference implementations for Shopify Discoun
 
 Examples and apps found in this repo are meant to be used with our tutorials on [Shopify Dev](https://shopify.dev/docs/apps/build/discounts). Rather than clone this repo, we recommend following the tutorials and using the code snippets as reference. Each example can be scaffolded using the Shopify CLI.
 
-- [Build a discount function in JavaScript](https://shopify.dev/docs/apps/build/discounts/create-discount-functions/javascript)
+- [Build a discount function in JavaScript](https://shopify.dev/docs/apps/build/discounts/build-discount-function/javascript)
 - [Build a discount function with Rust](https://shopify.dev/docs/apps/build/discounts/build-discount-function?extension=rust)
-- [Build a discount function with JavaScript](https://shopify.dev/docs/apps/build/discounts/build-discount-function?extension=javascript)
 - [Build a discount UI with UI Extensions](https://shopify.dev/docs/apps/build/discounts/build-ui-extension)
 - [Build a discount UI with Remix](https://shopify.dev/docs/apps/build/discounts/build-ui-with-remix)
 - [Network access](https://shopify.dev/docs/apps/build/discounts/create-discount-functions/network-access)
