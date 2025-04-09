@@ -1,4 +1,4 @@
-# Shopify Discount Functions Testing App
+# Shopify Discount Functions Remix App
 
 > [!NOTE]
 > Instead of cloning this repo, you can use the Shopify CLI to create a new app using the following command:
@@ -68,25 +68,6 @@ pnpm run setup
 pnpm run dev
 ```
 
-Press P to open the app URL. The Shopify CLI will handle:
-
-- Partner account authentication
-- App registration
-- Environment variable management
-- Development URL tunneling
-
-### Creating a Discount
-
-1. Navigate to the app's main page
-2. Click "Create discount"
-3. Configure the discount settings:
-   - Choose between automatic or code-based discount
-   - Set discount percentages for products, orders, or shipping
-   - Select target collections (for product discounts)
-   - Configure usage limits and restrictions
-   - Configure combination rules with other discounts
-4. Save and test the discount in your store
-
 ## Deployment
 
 1. Build the app:
@@ -132,10 +113,3 @@ pnpm run dev --reset
 - [Polaris](https://polaris.shopify.com/) - Design system
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Prisma](https://www.prisma.io/) - Database ORM
-
-## Additional Resources
-
-- [Discount Functions Documentation](https://shopify.dev/docs/api/functions/reference/discount)
-- [Multi-class Discounts Guide](https://shopify.dev/docs/api/functions/reference/discount/configuration)
-- [Remix Documentation](https://remix.run/docs/en/v1)
-- [Shopify App Development Guide](https://shopify.dev/docs/apps/getting-started)
