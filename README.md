@@ -4,8 +4,6 @@ Reference applications and examples demonstrating how to implement Shopify Disco
 
 > [!NOTE]
 >
-> # Note to External Developers
->
 > This repository is read-only. All examples and code samples contained here are generated and maintained by Shopify.
 >
 > If you encounter any issues or have questions about the implementations, please submit them through the GitHub Issues section of this repository.
@@ -32,14 +30,15 @@ This project provides examples and reference implementations for Shopify Discoun
 │   ├── remix-app/  # Remix application examples
 │   ├── rust/       # Rust examples
 │   └── mock-http-server/ # Mock server for testing
+└── extensions/     # Shopify app extensions
 ```
 
 ## Getting Started
 
 Examples and apps found in this repo are meant to be used as reference only. **Do not clone or run these applications directly from this repository.**
 
-
 Examples and apps found in this repo are meant to be used with our tutorials on [Shopify Dev](https://shopify.dev/docs/apps/build/discounts). Rather than clone this repo, we recommend following the tutorials and using the code snippets as reference. Each example can be scaffolded using the Shopify CLI. Learn more about [Shopify CLI](https://shopify.dev/docs/api/shopify-cli/app/app-init#flags-propertydetail-templatevalue) template value.
+
 
 ```bash
 shopify app init --template https://github.com/Shopify/discounts-reference-app/remix-app#[main]
