@@ -13,7 +13,7 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { returnToDiscounts } from "app/utils/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useDiscountForm } from "../../hooks/useDiscountForm";
 import { DiscountClass } from "../../types/admin.types.d";
@@ -74,6 +74,9 @@ export function DiscountForm({
       initialData,
     });
 
+  const [collections, setCollections] =
+    useState<DiscountFormProps["collections"]>(initialCollections);
+
   const today = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -100,8 +103,6 @@ export function DiscountForm({
     },
     [validateEndDate, setField],
   );
-
-  // Method options
 
   const errorBanner = useMemo(
     () =>
@@ -140,6 +141,7 @@ export function DiscountForm({
         "collectionIds",
         selectedCollections.map((collection) => collection.id),
       );
+      setCollections(selectedCollections);
     },
     [setConfigField],
   );
@@ -333,8 +335,7 @@ export function DiscountForm({
                             formState.configuration.collectionIds || []
                           }
                           collections={
-                            formState.configuration.collections ||
-                            initialCollections
+                            formState.configuration.collections || collections
                           }
                           buttonText="Select collections for discount"
                         />

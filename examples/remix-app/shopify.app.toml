@@ -1,7 +1,8 @@
 # This file stores configurations for your Shopify app.
 
+# [START remix-app.scopes]
 scopes = "write_discounts,read_products"
-
+# [END remix-app.scopes]
 [webhooks]
 api_version = "2024-10"
 
