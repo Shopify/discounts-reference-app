@@ -14,6 +14,6 @@ export default defineConfig({
     }),
   ],
   server: {
-    allowedHosts: ["brkupn3pzpz3jmqg.tunnel.shopifycloud.tech"],
+    allowedHosts: [],
   },
 });
