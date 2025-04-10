@@ -12,9 +12,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 export type MakeEmpty<
   T extends { [key: string]: unknown },
   K extends keyof T,
-> = {
-  [_ in K]?: never;
-};
+> = { [_ in K]?: never };
 export type Incremental<T> =
   | T
   | {
@@ -195,6 +193,21 @@ export type CartDeliveryOption = {
   title?: Maybe<Scalars["String"]["output"]>;
 };
 
+/**
+ * The cart.delivery-options.discounts.generate.fetch target result. Refer to
+ * [network access](https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
+ */
+export type CartDeliveryOptionsDiscountsGenerateFetchResult = {
+  /** The http request. */
+  request?: InputMaybe<HttpRequest>;
+};
+
+/** The cart.delivery-options.discounts.generate.run target result. */
+export type CartDeliveryOptionsDiscountsGenerateRunResult = {
+  /** The list of operations to apply discounts to the delivery lines. */
+  operations: Array<DeliveryOperation>;
+};
+
 /** Represents information about the merchandise in the cart. */
 export type CartLine = {
   __typename?: "CartLine";
@@ -275,26 +288,41 @@ export type CartLineTarget = {
   quantity?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+/**
+ * The cart.lines.discounts.generate.fetch target result. Refer to [network access]
+ * (https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
+ */
+export type CartLinesDiscountsGenerateFetchResult = {
+  /** The http request. */
+  request?: InputMaybe<HttpRequest>;
+};
+
+/** The cart.lines.discounts.generate.run target result. */
+export type CartLinesDiscountsGenerateRunResult = {
+  /** The list of operations to apply discounts to the cart. */
+  operations: Array<CartOperation>;
+};
+
 /** The operations that can be performed to apply discounts to the cart. */
 export type CartOperation =
   /**
-   * A list of valid discount codes that correspond to external discounts. This can
-   * only be used by Functions with network access.
+   * An operation that selects which entered discount codes to accept. Use this to
+   * validate discount codes from external systems.
    */
   | {
-      enteredDiscountCodesAccept: ValidDiscountCodes;
+      enteredDiscountCodesAccept: EnteredDiscountCodesAcceptOperation;
       orderDiscountsAdd?: never;
       productDiscountsAdd?: never;
-    } /** A group of order discounts that share a selection strategy. */
+    } /** An operation that applies order discounts to a cart that share a selection strategy. */
   | {
       enteredDiscountCodesAccept?: never;
-      orderDiscountsAdd: OrderDiscounts;
+      orderDiscountsAdd: OrderDiscountsAddOperation;
       productDiscountsAdd?: never;
-    } /** A group of product discounts that share a selection strategy. */
+    } /** An operation that applies product discounts to a cart that share a selection strategy. */
   | {
       enteredDiscountCodesAccept?: never;
       orderDiscountsAdd?: never;
-      productDiscountsAdd: ProductDiscounts;
+      productDiscountsAdd: ProductDiscountsAddOperation;
     };
 
 /** Represents whether the product is a member of the given collection. */
@@ -1362,8 +1390,8 @@ export enum DeliveryDiscountSelectionStrategy {
   All = "ALL",
 }
 
-/** A group of delivery discounts that share a selection strategy. */
-export type DeliveryDiscounts = {
+/** An operation that applies delivery discounts to a cart that share a selection strategy. */
+export type DeliveryDiscountsAddOperation = {
   /** The list of delivery discount candidates to be applied. */
   candidates: Array<DeliveryDiscountCandidate>;
   /** The strategy that's applied to the list of discounts. */
@@ -1394,17 +1422,17 @@ export enum DeliveryMethod {
 
 /** The operations that can be performed to apply discounts to the delivery lines. */
 export type DeliveryOperation =
-  /** A group of delivery discounts that share a selection strategy. */
+  /** An operation that applies delivery discounts to a cart that share a selection strategy. */
   | {
-      deliveryDiscountsAdd: DeliveryDiscounts;
+      deliveryDiscountsAdd: DeliveryDiscountsAddOperation;
       enteredDiscountCodesAccept?: never;
     } /**
-   * A list of valid discount codes that correspond to external discounts. This can
-   * only be used by Functions with network access.
+   * An operation that selects which entered discount codes to accept. Use this to
+   * validate discount codes from external systems.
    */
   | {
       deliveryDiscountsAdd?: never;
-      enteredDiscountCodesAccept: ValidDiscountCodes;
+      enteredDiscountCodesAccept: EnteredDiscountCodesAcceptOperation;
     };
 
 /** The target delivery option. */
@@ -1453,6 +1481,18 @@ export enum DiscountClass {
   Shipping = "SHIPPING",
 }
 
+/** A discount code used by the buyer to add a discount to the cart. */
+export type DiscountCode = {
+  /** The discount code. */
+  code: Scalars["String"]["input"];
+};
+
+/** An operation that selects which entered discount codes to accept. Use this to validate discount codes from external systems. */
+export type EnteredDiscountCodesAcceptOperation = {
+  /** The list of discount codes to accept. */
+  codes: Array<DiscountCode>;
+};
+
 /** A fixed amount value. */
 export type FixedAmount = {
   /**
@@ -1461,36 +1501,6 @@ export type FixedAmount = {
    * The amount must be greater than or equal to 0.
    */
   amount: Scalars["Decimal"]["input"];
-};
-
-/**
- * The cart.fetch target result. Refer to [network access]
- * (https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
- */
-export type FunctionCartFetchResult = {
-  /** The http request. */
-  request?: InputMaybe<HttpRequest>;
-};
-
-/** The cart.run target result. */
-export type FunctionCartRunResult = {
-  /** The list of operations to apply discounts to the cart. */
-  operations: Array<CartOperation>;
-};
-
-/**
- * The delivery.fetch target result. Refer to
- * [network access](https://shopify.dev/apps/build/functions/input-output/network-access/graphql) for Shopify Functions.
- */
-export type FunctionDeliveryFetchResult = {
-  /** The http request. */
-  request?: InputMaybe<HttpRequest>;
-};
-
-/** The delivery.run target result. */
-export type FunctionDeliveryRunResult = {
-  /** The list of operations to apply discounts to the delivery lines. */
-  operations: Array<DeliveryOperation>;
 };
 
 /** Represents a gate configuration. */
@@ -2269,22 +2279,22 @@ export type MutationRoot = {
 
 /** The root mutation for the API. */
 export type MutationRootCartDeliveryOptionsDiscountsGenerateFetchArgs = {
-  result: FunctionDeliveryFetchResult;
+  result: CartDeliveryOptionsDiscountsGenerateFetchResult;
 };
 
 /** The root mutation for the API. */
 export type MutationRootCartDeliveryOptionsDiscountsGenerateRunArgs = {
-  result: FunctionDeliveryRunResult;
+  result: CartDeliveryOptionsDiscountsGenerateRunResult;
 };
 
 /** The root mutation for the API. */
 export type MutationRootCartLinesDiscountsGenerateFetchArgs = {
-  result: FunctionCartFetchResult;
+  result: CartLinesDiscountsGenerateFetchResult;
 };
 
 /** The root mutation for the API. */
 export type MutationRootCartLinesDiscountsGenerateRunArgs = {
-  result: FunctionCartRunResult;
+  result: CartLinesDiscountsGenerateRunResult;
 };
 
 /** The order discount candidate to be applied. */
@@ -2320,8 +2330,8 @@ export enum OrderDiscountSelectionStrategy {
   Maximum = "MAXIMUM",
 }
 
-/** A group of order discounts that share a selection strategy. */
-export type OrderDiscounts = {
+/** An operation that applies order discounts to a cart that share a selection strategy. */
+export type OrderDiscountsAddOperation = {
   /** The list of order discount candidates to be applied. */
   candidates: Array<OrderDiscountCandidate>;
   /** The strategy that's applied to the list of discounts. */
@@ -2454,7 +2464,7 @@ export type ProductDiscountCandidateFixedAmount = {
  * Multiple targets with the same type and ID are the same as a single target of that type and ID with their
  * quantities added together, or `null` if any of those targets have a quantity of `null`.
  *
- * See the [Discounts API reference](https://shopify.dev/docs/api/functions/reference/product-discounts/graphql#functionrunresult) for examples.
+ * See the [Discounts API reference](https://shopify.dev/docs/api/functions/reference/discount/graphql/functioncartrunresult) for examples.
  */
 export type ProductDiscountCandidateTarget =
   /** A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit. */
@@ -2482,8 +2492,8 @@ export enum ProductDiscountSelectionStrategy {
   Maximum = "MAXIMUM",
 }
 
-/** A group of product discounts that share a selection strategy. */
-export type ProductDiscounts = {
+/** An operation that applies product discounts to a cart that share a selection strategy. */
+export type ProductDiscountsAddOperation = {
   /** The list of product discount candidates to be applied. */
   candidates: Array<ProductDiscountCandidate>;
   /** The strategy that's applied to the list of product discount candidates. */
@@ -2603,24 +2613,6 @@ export type Shop = HasMetafields & {
 export type ShopMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * A discount code that corresponds to a valid external discount.
- * This can only be used by Functions with network access.
- */
-export type ValidDiscountCode = {
-  /** The discount code. */
-  code: Scalars["String"]["input"];
-};
-
-/**
- * A list of valid discount codes that correspond to external discounts. This can
- * only be used by Functions with network access.
- */
-export type ValidDiscountCodes = {
-  /** The list of valid discount codes. */
-  codes: Array<ValidDiscountCode>;
 };
 
 /** Units of measurement for weight. */

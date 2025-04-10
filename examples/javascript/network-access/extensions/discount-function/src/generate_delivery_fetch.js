@@ -11,8 +11,12 @@ export function generateDeliveryFetch(input) {
         name: "accept",
         value: "application/json",
       },
+      {
+        name: "Content-Type",
+        value: "application/json",
+      },
     ],
-    method: HttpRequestMethod.Get,
+    method: HttpRequestMethod.Post,
     policy: {
       readTimeoutMs: 2000,
     },

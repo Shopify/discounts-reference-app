@@ -1,22 +1,36 @@
 {
   "name": "mock-http-server",
-  "version": "1.0.0",
-  "description": "Mock HTTP server for testing Shopify Functions",
-  "main": "server.ts",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "start": "ts-node server.ts",
-    "dev": "nodemon server.ts"
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
+    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "start": "remix-serve ./build/server/index.js"
   },
   "dependencies": {
-    "express": "4.18.2"
+    "@remix-run/node": "2.16.5",
+    "@remix-run/react": "2.16.5",
+    "@remix-run/serve": "2.16.5",
+    "isbot": "4.1.0",
+    "jsonwebtoken": "9.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/express": "4.17.21",
-    "@types/node": "20.11.19",
-    "nodemon": "3.0.3",
-    "ts-node": "10.9.2",
-    "typescript": "5.8.3"
+    "@remix-run/dev": "2.16.5",
+    "autoprefixer": "10.4.19",
+    "eslint": "8.38.0",
+    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.4",
+    "vite": "6.0.0"
   },
-  "author": "Shopify",
-  "license": "MIT"
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }

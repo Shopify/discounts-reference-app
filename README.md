@@ -39,7 +39,6 @@ Examples and apps found in this repo are meant to be used as reference only. **D
 
 Examples and apps found in this repo are meant to be used with our tutorials on [Shopify Dev](https://shopify.dev/docs/apps/build/discounts). Rather than clone this repo, we recommend following the tutorials and using the code snippets as reference. Each example can be scaffolded using the Shopify CLI. Learn more about [Shopify CLI](https://shopify.dev/docs/api/shopify-cli/app/app-init#flags-propertydetail-templatevalue) template value.
 
-
 ```bash
 shopify app init --template https://github.com/Shopify/discounts-reference-app/remix-app#[main]
 ```

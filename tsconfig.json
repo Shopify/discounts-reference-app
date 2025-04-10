@@ -1,6 +1,13 @@
 {
   "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "build", "public", "dist", "examples/remix-app"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "public",
+    "dist",
+    "examples/remix-app",
+    "examples/mock-http-server"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "strict": true,
