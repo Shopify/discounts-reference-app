@@ -13,4 +13,4 @@ query InputDeliveryRun {
     }
   }
 }
-# [END discount-function.graphql.delivery.fetch]
+# [END discount-function.graphql.delivery.run]
