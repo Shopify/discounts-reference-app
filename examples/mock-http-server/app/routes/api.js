@@ -2,11 +2,12 @@ import jwt from "jsonwebtoken";
 import { TextEncoder } from "util";
 import { subtle } from "crypto";
 import { json } from "@remix-run/node";
-import {
-  ProductDiscountSelectionStrategy,
-  DeliveryDiscountSelectionStrategy,
-  OrderDiscountSelectionStrategy,
-} from "../types/generated";
+
+const selectionStrategy = {
+  All: "ALL",
+  First: "FIRST",
+  Maximum: "MAXIMUM",
+};
 
 const PRODUCT_DISCOUNT_CODE = "10OFFPRODUCT";
 const ORDER_DISCOUNT_CODE = "20OFFORDER";
@@ -133,7 +134,7 @@ const handle = (body) => {
       if (validDiscountCodes.includes(PRODUCT_DISCOUNT_CODE)) {
         cartOperations.push({
           productDiscountsAdd: {
-            selectionStrategy: ProductDiscountSelectionStrategy.First,
+            selectionStrategy: selectionStrategy.First,
             candidates: [
               {
                 associatedDiscountCode: { code: PRODUCT_DISCOUNT_CODE },
@@ -158,7 +159,7 @@ const handle = (body) => {
       if (validDiscountCodes.includes(ORDER_DISCOUNT_CODE)) {
         cartOperations.push({
           orderDiscountsAdd: {
-            selectionStrategy: OrderDiscountSelectionStrategy.First,
+            selectionStrategy: selectionStrategy.First,
             candidates: [
               {
                 associatedDiscountCode: { code: ORDER_DISCOUNT_CODE },
@@ -183,7 +184,7 @@ const handle = (body) => {
       if (validDiscountCodes.includes(SHIPPING_DISCOUNT_CODE)) {
         deliveryOperations.push({
           deliveryDiscountsAdd: {
-            selectionStrategy: DeliveryDiscountSelectionStrategy.All,
+            selectionStrategy: selectionStrategy.All,
             candidates: [
               {
                 associatedDiscountCode: { code: SHIPPING_DISCOUNT_CODE },
@@ -205,13 +206,11 @@ const handle = (body) => {
         });
       }
     }
-    return json(
-      JSON.stringify([
-        ...validationOperations,
-        ...cartOperations,
-        ...deliveryOperations,
-      ]),
-    );
+    return json([
+      ...validationOperations,
+      ...cartOperations,
+      ...deliveryOperations,
+    ]);
     // [END mock-http-server.results]
   } catch (error) {
     throw error;
