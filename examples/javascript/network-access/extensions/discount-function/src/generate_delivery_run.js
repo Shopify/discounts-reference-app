@@ -8,8 +8,7 @@ export function generateDeliveryRun(input) {
     throw new Error("Missing response body");
   }
 
-  const operations = JSON.parse(body);
-
+  const operations = body;
   // Filter operations to only include enteredDiscountCodesAccept and delivery operations
   const filteredOperations = operations.filter((operation) => {
     return (

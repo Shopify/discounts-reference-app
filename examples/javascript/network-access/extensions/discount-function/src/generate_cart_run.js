@@ -8,7 +8,7 @@ export function generateCartRun(input) {
     throw new Error("Missing response body");
   }
 
-  const operations = JSON.parse(body);
+  const operations = body;
 
   // Filter operations to only include enteredDiscountCodesAccept and product and order operations
   const filteredOperations = operations.filter((operation) => {

@@ -13,7 +13,9 @@ export default defineConfig({
       },
     }),
   ],
+  // [START mock-http-server.allowedHosts]
   server: {
-    allowedHosts: [],
+    allowedHosts: ["<ngrok-url>"],
   },
+  // [END mock-http-server.allowedHosts]
 });

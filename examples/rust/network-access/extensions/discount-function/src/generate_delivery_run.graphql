@@ -1,4 +1,4 @@
-# [START discount-function.graphql.delivery.fetch]
+# [START discount-function.graphql.delivery.run]
 query Input {
   fetchResult {
     jsonBody
@@ -13,4 +13,4 @@ query Input {
     }
   }
 }
-# [END discount-function.graphql.delivery.fetch]
+# [END discount-function.graphql.delivery.run]
