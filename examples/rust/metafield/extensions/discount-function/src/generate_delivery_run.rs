@@ -12,6 +12,7 @@ use cart_delivery_options_discounts_generate_run::output::{
 use cart_delivery_options_discounts_generate_run::input::ResponseData;
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct DiscountConfiguration {
     delivery_percentage: f64,
 }

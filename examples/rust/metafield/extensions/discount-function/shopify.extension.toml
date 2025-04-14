@@ -1,6 +1,6 @@
 
 
-api_version = "unstable"
+api_version = "2025-04"
 
 [[extensions]]
 # [START discount-function.name_and_description]
