@@ -21,20 +21,24 @@ import {
 } from "@shopify/ui-extensions-react/admin";
 // [END discount-ui-extension.ui-components]
 import { useState, useMemo, useEffect } from "react";
+
 // [START discount-ui-extension.target]
 const TARGET = "admin.discount-details.function-settings.render";
 // [END discount-ui-extension.target]
+
 export default reactExtension(TARGET, async (api) => {
   const existingDefinition = await getMetafieldDefinition(api.query);
   if (!existingDefinition) {
     // Create a metafield definition for persistence if no pre-existing definition exists
     const metafieldDefinition = await createMetafieldDefinition(api.query);
+
     if (!metafieldDefinition) {
       throw new Error("Failed to create metafield definition");
     }
   }
   return <App />;
 });
+
 function PercentageField({ label, defaultValue, value, onChange, name }) {
   return (
     <Box>
@@ -91,6 +95,7 @@ function AppliesToCollections({
               },
             ]}
           />
+
           {appliesTo === "all" ? null : (
             <Box inlineSize={180}>
               <Button onClick={onClickAdd}>
@@ -104,10 +109,12 @@ function AppliesToCollections({
     </Section>
   );
 }
+
 function CollectionsSection({ collections, onClickRemove }) {
   if (collections.length === 0) {
     return null;
   }
+
   return collections.map((collection) => (
     <BlockStack gap="base" key={collection.id}>
       <InlineStack blockAlignment="center" inlineAlignment="space-between">
@@ -127,6 +134,7 @@ function CollectionsSection({ collections, onClickRemove }) {
   ));
 }
 // [END discount-ui-extension.collections-section]
+
 // [START discount-ui-extension.app-component]
 function App() {
   const {
@@ -144,9 +152,11 @@ function App() {
     onSelectedCollections,
     loading,
   } = useExtensionData();
+
   if (loading) {
     return <Text>{i18n.translate("loading")}</Text>;
   }
+
   return (
     <FunctionSettings onSave={applyExtensionMetafieldChange}>
       <Heading size={6}>{i18n.translate("title")}</Heading>
@@ -161,6 +171,7 @@ function App() {
                 label={i18n.translate("percentage.Product")}
                 name="product"
               />
+
               <AppliesToCollections
                 onClickAdd={onSelectedCollections}
                 onClickRemove={removeCollection}
@@ -179,6 +190,7 @@ function App() {
               label={i18n.translate("percentage.Order")}
               name="order"
             />
+
             <PercentageField
               value={String(percentages.shipping)}
               defaultValue={String(initialPercentages.shipping)}
@@ -193,6 +205,7 @@ function App() {
   );
 }
 // [END discount-ui-extension.app-component]
+
 // [START discount-ui-extension.use-extension-data]
 function useExtensionData() {
   const { applyMetafieldChange, i18n, data, resourcePicker, query } =
@@ -211,6 +224,7 @@ function useExtensionData() {
   const [collections, setCollections] = useState([]);
   const [appliesTo, setAppliesTo] = useState("all");
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchCollections = async () => {
       setLoading(true);
@@ -225,18 +239,21 @@ function useExtensionData() {
     };
     fetchCollections();
   }, [metafieldConfig.collectionIds, query]);
+
   const onPercentageValueChange = async (type, value) => {
     setPercentages((prev) => ({
       ...prev,
       [type]: Number(value),
     }));
   };
+
   const onAppliesToChange = (value) => {
     setAppliesTo(value);
     if (value === "all") {
       setCollections([]);
     }
   };
+
   // [START discount-ui-extension.apply-extension-metafield-change]
   async function applyExtensionMetafieldChange() {
     await applyMetafieldChange({
@@ -254,11 +271,13 @@ function useExtensionData() {
     setInitialCollections(collections);
   }
   // [END discount-ui-extension.apply-extension-metafield-change]
+
   const resetForm = () => {
     setPercentages(metafieldConfig.percentages);
     setCollections(initialCollections);
     setAppliesTo(initialCollections.length > 0 ? "collections" : "all");
   };
+
   const onSelectedCollections = async () => {
     const selection = await resourcePicker({
       type: "collection",
@@ -271,9 +290,11 @@ function useExtensionData() {
     });
     setCollections(selection ?? []);
   };
+
   const removeCollection = (id) => {
     setCollections((prev) => prev.filter((collection) => collection.id !== id));
   };
+
   return {
     applyExtensionMetafieldChange,
     i18n,
@@ -291,9 +312,11 @@ function useExtensionData() {
   };
 }
 // [END discount-ui-extension.use-extension-data]
+
 // [START discount-ui-extension.metafields]
 const METAFIELD_NAMESPACE = "$app:example-discounts--ui-extension";
 const METAFIELD_KEY = "function-configuration";
+
 async function getMetafieldDefinition(adminApiQuery) {
   const query = `#graphql
     query GetMetafieldDefinition {
@@ -304,7 +327,9 @@ async function getMetafieldDefinition(adminApiQuery) {
       }
     }
   `;
+
   const result = await adminApiQuery(query);
+
   return result?.data?.metafieldDefinitions?.nodes[0];
 }
 async function createMetafieldDefinition(adminApiQuery) {
@@ -318,6 +343,7 @@ async function createMetafieldDefinition(adminApiQuery) {
     ownerType: "DISCOUNT",
     type: "json",
   };
+
   const query = `#graphql
     mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
       metafieldDefinitionCreate(definition: $definition) {
@@ -327,11 +353,14 @@ async function createMetafieldDefinition(adminApiQuery) {
         }
       }
   `;
+
   const variables = { definition };
   const result = await adminApiQuery(query, { variables });
+
   return result?.data?.metafieldDefinitionCreate?.createdDefinition;
 }
 // [END discount-ui-extension.metafields]
+
 function parseMetafield(value) {
   try {
     const parsed = JSON.parse(value || "{}");
@@ -350,6 +379,7 @@ function parseMetafield(value) {
     };
   }
 }
+
 async function getCollections(collectionGids, adminApiQuery) {
   const query = `#graphql
     query GetCollections($ids: [ID!]!) {
