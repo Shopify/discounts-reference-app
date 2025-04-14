@@ -1,5 +1,5 @@
 # [START discount-function-shopify.extension.api-version]
-api_version = "unstable"
+api_version = "2025-04"
 # [END discount-function-shopify.extension.api-version]
 
 # [START discount-function.toml.metadata]

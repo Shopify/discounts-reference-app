@@ -33,7 +33,7 @@ const authenticate = async (request) => {
   const requestJwtHeader = request.headers.get("x-shopify-request-jwt");
   const requestIdHeader = request.headers.get("x-shopify-request-id");
 
-  const secretKey = process.env.APP_SECRET;
+  const secretKey = process.env.APP_CLIENT_SECRET;
   // Include the headers explicitly specified in the HttpRequest of the fetch target.
   const includedVerificationHeaders = process.env.JWT_HEADERS.split(",");
   const shopId = parseInt(process.env.JWT_SHOP_ID);
