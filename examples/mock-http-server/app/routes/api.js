@@ -106,113 +106,107 @@ const hashWithSHA256 = async (input) => {
 };
 
 const handle = (body) => {
-  try {
-    const {
-      body: { enteredDiscountCodes },
-    } = JSON.parse(body);
-    // [START mock-http-server.results]
-    const validDiscountCodes = enteredDiscountCodes.filter((code) =>
-      [
-        PRODUCT_DISCOUNT_CODE,
-        ORDER_DISCOUNT_CODE,
-        SHIPPING_DISCOUNT_CODE,
-      ].includes(code),
-    );
+  const { enteredDiscountCodes } = JSON.parse(body);
+  // [START mock-http-server.results]
+  const validDiscountCodes = enteredDiscountCodes.filter((code) =>
+    [
+      PRODUCT_DISCOUNT_CODE,
+      ORDER_DISCOUNT_CODE,
+      SHIPPING_DISCOUNT_CODE,
+    ].includes(code),
+  );
 
-    const cartOperations = [];
-    const deliveryOperations = [];
-    const validationOperations = [];
+  const cartOperations = [];
+  const deliveryOperations = [];
+  const validationOperations = [];
 
-    if (validDiscountCodes && validDiscountCodes.length > 0) {
-      // Add valid discount codes to cart operations
-      validationOperations.push({
-        enteredDiscountCodesAccept: {
-          codes: validDiscountCodes.map((code) => ({ code })),
+  if (validDiscountCodes && validDiscountCodes.length > 0) {
+    // Add valid discount codes to cart operations
+    validationOperations.push({
+      enteredDiscountCodesAccept: {
+        codes: validDiscountCodes.map((code) => ({ code })),
+      },
+    });
+
+    if (validDiscountCodes.includes(PRODUCT_DISCOUNT_CODE)) {
+      cartOperations.push({
+        productDiscountsAdd: {
+          selectionStrategy: selectionStrategy.First,
+          candidates: [
+            {
+              associatedDiscountCode: { code: PRODUCT_DISCOUNT_CODE },
+              targets: [
+                {
+                  cartLine: {
+                    id: "gid://shopify/CartLine/0",
+                  },
+                },
+              ],
+              value: {
+                percentage: {
+                  value: "10",
+                },
+              },
+            },
+          ],
         },
       });
-
-      if (validDiscountCodes.includes(PRODUCT_DISCOUNT_CODE)) {
-        cartOperations.push({
-          productDiscountsAdd: {
-            selectionStrategy: selectionStrategy.First,
-            candidates: [
-              {
-                associatedDiscountCode: { code: PRODUCT_DISCOUNT_CODE },
-                targets: [
-                  {
-                    cartLine: {
-                      id: "gid://shopify/CartLine/0",
-                    },
-                  },
-                ],
-                value: {
-                  percentage: {
-                    value: "10",
-                  },
-                },
-              },
-            ],
-          },
-        });
-      }
-
-      if (validDiscountCodes.includes(ORDER_DISCOUNT_CODE)) {
-        cartOperations.push({
-          orderDiscountsAdd: {
-            selectionStrategy: selectionStrategy.First,
-            candidates: [
-              {
-                associatedDiscountCode: { code: ORDER_DISCOUNT_CODE },
-                targets: [
-                  {
-                    orderSubtotal: {
-                      excludedCartLineIds: [],
-                    },
-                  },
-                ],
-                value: {
-                  percentage: {
-                    value: "20",
-                  },
-                },
-              },
-            ],
-          },
-        });
-      }
-
-      if (validDiscountCodes.includes(SHIPPING_DISCOUNT_CODE)) {
-        deliveryOperations.push({
-          deliveryDiscountsAdd: {
-            selectionStrategy: selectionStrategy.All,
-            candidates: [
-              {
-                associatedDiscountCode: { code: SHIPPING_DISCOUNT_CODE },
-                value: {
-                  percentage: {
-                    value: "100",
-                  },
-                },
-                targets: [
-                  {
-                    deliveryGroup: {
-                      id: "gid://shopify/DeliveryGroup/0",
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        });
-      }
     }
-    return json([
-      ...validationOperations,
-      ...cartOperations,
-      ...deliveryOperations,
-    ]);
-    // [END mock-http-server.results]
-  } catch (error) {
-    throw error;
+
+    if (validDiscountCodes.includes(ORDER_DISCOUNT_CODE)) {
+      cartOperations.push({
+        orderDiscountsAdd: {
+          selectionStrategy: selectionStrategy.First,
+          candidates: [
+            {
+              associatedDiscountCode: { code: ORDER_DISCOUNT_CODE },
+              targets: [
+                {
+                  orderSubtotal: {
+                    excludedCartLineIds: [],
+                  },
+                },
+              ],
+              value: {
+                percentage: {
+                  value: "20",
+                },
+              },
+            },
+          ],
+        },
+      });
+    }
+
+    if (validDiscountCodes.includes(SHIPPING_DISCOUNT_CODE)) {
+      deliveryOperations.push({
+        deliveryDiscountsAdd: {
+          selectionStrategy: selectionStrategy.All,
+          candidates: [
+            {
+              associatedDiscountCode: { code: SHIPPING_DISCOUNT_CODE },
+              value: {
+                percentage: {
+                  value: "100",
+                },
+              },
+              targets: [
+                {
+                  deliveryGroup: {
+                    id: "gid://shopify/DeliveryGroup/0",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
   }
+  return json([
+    ...validationOperations,
+    ...cartOperations,
+    ...deliveryOperations,
+  ]);
+  // [END mock-http-server.results]
 };
