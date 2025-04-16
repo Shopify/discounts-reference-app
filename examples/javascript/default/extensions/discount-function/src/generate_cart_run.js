@@ -10,7 +10,7 @@ export function generateCartRun(input) {
   }
 
   const maxCartLine = input.cart.lines.reduce((maxLine, line) => {
-    if (line.cost.subtotalAmount > maxLine.cost.subtotalAmount) {
+    if (line.cost.subtotalAmount.amount > maxLine.cost.subtotalAmount.amount) {
       return line;
     }
     return maxLine;
