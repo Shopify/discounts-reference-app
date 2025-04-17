@@ -170,7 +170,7 @@ export function DiscountForm({
         setField("endDate", tomorrow);
       }
     },
-    [formState.startDate, today, setField]
+    [formState.startDate, formState.endDate, today, setField]
   );
 
   return (

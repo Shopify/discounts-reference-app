@@ -23,6 +23,6 @@
   "overrides": {
     "ws": "^8.17.1"
   },
-  "author": "mathiusjohnson",
+  "author": "shopify",
   "packageManager": "pnpm@8.15.5"
 }
