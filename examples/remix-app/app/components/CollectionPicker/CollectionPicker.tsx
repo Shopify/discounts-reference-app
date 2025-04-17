@@ -5,7 +5,7 @@ import {
   Link,
   Divider,
 } from "@shopify/polaris";
-import { XCircleIcon } from "@shopify/polaris-icons";
+import { DeleteMinor } from "@shopify/polaris-icons";
 import { useCallback } from "react";
 interface Collection {
   id: string;
@@ -46,7 +46,7 @@ export function CollectionPicker({
         (collection: ResourcePickerResponse) => ({
           id: collection.id,
           title: collection.title,
-        }),
+        })
       );
       onSelect(selectedCollections);
     }
@@ -55,10 +55,10 @@ export function CollectionPicker({
   const handleRemove = useCallback(
     (collectionId: string) => {
       onSelect(
-        collections.filter((collection) => collection.id !== collectionId),
+        collections.filter((collection) => collection.id !== collectionId)
       );
     },
-    [selectedCollectionIds, onSelect, collections],
+    [onSelect, collections]
   );
 
   const selectedCollectionsText = collections?.length
@@ -77,7 +77,9 @@ export function CollectionPicker({
             <BlockStack gap="200" key={collection.id}>
               <InlineStack blockAlign="center" align="space-between">
                 <Link
-                  url={`shopify://admin/collections/${collection.id.split("/").pop()}`}
+                  url={`shopify://admin/collections/${collection.id
+                    .split("/")
+                    .pop()}`}
                   monochrome
                   removeUnderline
                 >
@@ -86,7 +88,7 @@ export function CollectionPicker({
                 <Button
                   variant="tertiary"
                   onClick={() => handleRemove(collection.id)}
-                  icon={XCircleIcon}
+                  icon={DeleteMinor}
                 />
               </InlineStack>
               <Divider />

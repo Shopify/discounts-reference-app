@@ -11,7 +11,7 @@
     "eslint": "9.23.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "8.29.1",
+    "@typescript-eslint/eslint-plugin": "8.30.1",
     "@typescript-eslint/parser": "8.30.1",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-react": "7.37.5",
@@ -23,6 +23,6 @@
   "overrides": {
     "ws": "^8.17.1"
   },
-  "author": "mathiusjohnson",
+  "author": "shopify",
   "packageManager": "pnpm@8.15.5"
 }

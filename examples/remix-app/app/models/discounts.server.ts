@@ -41,7 +41,7 @@ export async function createCodeDiscount(
   code: string,
   usageLimit: number | null,
   appliesOncePerCustomer: boolean,
-  configuration: DiscountConfiguration,
+  configuration: DiscountConfiguration
 ) {
   const { admin } = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_CODE_DISCOUNT, {
@@ -80,7 +80,7 @@ export async function createCodeDiscount(
 export async function createAutomaticDiscount(
   request: Request,
   baseDiscount: BaseDiscount,
-  configuration: DiscountConfiguration,
+  configuration: DiscountConfiguration
 ) {
   const { admin } = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_AUTOMATIC_DISCOUNT, {
@@ -124,7 +124,7 @@ export async function updateCodeDiscount(
     orderPercentage: number;
     shippingPercentage: number;
     collectionIds?: string[];
-  },
+  }
 ) {
   const { admin } = await authenticate.admin(request);
   const discountId = id.includes("gid://")
@@ -149,7 +149,7 @@ export async function updateCodeDiscount(
               shippingPercentage: configuration.shippingPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
-                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
+                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`
                 ) || [],
             }),
           },
@@ -174,7 +174,7 @@ export async function updateAutomaticDiscount(
     orderPercentage: number;
     shippingPercentage: number;
     collectionIds?: string[];
-  },
+  }
 ) {
   const { admin } = await authenticate.admin(request);
   const discountId = id.includes("gid://")
@@ -195,7 +195,7 @@ export async function updateAutomaticDiscount(
               shippingPercentage: configuration.shippingPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
-                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
+                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`
                 ) || [],
             }),
           },
@@ -242,7 +242,7 @@ export async function getDiscount(request: Request, id: string) {
     discountClasses,
   } = responseJson.data.discountNode.discount;
   const configuration = JSON.parse(
-    responseJson.data.discountNode.configurationField.value,
+    responseJson.data.discountNode.configurationField.value
   );
 
   return {

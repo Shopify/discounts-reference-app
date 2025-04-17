@@ -28,6 +28,6 @@
     "vitest": "0.29.8"
   },
   "dependencies": {
-    "@shopify/shopify_function": "1.0.0"
+    "@shopify/shopify_function": "1.0.6"
   }
 }

@@ -19,10 +19,10 @@ export function DatePickerField({
 }: DatePickerFieldProps) {
   const [visible, setVisible] = useState(false);
   const [month, setMonth] = useState(
-    value ? new Date(value).getMonth() : new Date().getMonth(),
+    value ? new Date(value).getMonth() : new Date().getMonth()
   );
   const [year, setYear] = useState(
-    value ? new Date(value).getFullYear() : new Date().getFullYear(),
+    value ? new Date(value).getFullYear() : new Date().getFullYear()
   );
 
   const formatDateForInput = useCallback(
@@ -34,7 +34,7 @@ export function DatePickerField({
       }
       return "";
     },
-    [],
+    []
   );
 
   const handleDateChange = useCallback(
@@ -45,7 +45,7 @@ export function DatePickerField({
       onChange(newSelectedDate);
       setVisible(false);
     },
-    [onChange, minDate],
+    [onChange, minDate]
   );
 
   const handleMonthChange = useCallback((month: number, year: number) => {

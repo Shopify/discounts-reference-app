@@ -1,7 +1,8 @@
-import jwt from "jsonwebtoken";
-import { TextEncoder } from "util";
 import { subtle } from "crypto";
+import { TextEncoder } from "util";
+
 import { json } from "@remix-run/node";
+import jwt from "jsonwebtoken";
 
 const selectionStrategy = {
   All: "ALL",
@@ -113,7 +114,7 @@ const handle = (body) => {
       PRODUCT_DISCOUNT_CODE,
       ORDER_DISCOUNT_CODE,
       SHIPPING_DISCOUNT_CODE,
-    ].includes(code),
+    ].includes(code)
   );
 
   const cartOperations = [];
