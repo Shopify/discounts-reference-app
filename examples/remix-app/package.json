@@ -60,7 +60,7 @@
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
-  "author": "shopify",
+  "author": "tom",
   "workspaces": [
     "extensions/*"
   ]

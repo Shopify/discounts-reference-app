@@ -1,5 +1,5 @@
-import { GET_COLLECTIONS } from "../graphql/collections";
 import { authenticate } from "../shopify.server";
+import { GET_COLLECTIONS } from "../graphql/collections";
 
 interface Collection {
   id: string;

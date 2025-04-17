@@ -5,7 +5,7 @@ import {
   Link,
   Divider,
 } from "@shopify/polaris";
-import { DeleteMinor } from "@shopify/polaris-icons";
+import { XCircleIcon } from "@shopify/polaris-icons";
 import { useCallback } from "react";
 interface Collection {
   id: string;
@@ -58,7 +58,7 @@ export function CollectionPicker({
         collections.filter((collection) => collection.id !== collectionId)
       );
     },
-    [onSelect, collections]
+    [selectedCollectionIds, onSelect, collections]
   );
 
   const selectedCollectionsText = collections?.length
@@ -88,7 +88,7 @@ export function CollectionPicker({
                 <Button
                   variant="tertiary"
                   onClick={() => handleRemove(collection.id)}
-                  icon={DeleteMinor}
+                  icon={XCircleIcon}
                 />
               </InlineStack>
               <Divider />
