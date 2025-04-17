@@ -10,7 +10,7 @@ export function generateCartRun(input) {
   }
 
   const { cartLinePercentage, orderPercentage, collectionIds } = parseMetafield(
-    input.discount.metafield,
+    input.discount.metafield
   );
 
   const operations = [];
