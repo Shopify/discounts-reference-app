@@ -3,7 +3,7 @@ import { HttpRequestMethod } from "../generated/api";
 // [START discount-function.delivery.fetch]
 export function generateDeliveryFetch(input) {
   const { enteredDiscountCodes } = input;
-  const jsonBody = { body: { enteredDiscountCodes } };
+  const jsonBody = { enteredDiscountCodes };
 
   const request = {
     headers: [
