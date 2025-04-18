@@ -11,7 +11,7 @@ interface DiscountConfiguration {
   quantity: string;
   productPercentage: string;
   orderPercentage: string;
-  shippingPercentage: string;
+  deliveryPercentage: string;
   metafieldId?: string;
 }
 

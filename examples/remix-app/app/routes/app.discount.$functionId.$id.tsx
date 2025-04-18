@@ -41,7 +41,7 @@ interface LoaderData {
     configuration: {
       cartLinePercentage: number;
       orderPercentage: number;
-      shippingPercentage: number;
+      deliveryPercentage: number;
       metafieldId: string;
       collectionIds: string[];
     };
@@ -86,7 +86,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     metafieldId: configuration.metafieldId,
     cartLinePercentage: parseFloat(configuration.cartLinePercentage),
     orderPercentage: parseFloat(configuration.orderPercentage),
-    shippingPercentage: parseFloat(configuration.shippingPercentage),
+    deliveryPercentage: parseFloat(configuration.deliveryPercentage),
     collectionIds: configuration.collectionIds || [],
   };
 
@@ -168,7 +168,7 @@ export default function VolumeEdit() {
       ...rawDiscount.configuration,
       cartLinePercentage: String(rawDiscount.configuration.cartLinePercentage),
       orderPercentage: String(rawDiscount.configuration.orderPercentage),
-      shippingPercentage: String(rawDiscount.configuration.shippingPercentage),
+      deliveryPercentage: String(rawDiscount.configuration.deliveryPercentage),
       metafieldId: rawDiscount.configuration.metafieldId,
       collectionIds: rawDiscount.configuration.collectionIds || [],
     },

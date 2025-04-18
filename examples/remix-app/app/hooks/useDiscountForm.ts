@@ -18,7 +18,7 @@ interface CombinesWith {
 interface DiscountConfiguration {
   cartLinePercentage: string;
   orderPercentage: string;
-  shippingPercentage: string;
+  deliveryPercentage: string;
   metafieldId?: string;
   collectionIds?: string[];
   collections?: Collection[];
@@ -55,7 +55,7 @@ interface UseDiscountFormProps {
     configuration: {
       cartLinePercentage: string;
       orderPercentage: string;
-      shippingPercentage: string;
+      deliveryPercentage: string;
       metafieldId?: string;
       collectionIds?: string[];
     };
@@ -86,8 +86,8 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         initialData?.configuration.cartLinePercentage?.toString() ?? "0",
       orderPercentage:
         initialData?.configuration.orderPercentage?.toString() ?? "0",
-      shippingPercentage:
-        initialData?.configuration.shippingPercentage?.toString() ?? "0",
+      deliveryPercentage:
+        initialData?.configuration.deliveryPercentage?.toString() ?? "0",
       metafieldId: initialData?.configuration.metafieldId,
       collectionIds: initialData?.configuration.collectionIds ?? [],
     },
@@ -148,8 +148,8 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
             formState.configuration.cartLinePercentage
           ),
           orderPercentage: parseFloat(formState.configuration.orderPercentage),
-          shippingPercentage: parseFloat(
-            formState.configuration.shippingPercentage
+          deliveryPercentage: parseFloat(
+            formState.configuration.deliveryPercentage
           ),
           collectionIds: formState.configuration.collectionIds,
         },
