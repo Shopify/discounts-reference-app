@@ -5,7 +5,7 @@ import {
   Link,
   Divider,
 } from "@shopify/polaris";
-import { DeleteMinor } from "@shopify/polaris-icons";
+import { DeleteIcon } from "@shopify/polaris-icons";
 import { useCallback } from "react";
 interface Collection {
   id: string;
@@ -88,7 +88,7 @@ export function CollectionPicker({
                 <Button
                   variant="tertiary"
                   onClick={() => handleRemove(collection.id)}
-                  icon={DeleteMinor}
+                  icon={DeleteIcon}
                 />
               </InlineStack>
               <Divider />
