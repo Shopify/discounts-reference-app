@@ -46,7 +46,7 @@ export function CollectionPicker({
         (collection: ResourcePickerResponse) => ({
           id: collection.id,
           title: collection.title,
-        }),
+        })
       );
       onSelect(selectedCollections);
     }
@@ -55,10 +55,10 @@ export function CollectionPicker({
   const handleRemove = useCallback(
     (collectionId: string) => {
       onSelect(
-        collections.filter((collection) => collection.id !== collectionId),
+        collections.filter((collection) => collection.id !== collectionId)
       );
     },
-    [selectedCollectionIds, onSelect, collections],
+    [selectedCollectionIds, onSelect, collections]
   );
 
   const selectedCollectionsText = collections?.length
@@ -77,7 +77,9 @@ export function CollectionPicker({
             <BlockStack gap="200" key={collection.id}>
               <InlineStack blockAlign="center" align="space-between">
                 <Link
-                  url={`shopify://admin/collections/${collection.id.split("/").pop()}`}
+                  url={`shopify://admin/collections/${collection.id
+                    .split("/")
+                    .pop()}`}
                   monochrome
                   removeUnderline
                 >

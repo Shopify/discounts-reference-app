@@ -44,7 +44,7 @@ interface DiscountFormProps {
     configuration: {
       cartLinePercentage: string;
       orderPercentage: string;
-      shippingPercentage: string;
+      deliveryPercentage: string;
       metafieldId?: string;
       collectionIds?: string[];
     };
@@ -91,7 +91,7 @@ export function DiscountForm({
         ? "End date must be after start date"
         : undefined;
     },
-    [formState.startDate],
+    [formState.startDate]
   );
 
   const handleEndDateChange = useCallback(
@@ -101,7 +101,7 @@ export function DiscountForm({
         setField("endDate", date);
       }
     },
-    [validateEndDate, setField],
+    [validateEndDate, setField]
   );
 
   const errorBanner = useMemo(
@@ -120,7 +120,7 @@ export function DiscountForm({
           </Banner>
         </Layout.Section>
       ) : null,
-    [submitErrors],
+    [submitErrors]
   );
 
   const successBanner = useMemo(
@@ -132,18 +132,18 @@ export function DiscountForm({
           </Banner>
         </Layout.Section>
       ) : null,
-    [success],
+    [success]
   );
 
   const handleCollectionSelect = useCallback(
     async (selectedCollections: { id: string; title: string }[]) => {
       setConfigField(
         "collectionIds",
-        selectedCollections.map((collection) => collection.id),
+        selectedCollections.map((collection) => collection.id)
       );
       setCollections(selectedCollections);
     },
-    [setConfigField],
+    [setConfigField]
   );
 
   const handleDiscountClassChange = useCallback(
@@ -153,11 +153,11 @@ export function DiscountForm({
         checked
           ? [...formState.discountClasses, discountClassValue]
           : formState.discountClasses.filter(
-              (discountClass) => discountClass !== discountClassValue,
-            ),
+              (discountClass) => discountClass !== discountClassValue
+            )
       );
     },
-    [formState.discountClasses, setField],
+    [formState.discountClasses, setField]
   );
 
   const handleEndDateCheckboxChange = useCallback(
@@ -170,7 +170,7 @@ export function DiscountForm({
         setField("endDate", tomorrow);
       }
     },
-    [formState.startDate, today, setField],
+    [formState.startDate, today, setField]
   );
 
   return (
@@ -200,13 +200,13 @@ export function DiscountForm({
                   ? { metafieldId: formState.configuration.metafieldId }
                   : {}),
                 cartLinePercentage: parseFloat(
-                  formState.configuration.cartLinePercentage,
+                  formState.configuration.cartLinePercentage
                 ),
                 orderPercentage: parseFloat(
-                  formState.configuration.orderPercentage,
+                  formState.configuration.orderPercentage
                 ),
-                shippingPercentage: parseFloat(
-                  formState.configuration.shippingPercentage,
+                deliveryPercentage: parseFloat(
+                  formState.configuration.deliveryPercentage
                 ),
                 collectionIds: formState.configuration.collectionIds || [],
               },
@@ -268,19 +268,19 @@ export function DiscountForm({
                     <Checkbox
                       label="Product discount"
                       checked={formState.discountClasses.includes(
-                        DiscountClass.Product,
+                        DiscountClass.Product
                       )}
                       onChange={(checked) =>
                         handleDiscountClassChange(
                           DiscountClass.Product,
-                          checked,
+                          checked
                         )
                       }
                     />
                     <Checkbox
                       label="Order discount"
                       checked={formState.discountClasses.includes(
-                        DiscountClass.Order,
+                        DiscountClass.Order
                       )}
                       onChange={(checked) =>
                         handleDiscountClassChange(DiscountClass.Order, checked)
@@ -289,12 +289,12 @@ export function DiscountForm({
                     <Checkbox
                       label="Shipping discount"
                       checked={formState.discountClasses.includes(
-                        DiscountClass.Shipping,
+                        DiscountClass.Shipping
                       )}
                       onChange={(checked) =>
                         handleDiscountClassChange(
                           DiscountClass.Shipping,
-                          checked,
+                          checked
                         )
                       }
                     />
@@ -313,7 +313,7 @@ export function DiscountForm({
 
                   <BlockStack gap="400">
                     {formState.discountClasses?.includes(
-                      DiscountClass.Product,
+                      DiscountClass.Product
                     ) ? (
                       <>
                         <TextField
@@ -343,7 +343,7 @@ export function DiscountForm({
                     ) : null}
 
                     {formState.discountClasses?.includes(
-                      DiscountClass.Order,
+                      DiscountClass.Order
                     ) ? (
                       <TextField
                         label="Order discount percentage"
@@ -361,7 +361,7 @@ export function DiscountForm({
                     ) : null}
 
                     {formState.discountClasses?.includes(
-                      DiscountClass.Shipping,
+                      DiscountClass.Shipping
                     ) ? (
                       <TextField
                         label="Shipping discount percentage"
@@ -370,9 +370,9 @@ export function DiscountForm({
                         min="0"
                         max="100"
                         suffix="%"
-                        value={formState.configuration.shippingPercentage}
+                        value={formState.configuration.deliveryPercentage}
                         onChange={(value) =>
-                          setConfigField("shippingPercentage", value)
+                          setConfigField("deliveryPercentage", value)
                         }
                         helpText="Percentage discount for shipping"
                       />

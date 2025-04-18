@@ -25,7 +25,7 @@ interface BaseDiscount {
 interface DiscountConfiguration {
   cartLinePercentage: number;
   orderPercentage: number;
-  shippingPercentage: number;
+  deliveryPercentage: number;
   collectionIds?: string[];
 }
 
@@ -41,7 +41,7 @@ export async function createCodeDiscount(
   code: string,
   usageLimit: number | null,
   appliesOncePerCustomer: boolean,
-  configuration: DiscountConfiguration,
+  configuration: DiscountConfiguration
 ) {
   const { admin } = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_CODE_DISCOUNT, {
@@ -60,7 +60,7 @@ export async function createCodeDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds: configuration.collectionIds || [],
             }),
           },
@@ -80,7 +80,7 @@ export async function createCodeDiscount(
 export async function createAutomaticDiscount(
   request: Request,
   baseDiscount: BaseDiscount,
-  configuration: DiscountConfiguration,
+  configuration: DiscountConfiguration
 ) {
   const { admin } = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_AUTOMATIC_DISCOUNT, {
@@ -95,7 +95,7 @@ export async function createAutomaticDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds: configuration.collectionIds || [],
             }),
           },
@@ -122,9 +122,9 @@ export async function updateCodeDiscount(
     metafieldId: string;
     cartLinePercentage: number;
     orderPercentage: number;
-    shippingPercentage: number;
+    deliveryPercentage: number;
     collectionIds?: string[];
-  },
+  }
 ) {
   const { admin } = await authenticate.admin(request);
   const discountId = id.includes("gid://")
@@ -146,10 +146,10 @@ export async function updateCodeDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
-                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
+                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`
                 ) || [],
             }),
           },
@@ -172,9 +172,9 @@ export async function updateAutomaticDiscount(
     metafieldId: string;
     cartLinePercentage: number;
     orderPercentage: number;
-    shippingPercentage: number;
+    deliveryPercentage: number;
     collectionIds?: string[];
-  },
+  }
 ) {
   const { admin } = await authenticate.admin(request);
   const discountId = id.includes("gid://")
@@ -192,10 +192,10 @@ export async function updateAutomaticDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
-                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
+                  id.includes("gid://") ? id : `gid://shopify/Collection/${id}`
                 ) || [],
             }),
           },
@@ -242,7 +242,7 @@ export async function getDiscount(request: Request, id: string) {
     discountClasses,
   } = responseJson.data.discountNode.discount;
   const configuration = JSON.parse(
-    responseJson.data.discountNode.configurationField.value,
+    responseJson.data.discountNode.configurationField.value
   );
 
   return {

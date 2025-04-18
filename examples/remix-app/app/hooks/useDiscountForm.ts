@@ -18,7 +18,7 @@ interface CombinesWith {
 interface DiscountConfiguration {
   cartLinePercentage: string;
   orderPercentage: string;
-  shippingPercentage: string;
+  deliveryPercentage: string;
   metafieldId?: string;
   collectionIds?: string[];
   collections?: Collection[];
@@ -55,7 +55,7 @@ interface UseDiscountFormProps {
     configuration: {
       cartLinePercentage: string;
       orderPercentage: string;
-      shippingPercentage: string;
+      deliveryPercentage: string;
       metafieldId?: string;
       collectionIds?: string[];
     };
@@ -86,8 +86,8 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         initialData?.configuration.cartLinePercentage?.toString() ?? "0",
       orderPercentage:
         initialData?.configuration.orderPercentage?.toString() ?? "0",
-      shippingPercentage:
-        initialData?.configuration.shippingPercentage?.toString() ?? "0",
+      deliveryPercentage:
+        initialData?.configuration.deliveryPercentage?.toString() ?? "0",
       metafieldId: initialData?.configuration.metafieldId,
       collectionIds: initialData?.configuration.collectionIds ?? [],
     },
@@ -97,20 +97,20 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
     <K extends keyof FormState>(field: K, value: FormState[K]) => {
       setFormState((prev) => ({ ...prev, [field]: value }));
     },
-    [],
+    []
   );
 
   const setConfigField = useCallback(
     (
       field: keyof DiscountConfiguration,
-      value: string | string[] | Collection[],
+      value: string | string[] | Collection[]
     ) => {
       setFormState((prev) => ({
         ...prev,
         configuration: { ...prev.configuration, [field]: value },
       }));
     },
-    [],
+    []
   );
 
   const setCombinesWith = useCallback(
@@ -120,7 +120,7 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         combinesWith: { ...prev.combinesWith, [field]: value },
       }));
     },
-    [],
+    []
   );
 
   const handleSubmit = useCallback(() => {
@@ -145,15 +145,15 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
             ? { metafieldId: formState.configuration.metafieldId }
             : {}),
           cartLinePercentage: parseFloat(
-            formState.configuration.cartLinePercentage,
+            formState.configuration.cartLinePercentage
           ),
           orderPercentage: parseFloat(formState.configuration.orderPercentage),
-          shippingPercentage: parseFloat(
-            formState.configuration.shippingPercentage,
+          deliveryPercentage: parseFloat(
+            formState.configuration.deliveryPercentage
           ),
           collectionIds: formState.configuration.collectionIds,
         },
-      }),
+      })
     );
     submit(formData, { method: "post" });
   }, [formState, submit]);
