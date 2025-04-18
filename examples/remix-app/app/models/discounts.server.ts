@@ -25,7 +25,7 @@ interface BaseDiscount {
 interface DiscountConfiguration {
   cartLinePercentage: number;
   orderPercentage: number;
-  shippingPercentage: number;
+  deliveryPercentage: number;
   collectionIds?: string[];
 }
 
@@ -60,7 +60,7 @@ export async function createCodeDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds: configuration.collectionIds || [],
             }),
           },
@@ -95,7 +95,7 @@ export async function createAutomaticDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds: configuration.collectionIds || [],
             }),
           },
@@ -122,7 +122,7 @@ export async function updateCodeDiscount(
     metafieldId: string;
     cartLinePercentage: number;
     orderPercentage: number;
-    shippingPercentage: number;
+    deliveryPercentage: number;
     collectionIds?: string[];
   }
 ) {
@@ -146,7 +146,7 @@ export async function updateCodeDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
                   id.includes("gid://") ? id : `gid://shopify/Collection/${id}`
@@ -172,7 +172,7 @@ export async function updateAutomaticDiscount(
     metafieldId: string;
     cartLinePercentage: number;
     orderPercentage: number;
-    shippingPercentage: number;
+    deliveryPercentage: number;
     collectionIds?: string[];
   }
 ) {
@@ -192,7 +192,7 @@ export async function updateAutomaticDiscount(
             value: JSON.stringify({
               cartLinePercentage: configuration.cartLinePercentage,
               orderPercentage: configuration.orderPercentage,
-              shippingPercentage: configuration.shippingPercentage,
+              deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
                 configuration.collectionIds?.map((id) =>
                   id.includes("gid://") ? id : `gid://shopify/Collection/${id}`

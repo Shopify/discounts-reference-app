@@ -57,7 +57,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       {
         cartLinePercentage: parseFloat(configuration.cartLinePercentage),
         orderPercentage: parseFloat(configuration.orderPercentage),
-        shippingPercentage: parseFloat(configuration.shippingPercentage),
+        deliveryPercentage: parseFloat(configuration.deliveryPercentage),
         collectionIds: configuration.collectionIds || [],
       }
     );
@@ -65,7 +65,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     result = await createAutomaticDiscount(request, baseDiscount, {
       cartLinePercentage: parseFloat(configuration.cartLinePercentage),
       orderPercentage: parseFloat(configuration.orderPercentage),
-      shippingPercentage: parseFloat(configuration.shippingPercentage),
+      deliveryPercentage: parseFloat(configuration.deliveryPercentage),
       collectionIds: configuration.collectionIds || [],
     });
   }
@@ -118,7 +118,7 @@ export default function VolumeNew() {
     configuration: {
       cartLinePercentage: "0",
       orderPercentage: "0",
-      shippingPercentage: "0",
+      deliveryPercentage: "0",
       collectionIds: [],
     },
   };

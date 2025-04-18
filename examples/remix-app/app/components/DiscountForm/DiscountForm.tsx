@@ -44,7 +44,7 @@ interface DiscountFormProps {
     configuration: {
       cartLinePercentage: string;
       orderPercentage: string;
-      shippingPercentage: string;
+      deliveryPercentage: string;
       metafieldId?: string;
       collectionIds?: string[];
     };
@@ -205,8 +205,8 @@ export function DiscountForm({
                 orderPercentage: parseFloat(
                   formState.configuration.orderPercentage
                 ),
-                shippingPercentage: parseFloat(
-                  formState.configuration.shippingPercentage
+                deliveryPercentage: parseFloat(
+                  formState.configuration.deliveryPercentage
                 ),
                 collectionIds: formState.configuration.collectionIds || [],
               },
@@ -370,9 +370,9 @@ export function DiscountForm({
                         min="0"
                         max="100"
                         suffix="%"
-                        value={formState.configuration.shippingPercentage}
+                        value={formState.configuration.deliveryPercentage}
                         onChange={(value) =>
-                          setConfigField("shippingPercentage", value)
+                          setConfigField("deliveryPercentage", value)
                         }
                         helpText="Percentage discount for shipping"
                       />
