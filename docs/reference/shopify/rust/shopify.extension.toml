@@ -2,7 +2,7 @@ api_version = "2025-04"
 
 [[extensions]]
 name = "t:name"
-handle = "discount-function"
+handle = "discount-function-js"
 type = "function"
 
 description = "t:description"
