@@ -92,6 +92,7 @@ export default [
       "reference-app-builder/**/*.{js,jsx,ts,tsx}",
       "scripts/**/*.{js,jsx,ts,tsx}",
       "examples/mock-http-server/**/*.{js,jsx,ts,tsx}",
+      "examples/remix-app/vite.config.ts",
     ],
     rules: {
       "no-console": OFF, // Allow console.log in reference-app-builder

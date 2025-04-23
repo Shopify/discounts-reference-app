@@ -16,8 +16,13 @@ if (
   delete process.env.HOST;
 }
 
-const host = new URL(process.env.SHOPIFY_APP_URL || "http://localhost")
-  .hostname;
+let host = "localhost";
+try {
+  host = new URL(process.env.SHOPIFY_APP_URL || "http://localhost").hostname;
+} catch {
+  console.warn("Failed to parse SHOPIFY_APP_URL, falling back to localhost");
+}
+
 const frontendPort = process.env.FRONTEND_PORT
   ? parseInt(process.env.FRONTEND_PORT)
   : 8002;

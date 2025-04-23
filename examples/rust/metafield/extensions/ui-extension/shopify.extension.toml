@@ -6,7 +6,7 @@ api_version = "2024-10"
 name = "t:name"
 description = "t:description"
 # [END discount-ui-extension.name_and_description]
-handle = "ui-extension-meta-rs"
+handle = "ui-discount-function-rs"
 type = "ui_extension"
 
 

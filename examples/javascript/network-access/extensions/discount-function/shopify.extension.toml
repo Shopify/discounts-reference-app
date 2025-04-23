@@ -5,7 +5,7 @@ api_version = "2025-04"
 # [START discount-function-shopify.extension.toml-metadata]
 [[extensions]]
 name = "t:name"
-handle = "function-network-js"
+handle = "discount-function-js"
 type = "function"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]

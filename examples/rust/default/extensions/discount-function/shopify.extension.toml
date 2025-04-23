@@ -7,7 +7,7 @@ api_version = "2025-04"
 # [START discount-function.toml.metadata]
 [[extensions]]
 name = "t:name"
-handle = "discount-function-rust"
+handle = "discount-function-rs"
 type = "function"
 description = "t:description"
 # [END discount-function.toml.metadata]
@@ -27,6 +27,6 @@ description = "t:description"
 # [START discount-function.toml.build]
   [extensions.build]
   command = "cargo build --target=wasm32-wasip1 --release"
-  path = "target/wasm32-wasip1/release/discount-function-rust.wasm"
+  path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 # [END discount-function.toml.build]

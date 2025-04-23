@@ -5,7 +5,7 @@ api_version = "2025-04"
 name = "t:name"
 description = "t:description"
 # [END discount-function.name_and_description]
-handle = "discount-function-meta-js"
+handle = "discount-function-js"
 type = "function"
 
   [[extensions.targeting]]
@@ -30,5 +30,5 @@ key = "function-configuration"
 
 # [START discount-function.toml.ui]
 [extensions.ui]
-handle = "ui-extension-meta-js"
+handle = "ui-discount-function-js"
 # [END discount-function.toml.ui]
