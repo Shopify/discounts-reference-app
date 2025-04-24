@@ -20,7 +20,8 @@ fn generate_cart_fetch(
     input: CartFetchResponseData,
 ) -> shopify_function::Result<CartLinesDiscountsGenerateFetchResult> {
     let entered_discount_codes = &input.entered_discount_codes;
-    let json_body = json!({ "enteredDiscountCodes": entered_discount_codes });
+    let discount_classes = &input.discount.discount_classes;
+    let json_body = json!({ "enteredDiscountCodes": entered_discount_codes, "discountClasses": discount_classes });
 
     let request = CartFetchHttpRequest {
         headers: vec![

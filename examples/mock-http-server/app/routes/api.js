@@ -10,9 +10,21 @@ const selectionStrategy = {
   Maximum: "MAXIMUM",
 };
 
+const supportedDiscountClasses = {
+  product: "PRODUCT",
+  order: "ORDER",
+  shipping: "SHIPPING",
+};
+
 const PRODUCT_DISCOUNT_CODE = "10OFFPRODUCT";
 const ORDER_DISCOUNT_CODE = "20OFFORDER";
 const SHIPPING_DISCOUNT_CODE = "FREESHIPPING";
+
+const codeToDiscountClass = {
+  [PRODUCT_DISCOUNT_CODE]: supportedDiscountClasses.product,
+  [ORDER_DISCOUNT_CODE]: supportedDiscountClasses.order,
+  [SHIPPING_DISCOUNT_CODE]: supportedDiscountClasses.shipping,
+};
 
 export const action = async ({ request }) => {
   if (request.method.toUpperCase() !== "POST") {
@@ -107,14 +119,15 @@ const hashWithSHA256 = async (input) => {
 };
 
 const handle = (body) => {
-  const { enteredDiscountCodes } = JSON.parse(body);
+  const { enteredDiscountCodes, discountClasses } = JSON.parse(body);
   // [START mock-http-server.results]
-  const validDiscountCodes = enteredDiscountCodes.filter((code) =>
-    [
-      PRODUCT_DISCOUNT_CODE,
-      ORDER_DISCOUNT_CODE,
-      SHIPPING_DISCOUNT_CODE,
-    ].includes(code)
+  const validDiscountCodes = enteredDiscountCodes.filter(
+    (code) =>
+      [
+        PRODUCT_DISCOUNT_CODE,
+        ORDER_DISCOUNT_CODE,
+        SHIPPING_DISCOUNT_CODE,
+      ].includes(code) && discountClasses.includes(codeToDiscountClass[code])
   );
 
   const cartOperations = [];

@@ -1,5 +1,8 @@
 # [START discount-function.graphql.delivery.fetch]
 query Input {
+  discount {
+    discountClasses
+  }
   enteredDiscountCodes
   cart {
     buyerIdentity {

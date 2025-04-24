@@ -2633,6 +2633,14 @@ export type InputCartFetchVariables = Exact<{ [key: string]: never }>;
 export type InputCartFetch = {
   __typename?: "Input";
   enteredDiscountCodes: Array<string>;
+  discount: { __typename?: "Discount"; discountClasses: Array<DiscountClass> };
+  cart: {
+    __typename?: "Cart";
+    buyerIdentity?: {
+      __typename?: "BuyerIdentity";
+      email?: string | null;
+    } | null;
+  };
 };
 
 export type InputCartRunVariables = Exact<{ [key: string]: never }>;
@@ -2666,6 +2674,14 @@ export type InputDeliveryFetchVariables = Exact<{ [key: string]: never }>;
 export type InputDeliveryFetch = {
   __typename?: "Input";
   enteredDiscountCodes: Array<string>;
+  discount: { __typename?: "Discount"; discountClasses: Array<DiscountClass> };
+  cart: {
+    __typename?: "Cart";
+    buyerIdentity?: {
+      __typename?: "BuyerIdentity";
+      email?: string | null;
+    } | null;
+  };
 };
 
 export type InputDeliveryRunVariables = Exact<{ [key: string]: never }>;
