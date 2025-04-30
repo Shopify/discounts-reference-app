@@ -5,5 +5,8 @@ query DeliveryInput {
       id
     }
   }
+  discount {
+    discountClasses
+  }
 }
 # [END discount-function.graphql.delivery]

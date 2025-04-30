@@ -20,7 +20,7 @@ export function generateCartFetch(input) {
       readTimeoutMs: 2000,
     },
     // [START discount-function.cart.fetch.url]
-    url: "<external server url>",
+    url: "<external server url>/api",
     // [END discount-function.cart.fetch.url]
     body: JSON.stringify(jsonBody),
     jsonBody,

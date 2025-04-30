@@ -38,7 +38,7 @@ fn generate_cart_fetch(
             read_timeout_ms: 2000,
         },
         // [START discount-function.cart.fetch.url]
-        url: "<external-server-url>".to_string(),
+        url: "<external-server-url>/api".to_string(),
         // [END discount-function.cart.fetch.url]
         body: Some(json_body.to_string()),
         json_body: Some(json_body.clone()),
@@ -83,7 +83,7 @@ mod tests {
                 policy: CartFetchHttpRequestPolicy {
                     read_timeout_ms: 2000,
                 },
-                url: "<external-server-url>".to_string(),
+                url: "<external-server-url>/api".to_string(),
                 json_body: Some(json_body.clone()),
                 body: Some(json_body.to_string()),
             }),

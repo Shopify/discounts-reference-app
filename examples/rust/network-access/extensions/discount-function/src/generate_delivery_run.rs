@@ -7,7 +7,7 @@ use cart_delivery_options_discounts_generate_run::output::{
     DeliveryDiscountsAddOperation, DeliveryOperation, CartDeliveryOptionsDiscountsGenerateRunResult, EnteredDiscountCodesAcceptOperation,
 };
 
-use cart_delivery_options_discounts_generate_run::input::ResponseData;
+use cart_delivery_options_discounts_generate_run::input::{ResponseData, DiscountClass};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -29,6 +29,15 @@ struct OperationItem {
 fn generate_delivery_run(input: ResponseData) -> Result<CartDeliveryOptionsDiscountsGenerateRunResult> {
     // [START discount-function.delivery.run.body]
     let fetch_result = input.fetch_result.ok_or("Missing fetch result")?;
+    let discount_classes = &input.discount.discount_classes;
+
+    // Check if shipping discount class is set
+    let has_shipping_discount_class = discount_classes.contains(&DiscountClass::SHIPPING);
+
+    // If shipping discount class is not set, return empty operations
+    if !has_shipping_discount_class {
+        return Ok(CartDeliveryOptionsDiscountsGenerateRunResult { operations: vec![] });
+    }
 
     // Use jsonBody which is the only available property
     let json_body = fetch_result
@@ -44,10 +53,12 @@ fn generate_delivery_run(input: ResponseData) -> Result<CartDeliveryOptionsDisco
 
     // Process each operation item
     for item in operation_items {
+        // Always include discount code operations
         if let Some(validations) = item.entered_discount_codes_accept {
             operations.push(DeliveryOperation::EnteredDiscountCodesAccept(validations));
         }
 
+        // Include delivery discounts (shipping discount class is already verified)
         if let Some(delivery_discounts_add_operation) = item.delivery_discounts_add {
             operations.push(DeliveryOperation::DeliveryDiscountsAdd(delivery_discounts_add_operation));
         }

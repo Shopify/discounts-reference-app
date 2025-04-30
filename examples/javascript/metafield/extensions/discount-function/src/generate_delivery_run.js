@@ -1,4 +1,7 @@
-import { DeliveryDiscountSelectionStrategy } from "../generated/api";
+import {
+  DeliveryDiscountSelectionStrategy,
+  DiscountClass,
+} from "../generated/api";
 
 // [START discount-function.run.delivery]
 export function generateDeliveryRun(input) {
@@ -8,10 +11,16 @@ export function generateDeliveryRun(input) {
   }
 
   const { deliveryPercentage } = parseMetafield(input.discount.metafield);
+  const hasShippingDiscountClass = input.discount.discountClasses.includes(
+    DiscountClass.Shipping
+  );
+  if (!hasShippingDiscountClass) {
+    return { operations: [] };
+  }
 
   const operations = [];
   // [START discount-function.run.delivery.add-operations]
-  if (deliveryPercentage > 0) {
+  if (hasShippingDiscountClass && deliveryPercentage > 0) {
     operations.push({
       deliveryDiscountsAdd: {
         candidates: [

@@ -11,7 +11,7 @@ use cart_lines_discounts_generate_run::output::{
 };
 
 use cart_lines_discounts_generate_run::input::{
-    InputCartLinesMerchandise::ProductVariant, ResponseData,
+    InputCartLinesMerchandise::ProductVariant, ResponseData, DiscountClass,
 };
 
 #[derive(Deserialize)]
@@ -39,32 +39,19 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
     )?;
     // [END discount-function.run.cart.parse-metafield]
     // [START discount-function.run.cart.add-operations]
-    let mut operations = vec![];
-    if discount_configuration.order_percentage > 0.0 {
-        operations.push(CartOperation::OrderDiscountsAdd(
-            OrderDiscountsAddOperation {
-                selection_strategy: OrderDiscountSelectionStrategy::FIRST,
-                candidates: vec![OrderDiscountCandidate {
-                    targets: vec![OrderDiscountCandidateTarget::OrderSubtotal(
-                        OrderSubtotalTarget {
-                            excluded_cart_line_ids: vec![],
-                        },
-                    )],
-                    message: Some(format!(
-                        "{}% OFF ORDER",
-                        discount_configuration.order_percentage
-                    )),
-                    value: OrderDiscountCandidateValue::Percentage(Percentage {
-                        value: Decimal(discount_configuration.order_percentage),
-                    }),
-                    conditions: None,
-                    associated_discount_code: None,
-                }],
-            },
-        ));
+    let has_order_discount_class = input.discount.discount_classes.contains(&DiscountClass::ORDER);
+    let has_product_discount_class = input.discount.discount_classes.contains(&DiscountClass::PRODUCT);
+
+    if !has_order_discount_class && !has_product_discount_class {
+        return Ok(CartLinesDiscountsGenerateRunResult {
+            operations: vec![],
+        });
     }
 
-    if discount_configuration.cart_line_percentage > 0.0 {
+    let mut operations = vec![];
+
+    // Add product discounts first if available and allowed
+    if has_product_discount_class && discount_configuration.cart_line_percentage > 0.0 {
         let mut cart_line_targets = vec![];
         for line in &input.cart.lines {
             // [START discount-function.run.cart.product.in_any_collection]
@@ -101,6 +88,31 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
                 },
             ));
         }
+    }
+
+    // Then add order discounts if available and allowed
+    if has_order_discount_class && discount_configuration.order_percentage > 0.0 {
+        operations.push(CartOperation::OrderDiscountsAdd(
+            OrderDiscountsAddOperation {
+                selection_strategy: OrderDiscountSelectionStrategy::FIRST,
+                candidates: vec![OrderDiscountCandidate {
+                    targets: vec![OrderDiscountCandidateTarget::OrderSubtotal(
+                        OrderSubtotalTarget {
+                            excluded_cart_line_ids: vec![],
+                        },
+                    )],
+                    message: Some(format!(
+                        "{}% OFF ORDER",
+                        discount_configuration.order_percentage
+                    )),
+                    value: OrderDiscountCandidateValue::Percentage(Percentage {
+                        value: Decimal(discount_configuration.order_percentage),
+                    }),
+                    conditions: None,
+                    associated_discount_code: None,
+                }],
+            },
+        ));
     }
     // [END discount-function.run.cart.add-operations]
     Ok(CartLinesDiscountsGenerateRunResult {

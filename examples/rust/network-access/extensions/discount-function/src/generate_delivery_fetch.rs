@@ -38,7 +38,7 @@ fn generate_delivery_fetch(
             read_timeout_ms: 2000,
         },
         // [START discount-function.delivery.fetch.url]
-        url: "<external-server-url>".to_string(),
+        url: "<external-server-url>/api".to_string(),
         // [END discount-function.delivery.fetch.url]
         body: Some(json_body.to_string()),
         json_body: Some(json_body.clone()),
@@ -83,7 +83,7 @@ mod tests {
                 policy: DeliveryFetchHttpRequestPolicy {
                     read_timeout_ms: 2000,
                 },
-                url: "<external-server-url>".to_string(),
+                url: "<external-server-url>/api".to_string(),
                 json_body: Some(json_body.clone()),
                 body: Some(json_body.to_string()),
             }),

@@ -1,7 +1,10 @@
 // [START discount-function.delivery.run]
 export function generateDeliveryRun(input) {
   // [START discount-function.delivery.run.body]
-  const { fetchResult } = input;
+  const {
+    fetchResult,
+    discount: { discountClasses },
+  } = input;
   const body = fetchResult?.jsonBody;
 
   if (!body) {
@@ -9,6 +12,16 @@ export function generateDeliveryRun(input) {
   }
 
   const operations = body;
+
+  const hasShippingDiscountClass = discountClasses.includes(
+    DiscountClass.Shipping
+  );
+
+  // If shipping discount class is not set, return an empty operations array
+  if (!hasShippingDiscountClass) {
+    return { operations: [] };
+  }
+
   // Filter operations to only include enteredDiscountCodesAccept and delivery operations
   const filteredOperations = operations.filter((operation) => {
     return (

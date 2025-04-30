@@ -12,5 +12,8 @@ query Input {
       id
     }
   }
+  discount {
+    discountClasses
+  }
 }
 # [END discount-function.graphql.delivery.run]
