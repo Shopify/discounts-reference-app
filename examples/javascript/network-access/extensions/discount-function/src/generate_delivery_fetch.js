@@ -21,7 +21,7 @@ export function generateDeliveryFetch(input) {
       readTimeoutMs: 2000,
     },
     // [START discount-function.delivery.fetch.url]
-    url: "<external server url>",
+    url: "<external server url>/api",
     // [END discount-function.delivery.fetch.url]
     body: JSON.stringify(jsonBody),
     jsonBody,

@@ -1,6 +1,7 @@
 import {
   OrderDiscountSelectionStrategy,
   ProductDiscountSelectionStrategy,
+  DiscountClass,
 } from "../generated/api";
 
 // [START discount-function.run.cart]
@@ -13,34 +14,21 @@ export function generateCartRun(input) {
     input.discount.metafield
   );
 
-  const operations = [];
-  // [START discount-function.run.cart.add-operations]
-  if (orderPercentage > 0) {
-    operations.push({
-      orderDiscountsAdd: {
-        candidates: [
-          {
-            message: `${orderPercentage}% OFF ORDER`,
-            targets: [
-              {
-                orderSubtotal: {
-                  excludedCartLineIds: [],
-                },
-              },
-            ],
-            value: {
-              percentage: {
-                value: orderPercentage,
-              },
-            },
-          },
-        ],
-        selectionStrategy: OrderDiscountSelectionStrategy.First,
-      },
-    });
+  const hasOrderDiscountClass = input.discount.discountClasses.includes(
+    DiscountClass.Order
+  );
+  const hasProductDiscountClass = input.discount.discountClasses.includes(
+    DiscountClass.Product
+  );
+
+  if (!hasOrderDiscountClass && !hasProductDiscountClass) {
+    return { operations: [] };
   }
 
-  if (cartLinePercentage > 0) {
+  const operations = [];
+  // [START discount-function.run.cart.add-operations]
+  // Add product discounts first if available and allowed
+  if (hasProductDiscountClass && cartLinePercentage > 0) {
     const cartLineTargets = input.cart.lines.reduce((targets, line) => {
       // [START discount-function.run.cart.product.in_any_collection]
       if (
@@ -75,6 +63,32 @@ export function generateCartRun(input) {
         },
       });
     }
+  }
+
+  // Then add order discounts if available and allowed
+  if (hasOrderDiscountClass && orderPercentage > 0) {
+    operations.push({
+      orderDiscountsAdd: {
+        candidates: [
+          {
+            message: `${orderPercentage}% OFF ORDER`,
+            targets: [
+              {
+                orderSubtotal: {
+                  excludedCartLineIds: [],
+                },
+              },
+            ],
+            value: {
+              percentage: {
+                value: orderPercentage,
+              },
+            },
+          },
+        ],
+        selectionStrategy: OrderDiscountSelectionStrategy.First,
+      },
+    });
     // [END discount-function.run.cart.add-operations]
   }
 

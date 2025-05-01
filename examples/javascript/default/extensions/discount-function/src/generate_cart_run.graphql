@@ -10,5 +10,8 @@ query CartInput {
       }
     }
   }
+  discount {
+    discountClasses
+  }
 }
 # [END discount-function.graphql.cart]

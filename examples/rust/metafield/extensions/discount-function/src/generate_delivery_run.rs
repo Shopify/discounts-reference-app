@@ -9,7 +9,7 @@ use cart_delivery_options_discounts_generate_run::output::{
     DeliveryOperation, Percentage,
 };
 
-use cart_delivery_options_discounts_generate_run::input::ResponseData;
+use cart_delivery_options_discounts_generate_run::input::{ResponseData, DiscountClass};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -42,7 +42,18 @@ fn generate_delivery_run(
     )?;
     // [END discount-function.run.delivery.parse-metafield]
     // [START discount-function.run.delivery.add-operations]
+
+    let has_shipping_discount_class = input.discount.discount_classes.contains(&DiscountClass::SHIPPING);
+
+    if !has_shipping_discount_class {
+        return Ok(CartDeliveryOptionsDiscountsGenerateRunResult {
+            operations: vec![],
+        });
+    }
+
     let mut operations = vec![];
+
+    // Only add delivery discount if both the class is allowed and percentage is set
     if discount_configuration.delivery_percentage > 0.0 {
         operations.push(DeliveryOperation::DeliveryDiscountsAdd(
             DeliveryDiscountsAddOperation {
