@@ -144,6 +144,7 @@ export default [
       ],
     },
   },
+  // <private-code />
   // Reference app builder and scripts specific rules
   {
     files: [
@@ -174,6 +175,7 @@ export default [
       "no-unused-vars": ERROR,
     },
   },
+  // </private
   // Test files specific rules
   {
     files: ["**/*.test.{js,jsx,ts,tsx}", "**/*.spec.{js,jsx,ts,tsx}"],
