@@ -1,0 +1,82 @@
+{
+  "fetchResult": {
+    "status": 200,
+    "jsonBody": [
+      {
+        "enteredDiscountCodesAccept": {
+          "codes": [{ "code": "SUMMER10" }]
+        }
+      },
+      {
+        "productDiscountsAdd": {
+          "selectionStrategy": "FIRST",
+          "candidates": [
+            {
+              "value": {
+                "percentage": {
+                  "value": "10.0"
+                }
+              },
+              "targets": [
+                {
+                  "cartLine": {
+                    "id": "gid://shopify/CartLine/123"
+                  }
+                }
+              ],
+              "message": "10% off with SUMMER10 code"
+            }
+          ]
+        }
+      },
+      {
+        "orderDiscountsAdd": {
+          "selectionStrategy": "MAXIMUM",
+          "candidates": [
+            {
+              "value": {
+                "percentage": {
+                  "value": "15.0"
+                }
+              },
+              "targets": [
+                {
+                  "orderSubtotal": {
+                    "excludedCartLineIds": []
+                  }
+                }
+              ],
+              "message": "15% off entire order"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "cart": {
+    "buyerIdentity": {
+      "email": "customer@example.com"
+    },
+    "lines": [
+      {
+        "id": "gid://shopify/CartLine/123",
+        "cost": {
+          "subtotalAmount": {
+            "amount": "100.00"
+          }
+        }
+      },
+      {
+        "id": "gid://shopify/CartLine/456",
+        "cost": {
+          "subtotalAmount": {
+            "amount": "50.00"
+          }
+        }
+      }
+    ]
+  },
+  "discount": {
+    "discountClasses": ["PRODUCT", "ORDER"]
+  }
+}

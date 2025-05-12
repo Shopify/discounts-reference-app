@@ -114,7 +114,7 @@ const handle = (body) => {
       PRODUCT_DISCOUNT_CODE,
       ORDER_DISCOUNT_CODE,
       SHIPPING_DISCOUNT_CODE,
-    ].includes(code)
+    ].includes(code),
   );
 
   const cartOperations = [];

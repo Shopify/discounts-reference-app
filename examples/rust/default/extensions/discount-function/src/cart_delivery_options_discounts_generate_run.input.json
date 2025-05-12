@@ -1,0 +1,12 @@
+{
+  "cart": {
+    "deliveryGroups": [
+      {
+        "id": "gid://shopify/CartDeliveryGroup/1"
+      }
+    ]
+  },
+  "discount": {
+    "discountClasses": ["SHIPPING"]
+  }
+}

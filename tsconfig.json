@@ -6,7 +6,8 @@
     "public",
     "dist",
     "examples/remix-app",
-    "examples/mock-http-server"
+    "examples/mock-http-server",
+    "**/generated"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],

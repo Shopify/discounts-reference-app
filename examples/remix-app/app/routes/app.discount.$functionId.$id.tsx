@@ -100,14 +100,14 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       code,
       usageLimit,
       appliesOncePerCustomer,
-      parsedConfiguration
+      parsedConfiguration,
     );
   } else {
     result = await updateAutomaticDiscount(
       request,
       id,
       baseDiscount,
-      parsedConfiguration
+      parsedConfiguration,
     );
   }
   if (result.errors?.length > 0) {
@@ -127,8 +127,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     ? await getCollectionsByIds(
         request,
         discount.configuration.collectionIds.map((id: string) =>
-          id.startsWith("gid://") ? id : `gid://shopify/Collection/${id}`
-        )
+          id.startsWith("gid://") ? id : `gid://shopify/Collection/${id}`,
+        ),
       )
     : [];
 

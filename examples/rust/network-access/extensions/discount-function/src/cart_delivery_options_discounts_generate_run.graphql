@@ -1,0 +1,18 @@
+# [START discount-function.graphql.delivery.run]
+query Input {
+  fetchResult {
+    jsonBody
+  }
+  cart {
+    buyerIdentity {
+      email
+    }
+    deliveryGroups {
+      id
+    }
+  }
+  discount {
+    discountClasses
+  }
+}
+# [END discount-function.graphql.delivery.run]

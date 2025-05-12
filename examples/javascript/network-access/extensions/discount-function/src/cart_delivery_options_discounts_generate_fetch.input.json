@@ -1,0 +1,8 @@
+{
+  "enteredDiscountCodes": ["FREESHIP"],
+  "cart": {
+    "buyerIdentity": {
+      "email": "customer@example.com"
+    }
+  }
+}

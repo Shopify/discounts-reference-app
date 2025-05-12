@@ -97,20 +97,20 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
     <K extends keyof FormState>(field: K, value: FormState[K]) => {
       setFormState((prev) => ({ ...prev, [field]: value }));
     },
-    []
+    [],
   );
 
   const setConfigField = useCallback(
     (
       field: keyof DiscountConfiguration,
-      value: string | string[] | Collection[]
+      value: string | string[] | Collection[],
     ) => {
       setFormState((prev) => ({
         ...prev,
         configuration: { ...prev.configuration, [field]: value },
       }));
     },
-    []
+    [],
   );
 
   const setCombinesWith = useCallback(
@@ -120,7 +120,7 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         combinesWith: { ...prev.combinesWith, [field]: value },
       }));
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(() => {
@@ -145,15 +145,15 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
             ? { metafieldId: formState.configuration.metafieldId }
             : {}),
           cartLinePercentage: parseFloat(
-            formState.configuration.cartLinePercentage
+            formState.configuration.cartLinePercentage,
           ),
           orderPercentage: parseFloat(formState.configuration.orderPercentage),
           deliveryPercentage: parseFloat(
-            formState.configuration.deliveryPercentage
+            formState.configuration.deliveryPercentage,
           ),
           collectionIds: formState.configuration.collectionIds,
         },
-      })
+      }),
     );
     submit(formData, { method: "post" });
   }, [formState, submit]);

@@ -1,0 +1,47 @@
+{
+  "fetchResult": {
+    "status": 200,
+    "jsonBody": [
+      {
+        "enteredDiscountCodesAccept": {
+          "codes": [{ "code": "FREESHIP" }]
+        }
+      },
+      {
+        "deliveryDiscountsAdd": {
+          "selectionStrategy": "FIRST",
+          "candidates": [
+            {
+              "value": {
+                "percentage": {
+                  "value": "100.0"
+                }
+              },
+              "targets": [
+                {
+                  "deliveryOption": {
+                    "handle": "standard-shipping"
+                  }
+                }
+              ],
+              "message": "Free standard shipping"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "cart": {
+    "buyerIdentity": {
+      "email": "customer@example.com"
+    },
+    "deliveryGroups": [
+      {
+        "id": "gid://shopify/CartDeliveryGroup/1"
+      }
+    ]
+  },
+  "discount": {
+    "discountClasses": ["SHIPPING"]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cart": {
+    "lines": [
+      {
+        "id": "gid://shopify/CartLine/1",
+        "cost": {
+          "subtotalAmount": {
+            "amount": "100.00"
+          }
+        },
+        "merchandise": {
+          "__typename": "ProductVariant",
+          "product": {
+            "inAnyCollection": true
+          }
+        }
+      },
+      {
+        "id": "gid://shopify/CartLine/2",
+        "cost": {
+          "subtotalAmount": {
+            "amount": "50.00"
+          }
+        },
+        "merchandise": {
+          "__typename": "ProductVariant",
+          "product": {
+            "inAnyCollection": false
+          }
+        }
+      }
+    ]
+  },
+  "discount": {
+    "discountClasses": ["PRODUCT", "ORDER"],
+    "metafield": {
+      "value": "{\"cartLinePercentage\": 15.0, \"orderPercentage\": 10.0, \"collectionIds\": [\"gid://shopify/Collection/123\"]}"
+    }
+  }
+}

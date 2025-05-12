@@ -1,0 +1,15 @@
+{
+  "cart": {
+    "deliveryGroups": [
+      {
+        "id": "gid://shopify/CartDeliveryGroup/1"
+      }
+    ]
+  },
+  "discount": {
+    "discountClasses": ["SHIPPING"],
+    "metafield": {
+      "value": "{\"deliveryPercentage\": 100.0}"
+    }
+  }
+}

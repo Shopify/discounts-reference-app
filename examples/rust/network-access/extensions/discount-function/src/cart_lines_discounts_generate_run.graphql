@@ -1,0 +1,24 @@
+# [START discount-function.graphql.cart.run]
+query Input {
+  fetchResult {
+    jsonBody
+  }
+  cart {
+    buyerIdentity {
+      email
+    }
+    lines {
+      id
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+  }
+}
+
+# [END discount-function.graphql.run.cart]

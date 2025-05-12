@@ -1,0 +1,35 @@
+{
+  "operations": [
+    {
+      "enteredDiscountCodesAccept": {
+        "codes": [
+          {
+            "code": "FREESHIP"
+          }
+        ]
+      }
+    },
+    {
+      "deliveryDiscountsAdd": {
+        "candidates": [
+          {
+            "message": "Free standard shipping",
+            "targets": [
+              {
+                "deliveryOption": {
+                  "handle": "standard-shipping"
+                }
+              }
+            ],
+            "value": {
+              "percentage": {
+                "value": "100.0"
+              }
+            }
+          }
+        ],
+        "selectionStrategy": "FIRST"
+      }
+    }
+  ]
+}

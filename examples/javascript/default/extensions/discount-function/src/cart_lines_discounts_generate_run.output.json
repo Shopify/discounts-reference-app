@@ -1,0 +1,48 @@
+{
+  "operations": [
+    {
+      "orderDiscountsAdd": {
+        "candidates": [
+          {
+            "message": "10% OFF ORDER",
+            "targets": [
+              {
+                "orderSubtotal": {
+                  "excludedCartLineIds": []
+                }
+              }
+            ],
+            "value": {
+              "percentage": {
+                "value": 10
+              }
+            }
+          }
+        ],
+        "selectionStrategy": "FIRST"
+      }
+    },
+    {
+      "productDiscountsAdd": {
+        "candidates": [
+          {
+            "message": "20% OFF PRODUCT",
+            "targets": [
+              {
+                "cartLine": {
+                  "id": "gid://shopify/CartLine/3"
+                }
+              }
+            ],
+            "value": {
+              "percentage": {
+                "value": 20
+              }
+            }
+          }
+        ],
+        "selectionStrategy": "FIRST"
+      }
+    }
+  ]
+}

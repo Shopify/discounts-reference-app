@@ -1,6 +1,6 @@
 [package]
 # [START network-access.cargo-name]
-name = "discount-function-rust"
+name = "discount-function-rs"
 # [END network-access.cargo-name]
 version = "1.0.0"
 edition = "2021"
