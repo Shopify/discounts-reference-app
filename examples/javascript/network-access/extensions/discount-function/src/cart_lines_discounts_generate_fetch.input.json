@@ -1,8 +1,0 @@
-{
-  "enteredDiscountCodes": ["SUMMER10", "WELCOME20"],
-  "cart": {
-    "buyerIdentity": {
-      "email": "customer@example.com"
-    }
-  }
-}

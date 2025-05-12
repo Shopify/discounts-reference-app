@@ -144,26 +144,6 @@ export default [
       ],
     },
   },
-  // <private-code />
-  // Reference app builder and scripts specific rules
-  {
-    files: [
-      "reference-app-builder/utils/logger.ts",
-      "scripts/**/*.{js,jsx,ts,tsx}",
-      "tests/utils/console-mocking.ts",
-    ],
-    rules: {
-      "no-console": OFF, // Allow console.log in reference-app-builder
-    },
-  },
-  // Test setup files
-  {
-    files: ["tests/setup/**/*.{js,jsx,ts,tsx}"],
-    rules: {
-      "no-console": OFF, // Allow console logs in test setup files
-      "@typescript-eslint/no-explicit-any": OFF,
-    },
-  },
   // Markdown specific rules
   {
     files: ["**/*.md/**"],
@@ -175,7 +155,6 @@ export default [
       "no-unused-vars": ERROR,
     },
   },
-  // </private
   // Test files specific rules
   {
     files: ["**/*.test.{js,jsx,ts,tsx}", "**/*.spec.{js,jsx,ts,tsx}"],
