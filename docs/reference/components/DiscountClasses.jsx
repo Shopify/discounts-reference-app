@@ -28,7 +28,7 @@ function DiscountClasses(props) {
   const { discountClasses = [DiscountClass.Product], onChange } = props;
 
   const [selectedClasses, setSelectedClasses] = useState(
-    discountClasses.length > 0 ? discountClasses : [DiscountClass.Product]
+    discountClasses.length > 0 ? discountClasses : [DiscountClass.Product],
   );
 
   const handleChange = useCallback(
@@ -47,7 +47,7 @@ function DiscountClasses(props) {
         onChange(updatedClasses);
       }
     },
-    [selectedClasses, onChange]
+    [selectedClasses, onChange],
   );
 
   return (

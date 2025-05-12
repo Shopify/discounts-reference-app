@@ -1,5 +1,5 @@
 {
-  "name": "discount-function-meta-js",
+  "name": "discount-function-js",
   "version": "0.0.1",
   "license": "UNLICENSED",
   "scripts": {
@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "vitest": "0.29.8"
+    "vitest": "3.1.3"
   },
   "dependencies": {
     "@shopify/shopify_function": "1.0.6"

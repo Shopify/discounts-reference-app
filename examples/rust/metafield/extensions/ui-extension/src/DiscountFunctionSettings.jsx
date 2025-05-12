@@ -214,10 +214,10 @@ function useExtensionData() {
     () =>
       parseMetafield(
         data?.metafields.find(
-          (metafield) => metafield.key === "function-configuration"
-        )?.value
+          (metafield) => metafield.key === "function-configuration",
+        )?.value,
       ),
-    [data?.metafields]
+    [data?.metafields],
   );
   const [percentages, setPercentages] = useState(metafieldConfig.percentages);
   const [initialCollections, setInitialCollections] = useState([]);
@@ -230,7 +230,7 @@ function useExtensionData() {
       setLoading(true);
       const selectedCollections = await getCollections(
         metafieldConfig.collectionIds,
-        query
+        query,
       );
       setInitialCollections(selectedCollections);
       setCollections(selectedCollections);

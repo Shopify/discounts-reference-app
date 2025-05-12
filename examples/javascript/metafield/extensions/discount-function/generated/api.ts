@@ -11,7 +11,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T
+  K extends keyof T,
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
@@ -1426,8 +1426,7 @@ export type DeliveryOperation =
   | {
       deliveryDiscountsAdd: DeliveryDiscountsAddOperation;
       enteredDiscountCodesAccept?: never;
-    }
-  /**
+    } /**
    * An operation that selects which entered discount codes to accept. Use this to
    * validate discount codes from external systems.
    */
@@ -2628,6 +2627,21 @@ export enum WeightUnit {
   Pounds = "POUNDS",
 }
 
+export type DeliveryInputVariables = Exact<{ [key: string]: never }>;
+
+export type DeliveryInput = {
+  __typename?: "Input";
+  cart: {
+    __typename?: "Cart";
+    deliveryGroups: Array<{ __typename?: "CartDeliveryGroup"; id: string }>;
+  };
+  discount: {
+    __typename?: "Discount";
+    discountClasses: Array<DiscountClass>;
+    metafield?: { __typename?: "Metafield"; value: string } | null;
+  };
+};
+
 export type CartInputVariables = Exact<{
   collectionIds?: InputMaybe<
     Array<Scalars["ID"]["input"]> | Scalars["ID"]["input"]
@@ -2655,20 +2669,7 @@ export type CartInput = {
   };
   discount: {
     __typename?: "Discount";
-    metafield?: { __typename?: "Metafield"; value: string } | null;
-  };
-};
-
-export type DeliveryInputVariables = Exact<{ [key: string]: never }>;
-
-export type DeliveryInput = {
-  __typename?: "Input";
-  cart: {
-    __typename?: "Cart";
-    deliveryGroups: Array<{ __typename?: "CartDeliveryGroup"; id: string }>;
-  };
-  discount: {
-    __typename?: "Discount";
+    discountClasses: Array<DiscountClass>;
     metafield?: { __typename?: "Metafield"; value: string } | null;
   };
 };

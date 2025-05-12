@@ -7,7 +7,7 @@ api_version = "2025-04"
 # [START discount-function.toml.metadata]
 [[extensions]]
 name = "t:name"
-handle = "discount-function-rust"
+handle = "discount-function-rs"
 type = "function"
 description = "t:description"
 # [END discount-function.toml.metadata]
@@ -15,18 +15,18 @@ description = "t:description"
 # [START discount-function.toml.targets]
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
-  input_query = "src/generate_cart_run.graphql"
-  export = "generate_cart_run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart_lines_discounts_generate_run"
 
   [[extensions.targeting]]
   target = "cart.delivery-options.discounts.generate.run"
-  input_query = "src/generate_delivery_run.graphql"
-  export = "generate_delivery_run"
+  input_query = "src/cart_delivery_options_discounts_generate_run.graphql"
+  export = "cart_delivery_options_discounts_generate_run"
 # [END discount-function.toml.targets]
 
 # [START discount-function.toml.build]
   [extensions.build]
   command = "cargo build --target=wasm32-wasip1 --release"
-  path = "target/wasm32-wasip1/release/discount-function-rust.wasm"
+  path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 # [END discount-function.toml.build]

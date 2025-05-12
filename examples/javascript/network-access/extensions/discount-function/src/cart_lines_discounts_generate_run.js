@@ -1,5 +1,5 @@
 // [START discount-function.cart.run]
-export function generateCartRun(input) {
+export function cartLinesDiscountsGenerateRun(input) {
   // [START discount-function.cart.run.body]
   const {
     fetchResult,
@@ -15,7 +15,7 @@ export function generateCartRun(input) {
 
   const hasOrderDiscountClass = discountClasses.includes(DiscountClass.Order);
   const hasProductDiscountClass = discountClasses.includes(
-    DiscountClass.Product
+    DiscountClass.Product,
   );
 
   // If no relevant discount classes are set, return an empty operations array

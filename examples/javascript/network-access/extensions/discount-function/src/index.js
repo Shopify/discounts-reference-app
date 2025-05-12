@@ -1,6 +1,6 @@
-export * from "./generate_cart_run";
-export * from "./generate_delivery_run";
+export * from "./cart_lines_discounts_generate_run";
+export * from "./cart_delivery_options_discounts_generate_run";
 // [START discount-function.main]
-export * from "./generate_cart_fetch";
-export * from "./generate_delivery_fetch";
+export * from "./cart_lines_discounts_generate_fetch";
+export * from "./cart_delivery_options_discounts_generate_fetch";
 // [END discount-function.main]

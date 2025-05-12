@@ -1,7 +1,7 @@
 import { HttpRequestMethod } from "../generated/api";
 
 // [START discount-function.delivery.fetch]
-export function generateDeliveryFetch(input) {
+export function cartDeliveryOptionsDiscountsGenerateFetch(input) {
   const { enteredDiscountCodes } = input;
   const jsonBody = { enteredDiscountCodes };
 

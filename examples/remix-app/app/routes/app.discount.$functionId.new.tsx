@@ -59,7 +59,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         orderPercentage: parseFloat(configuration.orderPercentage),
         deliveryPercentage: parseFloat(configuration.deliveryPercentage),
         collectionIds: configuration.collectionIds || [],
-      }
+      },
     );
   } else {
     result = await createAutomaticDiscount(request, baseDiscount, {

@@ -1,5 +1,5 @@
 // [START discount-function.delivery.run]
-export function generateDeliveryRun(input) {
+export function cartDeliveryOptionsDiscountsGenerateRun(input) {
   // [START discount-function.delivery.run.body]
   const {
     fetchResult,
@@ -14,7 +14,7 @@ export function generateDeliveryRun(input) {
   const operations = body;
 
   const hasShippingDiscountClass = discountClasses.includes(
-    DiscountClass.Shipping
+    DiscountClass.Shipping,
   );
 
   // If shipping discount class is not set, return an empty operations array

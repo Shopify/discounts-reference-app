@@ -2,18 +2,6 @@ use serde::Deserialize;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
-use cart_lines_discounts_generate_run::output::{
-    CartLineTarget, CartLinesDiscountsGenerateRunResult, CartOperation, OrderDiscountCandidate,
-    OrderDiscountCandidateTarget, OrderDiscountCandidateValue, OrderDiscountSelectionStrategy,
-    OrderDiscountsAddOperation, OrderSubtotalTarget, Percentage, ProductDiscountCandidate,
-    ProductDiscountCandidateTarget, ProductDiscountCandidateValue,
-    ProductDiscountSelectionStrategy, ProductDiscountsAddOperation,
-};
-
-use cart_lines_discounts_generate_run::input::{
-    InputCartLinesMerchandise::ProductVariant, ResponseData, DiscountClass,
-};
-
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct DiscountConfiguration {
@@ -24,11 +12,12 @@ struct DiscountConfiguration {
 
 // [START discount-function.run.cart]
 #[shopify_function_target(
-    target = "cartLinesDiscountsGenerateRun",
-    query_path = "src/generate_cart_run.graphql",
+    query_path = "src/cart_lines_discounts_generate_run.graphql",
     schema_path = "schema.graphql"
 )]
-fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRunResult> {
+fn cart_lines_discounts_generate_run(
+    input: cart_lines_discounts_generate_run::input::ResponseData,
+) -> Result<cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult> {
     // [START discount-function.run.cart.parse-metafield]
     let discount_configuration = serde_json::from_str::<DiscountConfiguration>(
         &input
@@ -39,13 +28,21 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
     )?;
     // [END discount-function.run.cart.parse-metafield]
     // [START discount-function.run.cart.add-operations]
-    let has_order_discount_class = input.discount.discount_classes.contains(&DiscountClass::ORDER);
-    let has_product_discount_class = input.discount.discount_classes.contains(&DiscountClass::PRODUCT);
+    let has_order_discount_class = input
+        .discount
+        .discount_classes
+        .contains(&cart_lines_discounts_generate_run::input::DiscountClass::ORDER);
+    let has_product_discount_class = input
+        .discount
+        .discount_classes
+        .contains(&cart_lines_discounts_generate_run::input::DiscountClass::PRODUCT);
 
     if !has_order_discount_class && !has_product_discount_class {
-        return Ok(CartLinesDiscountsGenerateRunResult {
-            operations: vec![],
-        });
+        return Ok(
+            cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult {
+                operations: vec![],
+            },
+        );
     }
 
     let mut operations = vec![];
@@ -55,12 +52,12 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
         let mut cart_line_targets = vec![];
         for line in &input.cart.lines {
             // [START discount-function.run.cart.product.in_any_collection]
-            if let ProductVariant(variant) = &line.merchandise {
+            if let cart_lines_discounts_generate_run::input::InputCartLinesMerchandise::ProductVariant(variant) = &line.merchandise {
                 if variant.product.in_any_collection
                     || discount_configuration.collection_ids.is_empty()
                 {
-                    cart_line_targets.push(ProductDiscountCandidateTarget::CartLine(
-                        CartLineTarget {
+                    cart_line_targets.push(cart_lines_discounts_generate_run::output::ProductDiscountCandidateTarget::CartLine(
+                        cart_lines_discounts_generate_run::output::CartLineTarget {
                             id: line.id.clone(),
                             quantity: None,
                         },
@@ -71,16 +68,16 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
         }
 
         if !cart_line_targets.is_empty() {
-            operations.push(CartOperation::ProductDiscountsAdd(
-                ProductDiscountsAddOperation {
-                    selection_strategy: ProductDiscountSelectionStrategy::FIRST,
-                    candidates: vec![ProductDiscountCandidate {
+            operations.push(cart_lines_discounts_generate_run::output::CartOperation::ProductDiscountsAdd(
+                cart_lines_discounts_generate_run::output::ProductDiscountsAddOperation {
+                    selection_strategy: cart_lines_discounts_generate_run::output::ProductDiscountSelectionStrategy::FIRST,
+                    candidates: vec![cart_lines_discounts_generate_run::output::ProductDiscountCandidate {
                         targets: cart_line_targets,
                         message: Some(format!(
                             "{}% OFF PRODUCT",
                             discount_configuration.cart_line_percentage
                         )),
-                        value: ProductDiscountCandidateValue::Percentage(Percentage {
+                        value: cart_lines_discounts_generate_run::output::ProductDiscountCandidateValue::Percentage(cart_lines_discounts_generate_run::output::Percentage {
                             value: Decimal(discount_configuration.cart_line_percentage),
                         }),
                         associated_discount_code: None,
@@ -92,12 +89,12 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
 
     // Then add order discounts if available and allowed
     if has_order_discount_class && discount_configuration.order_percentage > 0.0 {
-        operations.push(CartOperation::OrderDiscountsAdd(
-            OrderDiscountsAddOperation {
-                selection_strategy: OrderDiscountSelectionStrategy::FIRST,
-                candidates: vec![OrderDiscountCandidate {
-                    targets: vec![OrderDiscountCandidateTarget::OrderSubtotal(
-                        OrderSubtotalTarget {
+        operations.push(cart_lines_discounts_generate_run::output::CartOperation::OrderDiscountsAdd(
+            cart_lines_discounts_generate_run::output::OrderDiscountsAddOperation {
+                selection_strategy: cart_lines_discounts_generate_run::output::OrderDiscountSelectionStrategy::FIRST,
+                candidates: vec![cart_lines_discounts_generate_run::output::OrderDiscountCandidate {
+                    targets: vec![cart_lines_discounts_generate_run::output::OrderDiscountCandidateTarget::OrderSubtotal(
+                        cart_lines_discounts_generate_run::output::OrderSubtotalTarget {
                             excluded_cart_line_ids: vec![],
                         },
                     )],
@@ -105,7 +102,7 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
                         "{}% OFF ORDER",
                         discount_configuration.order_percentage
                     )),
-                    value: OrderDiscountCandidateValue::Percentage(Percentage {
+                    value: cart_lines_discounts_generate_run::output::OrderDiscountCandidateValue::Percentage(cart_lines_discounts_generate_run::output::Percentage {
                         value: Decimal(discount_configuration.order_percentage),
                     }),
                     conditions: None,
@@ -115,8 +112,10 @@ fn generate_cart_run(input: ResponseData) -> Result<CartLinesDiscountsGenerateRu
         ));
     }
     // [END discount-function.run.cart.add-operations]
-    Ok(CartLinesDiscountsGenerateRunResult {
-        operations: operations,
-    })
+    Ok(
+        cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult {
+            operations,
+        },
+    )
 }
 // [END discount_function.run.cart]

@@ -5,16 +5,16 @@ import {
 } from "../generated/api";
 
 // [START discount-function.run.cart]
-export function generateCartRun(input) {
+export function cartLinesDiscountsGenerateRun(input) {
   if (!input.cart.lines.length) {
     throw new Error("No cart lines found");
   }
 
   const hasOrderDiscountClass = input.discount.discountClasses.includes(
-    DiscountClass.Order
+    DiscountClass.Order,
   );
   const hasProductDiscountClass = input.discount.discountClasses.includes(
-    DiscountClass.Product
+    DiscountClass.Product,
   );
 
   if (!hasOrderDiscountClass && !hasProductDiscountClass) {
