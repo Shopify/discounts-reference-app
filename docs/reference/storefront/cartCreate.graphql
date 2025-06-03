@@ -1,0 +1,89 @@
+mutation CartCreate($input: CartInput!) {
+  cartCreate(input: $input) {
+    cart {
+      id
+      checkoutUrl
+      cost {
+        subtotalAmount {
+          amount
+          currencyCode
+        }
+        totalAmount {
+          amount
+          currencyCode
+        }
+      }
+      lines(first: 10) {
+        nodes {
+          quantity
+          merchandise {
+            ... on ProductVariant {
+              title
+            }
+          }
+        }
+      }
+    }
+    userErrors {
+      code
+      field
+      message
+    }
+    warnings {
+      code
+      target
+      message
+    }
+    ... @defer {
+      asyncCart: cart {
+        cost {
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+          totalAmount {
+            amount
+            currencyCode
+          }
+        }
+        lines(first: 10) {
+          edges {
+            node {
+              merchandise {
+                ... on ProductVariant {
+                  title
+                }
+              }
+              # Line-level discount
+              discountAllocations {
+                discountApplication {
+                  allocationMethod
+                  targetSelection
+                }
+                discountedAmount {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+        discountCodes {
+          applicable
+          code
+        }
+        # Cart-level discount
+        discountAllocations {
+          discountApplication {
+            allocationMethod
+            targetSelection
+          }
+          discountedAmount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+}

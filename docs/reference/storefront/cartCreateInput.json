@@ -1,0 +1,11 @@
+{
+  "input": {
+    "discountCodes": ["10OFFPRODUCT"],
+    "lines": [
+      {
+        "quantity": 2,
+        "merchandiseId": "gid://shopify/ProductVariant/35610123173910"
+      }
+    ]
+  }
+}
