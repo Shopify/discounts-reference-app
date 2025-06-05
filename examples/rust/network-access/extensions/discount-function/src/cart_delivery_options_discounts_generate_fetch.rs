@@ -1,44 +1,46 @@
 // [START discount-function.delivery.fetch]
-use serde_json::json;
+use super::schema;
 use shopify_function;
 use shopify_function::prelude::*;
-
-use cart_delivery_options_discounts_generate_fetch::input::ResponseData as DeliveryFetchResponseData;
-
-#[shopify_function_target(
-    query_path = "src/cart_delivery_options_discounts_generate_fetch.graphql",
-    schema_path = "schema.graphql",
-    target = "cartDeliveryOptionsDiscountsGenerateFetch"
-)]
+use std::collections::BTreeMap;
+#[shopify_function]
 fn cart_delivery_options_discounts_generate_fetch(
-    input: DeliveryFetchResponseData,
-) -> shopify_function::Result<cart_delivery_options_discounts_generate_fetch::output::CartDeliveryOptionsDiscountsGenerateFetchResult>{
-    let entered_discount_codes = &input.entered_discount_codes;
-    let json_body = json!({ "enteredDiscountCodes": entered_discount_codes });
+    input: schema::cart_delivery_options_discounts_generate_fetch::Input,
+) -> shopify_function::Result<schema::CartDeliveryOptionsDiscountsGenerateFetchResult> {
+    let entered_discount_codes = &input.entered_discount_codes();
+    let json_body = JsonValue::Object(BTreeMap::from([(
+        "enteredDiscountCodes".to_string(),
+        JsonValue::Array(
+            entered_discount_codes
+                .iter()
+                .map(|s| JsonValue::String(s.clone()))
+                .collect(),
+        ),
+    )]));
 
-    let request = cart_delivery_options_discounts_generate_fetch::output::HttpRequest {
+    let request = schema::HttpRequest {
         headers: vec![
-            cart_delivery_options_discounts_generate_fetch::output::HttpRequestHeader {
+            schema::HttpRequestHeader {
                 name: "accept".to_string(),
                 value: "application/json".to_string(),
             },
-            cart_delivery_options_discounts_generate_fetch::output::HttpRequestHeader {
+            schema::HttpRequestHeader {
                 name: "Content-Type".to_string(),
                 value: "application/json".to_string(),
             },
         ],
-        method: cart_delivery_options_discounts_generate_fetch::output::HttpRequestMethod::POST,
-        policy: cart_delivery_options_discounts_generate_fetch::output::HttpRequestPolicy {
+        method: schema::HttpRequestMethod::Post,
+        policy: schema::HttpRequestPolicy {
             read_timeout_ms: 2000,
         },
         // [START discount-function.delivery.fetch.url]
         url: "<external-server-url>/api".to_string(),
         // [END discount-function.delivery.fetch.url]
-        body: Some(json_body.to_string()),
+        body: None,
         json_body: Some(json_body.clone()),
     };
 
-    Ok(cart_delivery_options_discounts_generate_fetch::output::CartDeliveryOptionsDiscountsGenerateFetchResult {
+    Ok(schema::CartDeliveryOptionsDiscountsGenerateFetchResult {
         request: Some(request),
     })
 }
@@ -47,6 +49,7 @@ fn cart_delivery_options_discounts_generate_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
     use shopify_function::run_function_with_input;
 
     #[test]
@@ -61,26 +64,29 @@ mod tests {
 
         let result =
             run_function_with_input(cart_delivery_options_discounts_generate_fetch, &input)?;
-        let json_body = json!({ "enteredDiscountCodes": [] });
-        let expected = cart_delivery_options_discounts_generate_fetch::output::CartDeliveryOptionsDiscountsGenerateFetchResult {
-            request: Some(cart_delivery_options_discounts_generate_fetch::output::HttpRequest {
+        let json_body = JsonValue::Object(BTreeMap::from([(
+            "enteredDiscountCodes".to_string(),
+            JsonValue::Array(vec![]),
+        )]));
+        let expected = schema::CartDeliveryOptionsDiscountsGenerateFetchResult {
+            request: Some(schema::HttpRequest {
                 headers: vec![
-                    cart_delivery_options_discounts_generate_fetch::output::HttpRequestHeader {
+                    schema::HttpRequestHeader {
                         name: "accept".to_string(),
                         value: "application/json".to_string(),
                     },
-                    cart_delivery_options_discounts_generate_fetch::output::HttpRequestHeader {
+                    schema::HttpRequestHeader {
                         name: "Content-Type".to_string(),
                         value: "application/json".to_string(),
                     },
                 ],
-                method: cart_delivery_options_discounts_generate_fetch::output::HttpRequestMethod::POST,
-                policy: cart_delivery_options_discounts_generate_fetch::output::HttpRequestPolicy {
+                method: schema::HttpRequestMethod::Post,
+                policy: schema::HttpRequestPolicy {
                     read_timeout_ms: 2000,
                 },
                 url: "<external-server-url>/api".to_string(),
-                json_body: Some(json_body.clone()),
-                body: Some(json_body.to_string()),
+                json_body: Some(json_body),
+                body: None,
             }),
         };
 

@@ -29,7 +29,7 @@ query Input($collectionIds: [ID!]) {
       namespace: "$app:example-discounts--ui-extension"
       key: "function-configuration"
     ) {
-      value
+      jsonValue
     }
   }
   # [END discount-function.graphql.cart.discount]

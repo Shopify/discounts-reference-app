@@ -1,59 +1,38 @@
 // [START discount-function.cart.run]
-use serde::Deserialize;
+use super::schema;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
 #[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct OperationItem {
-    #[serde(default)]
-    product_discounts_add:
-        Option<cart_lines_discounts_generate_run::output::ProductDiscountsAddOperation>,
-    #[serde(default)]
-    order_discounts_add:
-        Option<cart_lines_discounts_generate_run::output::OrderDiscountsAddOperation>,
-    #[serde(default)]
-    entered_discount_codes_accept:
-        Option<cart_lines_discounts_generate_run::output::EnteredDiscountCodesAcceptOperation>,
-    // Ignore other operation types that might be in the response but we don't use in cart context
-    #[serde(flatten)]
-    _other: std::collections::HashMap<String, serde_json::Value>,
+#[shopify_function(rename_all = "camelCase")]
+pub struct OperationItem {
+    product_discounts_add: Option<schema::ProductDiscountsAddOperation>,
+    order_discounts_add: Option<schema::OrderDiscountsAddOperation>,
+    entered_discount_codes_accept: Option<schema::EnteredDiscountCodesAcceptOperation>,
 }
+pub type JsonBody = Vec<OperationItem>;
 
-#[shopify_function_target(
-    query_path = "src/cart_lines_discounts_generate_run.graphql",
-    schema_path = "schema.graphql"
-)]
+#[shopify_function]
 fn cart_lines_discounts_generate_run(
-    input: cart_lines_discounts_generate_run::input::ResponseData,
-) -> Result<cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult> {
+    input: schema::cart_lines_discounts_generate_run::Input,
+) -> Result<schema::CartLinesDiscountsGenerateRunResult> {
     // [START discount-function.cart.run.body]
-    let fetch_result = input.fetch_result.ok_or("Missing fetch result")?;
-    let discount_classes = &input.discount.discount_classes;
+    let fetch_result = input.fetch_result().ok_or("Missing fetch result")?;
+    let discount_classes = &input.discount().discount_classes();
 
     // Check if relevant discount classes are set
-    let has_order_discount_class =
-        discount_classes.contains(&cart_lines_discounts_generate_run::input::DiscountClass::ORDER);
-    let has_product_discount_class = discount_classes
-        .contains(&cart_lines_discounts_generate_run::input::DiscountClass::PRODUCT);
+    let has_order_discount_class = discount_classes.contains(&schema::DiscountClass::Order);
+    let has_product_discount_class = discount_classes.contains(&schema::DiscountClass::Product);
 
     // If no relevant discount class is set, return empty operations
     if !has_order_discount_class && !has_product_discount_class {
-        return Ok(
-            cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult {
-                operations: vec![],
-            },
-        );
+        return Ok(schema::CartLinesDiscountsGenerateRunResult { operations: vec![] });
     }
 
     // Use jsonBody which is the only available property
-    let json_body = fetch_result
-        .json_body
+    let operation_items = fetch_result
+        .json_body()
         .ok_or("Missing json_body in response")?;
-
-    // Parse using the JSON value
-    let operation_items = serde_json::from_value::<Vec<OperationItem>>(json_body)
-        .map_err(|e| format!("Failed to convert jsonBody: {}", e))?;
 
     // Convert the response into operations
     let mut operations = Vec::new();
@@ -61,39 +40,33 @@ fn cart_lines_discounts_generate_run(
     // Process each operation item
     for item in operation_items {
         // Always include discount code operations
-        if let Some(validations) = item.entered_discount_codes_accept {
-            operations.push(cart_lines_discounts_generate_run::output::CartOperation::EnteredDiscountCodesAccept(validations));
+        if let Some(validations) = &item.entered_discount_codes_accept {
+            operations.push(schema::CartOperation::EnteredDiscountCodesAccept(
+                validations.clone(),
+            ));
         }
 
         // Include product discounts only if that class is set
         if has_product_discount_class {
-            if let Some(product_discounts_add_operation) = item.product_discounts_add {
-                operations.push(
-                    cart_lines_discounts_generate_run::output::CartOperation::ProductDiscountsAdd(
-                        product_discounts_add_operation,
-                    ),
-                );
+            if let Some(product_discounts_add_operation) = &item.product_discounts_add {
+                operations.push(schema::CartOperation::ProductDiscountsAdd(
+                    product_discounts_add_operation.clone(),
+                ));
             }
         }
 
         // Include order discounts only if that class is set
         if has_order_discount_class {
-            if let Some(order_discounts_add_operation) = item.order_discounts_add {
-                operations.push(
-                    cart_lines_discounts_generate_run::output::CartOperation::OrderDiscountsAdd(
-                        order_discounts_add_operation,
-                    ),
-                );
+            if let Some(order_discounts_add_operation) = &item.order_discounts_add {
+                operations.push(schema::CartOperation::OrderDiscountsAdd(
+                    order_discounts_add_operation.clone(),
+                ));
             }
         }
         // Ignore delivery discounts for cart operations
     }
 
-    Ok(
-        cart_lines_discounts_generate_run::output::CartLinesDiscountsGenerateRunResult {
-            operations,
-        },
-    )
+    Ok(schema::CartLinesDiscountsGenerateRunResult { operations })
     // [END discount-function.cart.run.body]
 }
 // [END discount-function.cart.run]
@@ -177,7 +150,7 @@ mod tests {
 
         // First operation should be EnteredDiscountCodesAccept
         match &result.operations[0] {
-            cart_lines_discounts_generate_run::output::CartOperation::EnteredDiscountCodesAccept(op) => {
+            schema::CartOperation::EnteredDiscountCodesAccept(op) => {
                 assert_eq!(op.codes.len(), 1);
                 assert_eq!(op.codes[0].code, "SUMMER10");
             }
@@ -186,16 +159,16 @@ mod tests {
 
         // Second operation should be ProductDiscountsAdd
         match &result.operations[1] {
-            cart_lines_discounts_generate_run::output::CartOperation::ProductDiscountsAdd(op) => {
+            schema::CartOperation::ProductDiscountsAdd(op) => {
                 assert_eq!(
                     op.selection_strategy,
-                    cart_lines_discounts_generate_run::output::ProductDiscountSelectionStrategy::FIRST
+                    schema::ProductDiscountSelectionStrategy::First
                 );
                 assert_eq!(op.candidates.len(), 1);
 
                 let candidate = &op.candidates[0];
                 match &candidate.value {
-                    cart_lines_discounts_generate_run::output::ProductDiscountCandidateValue::Percentage(pct) => {
+                    schema::ProductDiscountCandidateValue::Percentage(pct) => {
                         assert_eq!(pct.value, Decimal::from(0.1));
                     }
                     _ => panic!("Expected Percentage value"),
@@ -203,7 +176,7 @@ mod tests {
 
                 assert_eq!(candidate.targets.len(), 1);
                 match &candidate.targets[0] {
-                    cart_lines_discounts_generate_run::output::ProductDiscountCandidateTarget::CartLine(target) => {
+                    schema::ProductDiscountCandidateTarget::CartLine(target) => {
                         assert_eq!(target.id, "gid://shopify/CartLine/123");
                     }
                 }
@@ -213,16 +186,16 @@ mod tests {
 
         // Third operation should be OrderDiscountsAdd
         match &result.operations[2] {
-            cart_lines_discounts_generate_run::output::CartOperation::OrderDiscountsAdd(op) => {
+            schema::CartOperation::OrderDiscountsAdd(op) => {
                 assert_eq!(
                     op.selection_strategy,
-                    cart_lines_discounts_generate_run::output::OrderDiscountSelectionStrategy::MAXIMUM
+                    schema::OrderDiscountSelectionStrategy::Maximum
                 );
                 assert_eq!(op.candidates.len(), 1);
 
                 let candidate = &op.candidates[0];
                 match &candidate.value {
-                    cart_lines_discounts_generate_run::output::OrderDiscountCandidateValue::Percentage(pct) => {
+                    schema::OrderDiscountCandidateValue::Percentage(pct) => {
                         assert_eq!(pct.value, Decimal::from(0.15));
                     }
                     _ => panic!("Expected Percentage value"),
@@ -230,7 +203,7 @@ mod tests {
 
                 assert_eq!(candidate.targets.len(), 1);
                 match &candidate.targets[0] {
-                    cart_lines_discounts_generate_run::output::OrderDiscountCandidateTarget::OrderSubtotal(target) => {
+                    schema::OrderDiscountCandidateTarget::OrderSubtotal(target) => {
                         assert_eq!(target.excluded_cart_line_ids.len(), 0);
                     }
                 }
@@ -312,16 +285,16 @@ mod tests {
 
         // The operation should be ProductDiscountsAdd
         match &result.operations[0] {
-            cart_lines_discounts_generate_run::output::CartOperation::ProductDiscountsAdd(op) => {
+            schema::CartOperation::ProductDiscountsAdd(op) => {
                 assert_eq!(
                     op.selection_strategy,
-                    cart_lines_discounts_generate_run::output::ProductDiscountSelectionStrategy::FIRST
+                    schema::ProductDiscountSelectionStrategy::First
                 );
                 assert_eq!(op.candidates.len(), 1);
 
                 let candidate = &op.candidates[0];
                 match &candidate.value {
-                    cart_lines_discounts_generate_run::output::ProductDiscountCandidateValue::Percentage(pct) => {
+                    schema::ProductDiscountCandidateValue::Percentage(pct) => {
                         assert_eq!(pct.value, Decimal::from(0.1));
                     }
                     _ => panic!("Expected Percentage value"),
@@ -329,7 +302,7 @@ mod tests {
 
                 assert_eq!(candidate.targets.len(), 1);
                 match &candidate.targets[0] {
-                    cart_lines_discounts_generate_run::output::ProductDiscountCandidateTarget::CartLine(target) => {
+                    schema::ProductDiscountCandidateTarget::CartLine(target) => {
                         assert_eq!(target.id, "gid://shopify/CartLine/123");
                     }
                 }
@@ -448,7 +421,7 @@ mod tests {
 
         // The operation should be EnteredDiscountCodesAccept
         match &result.operations[0] {
-            cart_lines_discounts_generate_run::output::CartOperation::EnteredDiscountCodesAccept(op) => {
+            schema::CartOperation::EnteredDiscountCodesAccept(op) => {
                 assert_eq!(op.codes.len(), 1);
                 assert_eq!(op.codes[0].code, "SAVE20");
             }
@@ -457,10 +430,10 @@ mod tests {
 
         // Make sure we don't have any product discount operations
         assert!(
-            !result.operations.iter().any(|op| matches!(
-                op,
-                cart_lines_discounts_generate_run::output::CartOperation::ProductDiscountsAdd(_)
-            )),
+            !result
+                .operations
+                .iter()
+                .any(|op| matches!(op, schema::CartOperation::ProductDiscountsAdd(_))),
             "Should not have ProductDiscountsAdd operations when PRODUCT class is not set"
         );
 

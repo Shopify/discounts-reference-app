@@ -1,39 +1,37 @@
+use super::schema;
 use shopify_function::prelude::*;
 use shopify_function::Result;
 
 // [START discount-function.run.delivery]
-#[shopify_function_target(
-    query_path = "src/cart_delivery_options_discounts_generate_run.graphql",
-    schema_path = "schema.graphql"
-)]
+#[shopify_function]
 fn cart_delivery_options_discounts_generate_run(
-    input: input::ResponseData,
-) -> Result<output::CartDeliveryOptionsDiscountsGenerateRunResult> {
+    input: schema::cart_delivery_options_discounts_generate_run::Input,
+) -> Result<schema::CartDeliveryOptionsDiscountsGenerateRunResult> {
     let has_shipping_discount_class = input
-        .discount
-        .discount_classes
-        .contains(&input::DiscountClass::SHIPPING);
+        .discount()
+        .discount_classes()
+        .contains(&schema::DiscountClass::Shipping);
     if !has_shipping_discount_class {
-        return Ok(output::CartDeliveryOptionsDiscountsGenerateRunResult { operations: vec![] });
+        return Ok(schema::CartDeliveryOptionsDiscountsGenerateRunResult { operations: vec![] });
     }
 
     let first_delivery_group = input
-        .cart
-        .delivery_groups
+        .cart()
+        .delivery_groups()
         .first()
         .ok_or("No delivery groups found")?;
 
-    Ok(output::CartDeliveryOptionsDiscountsGenerateRunResult {
-        operations: vec![output::DeliveryOperation::DeliveryDiscountsAdd(
-            output::DeliveryDiscountsAddOperation {
-                selection_strategy: output::DeliveryDiscountSelectionStrategy::ALL,
-                candidates: vec![output::DeliveryDiscountCandidate {
-                    targets: vec![output::DeliveryDiscountCandidateTarget::DeliveryGroup(
-                        output::DeliveryGroupTarget {
-                            id: first_delivery_group.id.clone(),
+    Ok(schema::CartDeliveryOptionsDiscountsGenerateRunResult {
+        operations: vec![schema::DeliveryOperation::DeliveryDiscountsAdd(
+            schema::DeliveryDiscountsAddOperation {
+                selection_strategy: schema::DeliveryDiscountSelectionStrategy::All,
+                candidates: vec![schema::DeliveryDiscountCandidate {
+                    targets: vec![schema::DeliveryDiscountCandidateTarget::DeliveryGroup(
+                        schema::DeliveryGroupTarget {
+                            id: first_delivery_group.id().clone(),
                         },
                     )],
-                    value: output::DeliveryDiscountCandidateValue::Percentage(output::Percentage {
+                    value: schema::DeliveryDiscountCandidateValue::Percentage(schema::Percentage {
                         value: Decimal(100.0),
                     }),
                     message: Some("FREE DELIVERY".to_string()),
