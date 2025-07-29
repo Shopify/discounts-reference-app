@@ -31,7 +31,7 @@ export default [
       "**/admin.*.d.ts",
       "app/types/admin.*.d.ts",
       "app/types/*.d.ts",
-      "examples/remix-app/**",
+      "examples/react-router-app/**",
       ".graphqlrc.ts",
     ],
   },
@@ -86,7 +86,7 @@ export default [
   {
     files: ["**/*.{ts,tsx}"],
     ignores: [
-      "examples/remix-app/**",
+      "examples/react-router-app/**",
       ".graphqlrc.ts",
       "**/config.*.ts",
       "**/*.config.ts",

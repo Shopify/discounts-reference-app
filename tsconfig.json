@@ -5,7 +5,7 @@
     "build",
     "public",
     "dist",
-    "examples/remix-app",
+    "examples/react-router-app",
     "examples/mock-http-server",
     "**/generated"
   ],

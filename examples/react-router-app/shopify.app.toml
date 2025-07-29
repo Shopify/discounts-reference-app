@@ -1,8 +1,8 @@
 # This file stores configurations for your Shopify app.
 
-# [START remix-app.scopes]
+# [START react-router-app.scopes]
 scopes = "write_discounts,read_products"
-# [END remix-app.scopes]
+# [END react-router-app.scopes]
 [webhooks]
 api_version = "2024-10"
 
