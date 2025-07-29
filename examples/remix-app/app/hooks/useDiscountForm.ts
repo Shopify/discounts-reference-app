@@ -1,5 +1,5 @@
-import { useSubmit } from "@remix-run/react";
 import { useCallback, useState } from "react";
+import { useSubmit } from "react-router";
 
 import { DiscountClass } from "../types/admin.types";
 import { DiscountMethod } from "../types/types";

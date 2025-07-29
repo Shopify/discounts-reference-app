@@ -1,13 +1,12 @@
-import { TextField, Popover, DatePicker, Icon, Box } from "@shopify/polaris";
-import { CalendarIcon } from "@shopify/polaris-icons";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 interface DatePickerFieldProps {
   label: string;
-  value: Date | string | null;
-  onChange: (date: Date) => void;
+  value: Date | string | null | [Date | string | null, Date | string | null];
+  onChange: (date: Date | [Date, Date]) => void;
   minDate?: Date;
   error?: string;
+  type?: "single" | "range";
 }
 
 export function DatePickerField({
@@ -16,78 +15,68 @@ export function DatePickerField({
   onChange,
   minDate,
   error,
+  type = "single",
 }: DatePickerFieldProps) {
-  const [visible, setVisible] = useState(false);
-  const [month, setMonth] = useState(
-    value ? new Date(value).getMonth() : new Date().getMonth(),
-  );
-  const [year, setYear] = useState(
-    value ? new Date(value).getFullYear() : new Date().getFullYear(),
-  );
-
-  const formatDateForInput = useCallback(
+  const formatDate = useCallback(
     (date: Date | string | null): string => {
       if (!date) return "";
       const dateObj = typeof date === "string" ? new Date(date) : date;
-      if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
-        return dateObj.toISOString().split("T")[0];
-      }
-      return "";
+      return dateObj.toISOString().split("T")[0];
     },
     [],
   );
 
-  const handleDateChange = useCallback(
-    ({ start: newSelectedDate }: { start: Date; end: Date }) => {
-      if (minDate && newSelectedDate < minDate) {
-        return;
+  const formatValue = useCallback(
+    (value: Date | string | null | [Date | string | null, Date | string | null]): string => {
+      if (!value) return "";
+      
+      if (type === "range" && Array.isArray(value)) {
+        const startDate = formatDate(value[0]);
+        const endDate = formatDate(value[1]);
+        if (!startDate) return "";
+        return endDate ? `${startDate}--${endDate}` : startDate;
       }
-      onChange(newSelectedDate);
-      setVisible(false);
+      
+      return formatDate(value as Date | string | null);
     },
-    [onChange, minDate],
+    [type, formatDate],
   );
 
-  const handleMonthChange = useCallback((month: number, year: number) => {
-    setMonth(month);
-    setYear(year);
-  }, []);
+  const handleChange = useCallback(
+    (event: any) => {
+      const dateString = event.target.value;
+      if (!dateString) return;
+      
+      if (type === "range" && dateString.includes("--")) {
+        const [start, end] = dateString.split("--");
+        if (start && end) {
+          onChange([new Date(start), new Date(end)]);
+        }
+      } else if (type === "single") {
+        onChange(new Date(dateString));
+      }
+    },
+    [onChange, type],
+  );
+
+  const getDisallowDates = useCallback(
+    (minDate: Date) => {
+      const disallowDate = new Date(minDate.getTime() - 86400000);
+      return `--${disallowDate.toISOString().split("T")[0]}`;
+    },
+    [],
+  );
 
   return (
-    <Box minWidth="276px">
-      <Popover
-        active={visible}
-        autofocusTarget="none"
-        preferredAlignment="left"
-        fullWidth
-        preferInputActivator={false}
-        preferredPosition="below"
-        preventCloseOnChildOverlayClick
-        onClose={() => setVisible(false)}
-        activator={
-          <TextField
-            role="combobox"
-            label={label}
-            prefix={<Icon source={CalendarIcon} />}
-            value={formatDateForInput(value)}
-            onFocus={() => setVisible(true)}
-            onChange={() => {}}
-            autoComplete="off"
-            error={error}
-          />
-        }
-      >
-        <div>
-          <DatePicker
-            month={month}
-            year={year}
-            selected={value ? new Date(value) : undefined}
-            onMonthChange={handleMonthChange}
-            onChange={handleDateChange}
-            disableDatesBefore={minDate}
-          />
-        </div>
-      </Popover>
-    </Box>
+    <s-stack direction="block" gap="small">
+      {label ? <s-paragraph>{label}</s-paragraph> : null}
+      <s-date-picker
+        type={type}
+        value={formatValue(value)}
+        disallow={minDate ? getDisallowDates(minDate) : undefined}
+        onChange={handleChange}
+      />
+      {error ? <s-text tone="critical">{error}</s-text> : null}
+    </s-stack>
   );
 }

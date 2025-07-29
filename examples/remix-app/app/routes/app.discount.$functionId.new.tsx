@@ -1,6 +1,9 @@
-import { ActionFunctionArgs } from "@remix-run/node";
-import { useActionData, useLoaderData, useNavigation } from "@remix-run/react";
-import { Page } from "@shopify/polaris";
+import {
+  type ActionFunctionArgs,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router";
 
 import { DiscountForm } from "../components/DiscountForm/DiscountForm";
 import {
@@ -124,9 +127,9 @@ export default function VolumeNew() {
   };
 
   return (
-    <Page>
+    <s-page>
       <ui-title-bar title="Create product, order, and shipping discount">
-        <button variant="breadcrumb" onClick={returnToDiscounts}>
+        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
           Discounts
         </button>
       </ui-title-bar>
@@ -138,6 +141,6 @@ export default function VolumeNew() {
         submitErrors={submitErrors}
         success={actionData?.success}
       />
-    </Page>
+    </s-page>
   );
 }

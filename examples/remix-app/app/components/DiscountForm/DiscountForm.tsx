@@ -1,19 +1,6 @@
-import { Form } from "@remix-run/react";
-import {
-  Banner,
-  Card,
-  Text,
-  Layout,
-  PageActions,
-  TextField,
-  BlockStack,
-  Box,
-  Checkbox,
-  Select,
-  InlineStack,
-} from "@shopify/polaris";
 import { returnToDiscounts } from "app/utils/navigation";
 import { useCallback, useMemo, useState } from "react";
+import { Form } from "react-router";
 
 import { useDiscountForm } from "../../hooks/useDiscountForm";
 import { DiscountClass } from "../../types/admin.types.d";
@@ -66,7 +53,6 @@ export function DiscountForm({
   collections: initialCollections,
   isEditing = false,
   submitErrors = [],
-  isLoading = false,
   success = false,
 }: DiscountFormProps) {
   const { formState, setField, setConfigField, setCombinesWith, submit } =
@@ -83,42 +69,19 @@ export function DiscountForm({
     return date;
   }, []);
 
-  const validateEndDate = useCallback(
-    (endDate: Date) => {
-      if (!formState.startDate) return undefined;
-      const startDate = new Date(formState.startDate);
-      return endDate < startDate
-        ? "End date must be after start date"
-        : undefined;
-    },
-    [formState.startDate],
-  );
-
-  const handleEndDateChange = useCallback(
-    (date: Date) => {
-      const error = validateEndDate(date);
-      if (!error) {
-        setField("endDate", date);
-      }
-    },
-    [validateEndDate, setField],
-  );
-
   const errorBanner = useMemo(
     () =>
       submitErrors.length > 0 ? (
-        <Layout.Section>
-          <Banner tone="critical">
-            <p>There were some issues with your form submission:</p>
-            <ul>
-              {submitErrors.map(({ message, field }, index) => (
-                <li key={index}>
-                  {field.join(".")} {message}
-                </li>
-              ))}
-            </ul>
-          </Banner>
-        </Layout.Section>
+        <s-banner tone="critical">
+          <p>There were some issues with your form submission:</p>
+          <ul>
+            {submitErrors.map(({ message, field }, index) => (
+              <li key={index}>
+                {field.join(".")} {message}
+              </li>
+            ))}
+          </ul>
+        </s-banner>
       ) : null,
     [submitErrors],
   );
@@ -126,11 +89,9 @@ export function DiscountForm({
   const successBanner = useMemo(
     () =>
       success ? (
-        <Layout.Section>
-          <Banner tone="success">
-            <p>Discount saved successfully</p>
-          </Banner>
-        </Layout.Section>
+        <s-banner tone="success">
+          <p>Discount saved successfully</p>
+        </s-banner>
       ) : null,
     [success],
   );
@@ -173,351 +134,295 @@ export function DiscountForm({
     [formState.startDate, formState.endDate, today, setField],
   );
 
+  const handleDateChange = useCallback(
+    (date: Date | [Date, Date]) => {
+      if (Array.isArray(date)) {
+        // Range mode
+        setField("startDate", date[0]);
+        setField("endDate", date[1]);
+      } else {
+        // Single mode
+        setField("startDate", date);
+        if (formState.endDate) {
+          setField("endDate", null);
+        }
+      }
+    },
+    [setField, formState.endDate],
+  );
+
+  const getDatePickerValue = useCallback(
+    (): Date | string | null | [Date | string | null, Date | string | null] => {
+      if (formState.endDate) {
+        return [formState.startDate, formState.endDate];
+      }
+      return formState.startDate;
+    },
+    [formState.startDate, formState.endDate],
+  );
+
+  const handleReset = useCallback(() => {
+    returnToDiscounts();
+  }, []);
+
   return (
-    <Layout>
-      {errorBanner}
-      {successBanner}
-      <Layout.Section>
-        <Form method="post" id="discount-form">
-          <input
-            type="hidden"
-            name="discount"
-            value={JSON.stringify({
-              title: formState.title,
-              method: formState.method,
-              code: formState.code,
-              combinesWith: formState.combinesWith,
-              discountClasses: formState.discountClasses,
-              usageLimit:
-                formState.usageLimit === ""
-                  ? null
-                  : parseInt(formState.usageLimit, 10),
-              appliesOncePerCustomer: formState.appliesOncePerCustomer,
-              startsAt: formState.startDate,
-              endsAt: formState.endDate,
-              configuration: {
-                ...(formState.configuration.metafieldId
-                  ? { metafieldId: formState.configuration.metafieldId }
-                  : {}),
-                cartLinePercentage: parseFloat(
-                  formState.configuration.cartLinePercentage,
-                ),
-                orderPercentage: parseFloat(
-                  formState.configuration.orderPercentage,
-                ),
-                deliveryPercentage: parseFloat(
-                  formState.configuration.deliveryPercentage,
-                ),
-                collectionIds: formState.configuration.collectionIds || [],
-              },
-            })}
-          />
-          <BlockStack gap="400">
-            {/* Method section */}
-            <Card>
-              <Box>
-                <BlockStack gap="100">
-                  <Text variant="headingMd" as="h2">
-                    {isEditing ? "Edit discount" : "Create discount"}
-                  </Text>
+    <Form method="post" id="discount-form" data-save-bar onSubmit={submit} onReset={handleReset}>
+      <input
+        type="hidden"
+        name="discount"
+        value={JSON.stringify({
+          title: formState.title,
+          method: formState.method,
+          code: formState.code,
+          combinesWith: formState.combinesWith,
+          discountClasses: formState.discountClasses,
+          usageLimit:
+            formState.usageLimit === ""
+              ? null
+              : parseInt(formState.usageLimit, 10),
+          appliesOncePerCustomer: formState.appliesOncePerCustomer,
+          startsAt: formState.startDate,
+          endsAt: formState.endDate,
+          configuration: {
+            ...(formState.configuration.metafieldId
+              ? { metafieldId: formState.configuration.metafieldId }
+              : {}),
+            cartLinePercentage: parseFloat(
+              formState.configuration.cartLinePercentage,
+            ),
+            orderPercentage: parseFloat(
+              formState.configuration.orderPercentage,
+            ),
+            deliveryPercentage: parseFloat(
+              formState.configuration.deliveryPercentage,
+            ),
+            collectionIds: formState.configuration.collectionIds || [],
+          },
+        })}
+      />
+      <s-stack gap="base">
+        {errorBanner}
+        {successBanner}
+        
+        <s-stack gap="base">
+          {/* Method section */}
+          <s-section heading={isEditing ? "Edit discount" : "Create discount"}>
+            <s-select
+              label="Discount type"
+              value={formState.method}
+              onChange={(e: any) =>
+                setField("method", e.target.value as DiscountMethod)
+              }
+              disabled={isEditing}
+            >
+              {methodOptions.map((option) => (
+                <s-option key={option.value} value={option.value}>
+                  {option.label}
+                </s-option>
+              ))}
+            </s-select>
 
-                  <Select
-                    label="Discount type"
-                    options={methodOptions}
-                    value={formState.method}
-                    onChange={(value: DiscountMethod) =>
-                      setField("method", value)
-                    }
-                    disabled={isEditing}
-                  />
+            {formState.method === DiscountMethod.Automatic ? (
+              <s-text-field
+                label="Discount title"
+                autocomplete="off"
+                value={formState.title}
+                onChange={(e: any) => setField("title", e.target.value)}
+              />
+            ) : (
+              <s-text-field
+                label="Discount code"
+                autocomplete="off"
+                value={formState.code}
+                onChange={(e: any) => setField("code", e.target.value)}
+              />
+            )}
+          </s-section>
 
-                  {formState.method === DiscountMethod.Automatic ? (
-                    <TextField
-                      label="Discount title"
-                      autoComplete="off"
-                      value={formState.title}
-                      onChange={(value) => setField("title", value)}
-                    />
-                  ) : (
-                    <TextField
-                      label="Discount code"
-                      autoComplete="off"
-                      value={formState.code}
-                      onChange={(value) => setField("code", value)}
-                      helpText="Customers will enter this discount code at checkout."
-                    />
-                  )}
-                </BlockStack>
-              </Box>
-            </Card>
+          {/* Discount classes section */}
 
-            {/* Discount classes section */}
+          {/* [START build-the-ui.add-discount-classes] */}
+          <s-section heading="Discount Classes">
+            <s-text>
+              Select which types of discounts to apply
+            </s-text>
 
-            {/* [START build-the-ui.add-discount-classes] */}
-            <Card>
-              <Box>
-                <BlockStack gap="100">
-                  <Text variant="headingMd" as="h2">
-                    Discount Classes
-                  </Text>
-                  <Text as="p" variant="bodyMd">
-                    Select which types of discounts to apply
-                  </Text>
-
-                  <BlockStack gap="200">
-                    <Checkbox
-                      label="Product discount"
-                      checked={formState.discountClasses.includes(
-                        DiscountClass.Product,
-                      )}
-                      onChange={(checked) =>
-                        handleDiscountClassChange(
-                          DiscountClass.Product,
-                          checked,
-                        )
-                      }
-                    />
-                    <Checkbox
-                      label="Order discount"
-                      checked={formState.discountClasses.includes(
-                        DiscountClass.Order,
-                      )}
-                      onChange={(checked) =>
-                        handleDiscountClassChange(DiscountClass.Order, checked)
-                      }
-                    />
-                    <Checkbox
-                      label="Shipping discount"
-                      checked={formState.discountClasses.includes(
-                        DiscountClass.Shipping,
-                      )}
-                      onChange={(checked) =>
-                        handleDiscountClassChange(
-                          DiscountClass.Shipping,
-                          checked,
-                        )
-                      }
-                    />
-                  </BlockStack>
-                </BlockStack>
-              </Box>
-            </Card>
-            {/* [END build-the-ui.add-discount-classes] */}
-            {/* [START build-the-ui.add-discount-configuration] */}
-            <Card>
-              <Box>
-                <BlockStack gap="100">
-                  <Text variant="headingMd" as="h2">
-                    Discount Configuration
-                  </Text>
-
-                  <BlockStack gap="400">
-                    {formState.discountClasses?.includes(
-                      DiscountClass.Product,
-                    ) ? (
-                      <>
-                        <TextField
-                          label="Product discount percentage"
-                          autoComplete="on"
-                          type="number"
-                          min="0"
-                          max="100"
-                          suffix="%"
-                          value={formState.configuration.cartLinePercentage}
-                          onChange={(value) =>
-                            setConfigField("cartLinePercentage", value)
-                          }
-                          helpText="Percentage discount for products"
-                        />
-                        <CollectionPicker
-                          onSelect={handleCollectionSelect}
-                          selectedCollectionIds={
-                            formState.configuration.collectionIds || []
-                          }
-                          collections={
-                            formState.configuration.collections || collections
-                          }
-                          buttonText="Select collections for discount"
-                        />
-                      </>
-                    ) : null}
-
-                    {formState.discountClasses?.includes(
-                      DiscountClass.Order,
-                    ) ? (
-                      <TextField
-                        label="Order discount percentage"
-                        autoComplete="on"
-                        type="number"
-                        min="0"
-                        max="100"
-                        suffix="%"
-                        value={formState.configuration.orderPercentage}
-                        onChange={(value) =>
-                          setConfigField("orderPercentage", value)
-                        }
-                        helpText="Percentage discount for orders"
-                      />
-                    ) : null}
-
-                    {formState.discountClasses?.includes(
-                      DiscountClass.Shipping,
-                    ) ? (
-                      <TextField
-                        label="Shipping discount percentage"
-                        autoComplete="on"
-                        type="number"
-                        min="0"
-                        max="100"
-                        suffix="%"
-                        value={formState.configuration.deliveryPercentage}
-                        onChange={(value) =>
-                          setConfigField("deliveryPercentage", value)
-                        }
-                        helpText="Percentage discount for shipping"
-                      />
-                    ) : null}
-                  </BlockStack>
-                </BlockStack>
-              </Box>
-            </Card>
-            {/* [END build-the-ui.add-discount-configuration] */}
-            {/* Usage limits section */}
-            {formState.method === DiscountMethod.Code ? (
-              <Card>
-                <Box>
-                  <BlockStack gap="100">
-                    <Text variant="headingMd" as="h2">
-                      Usage limits
-                    </Text>
-                    <TextField
-                      label="Usage limit"
-                      autoComplete="on"
-                      type="number"
-                      min="0"
-                      placeholder="No limit"
-                      value={formState.usageLimit}
-                      onChange={(value) => setField("usageLimit", value)}
-                      helpText="Limit the number of times this discount can be used"
-                    />
-                    <Checkbox
-                      label="Limit to one use per customer"
-                      checked={formState.appliesOncePerCustomer}
-                      onChange={(checked) =>
-                        setField("appliesOncePerCustomer", checked)
-                      }
-                    />
-                  </BlockStack>
-                </Box>
-              </Card>
-            ) : null}
-
-            {/* Combination section */}
-            <Card>
-              <Box>
-                <BlockStack gap="100">
-                  <Text variant="headingMd" as="h2">
-                    Combination
-                  </Text>
-                  <Text as="p" variant="bodyMd">
-                    Select which discounts can be combined with this discount
-                  </Text>
-
-                  <Checkbox
-                    label="Order discounts"
-                    checked={formState.combinesWith.orderDiscounts}
-                    onChange={(checked) =>
-                      setCombinesWith("orderDiscounts", checked)
+            <s-stack gap="base">
+              <s-checkbox
+                label="Product discount"
+                checked={formState.discountClasses.includes(
+                  DiscountClass.Product,
+                )}
+                onChange={(e: any) =>
+                  handleDiscountClassChange(
+                    DiscountClass.Product,
+                    e.target.checked,
+                  )
+                }
+              />
+              <s-checkbox
+                label="Order discount"
+                checked={formState.discountClasses.includes(
+                  DiscountClass.Order,
+                )}
+                onChange={(e: any) =>
+                  handleDiscountClassChange(DiscountClass.Order, e.target.checked)
+                }
+              />
+              <s-checkbox
+                label="Shipping discount"
+                checked={formState.discountClasses.includes(
+                  DiscountClass.Shipping,
+                )}
+                onChange={(e: any) =>
+                  handleDiscountClassChange(
+                    DiscountClass.Shipping,
+                    e.target.checked,
+                  )
+                }
+              />
+            </s-stack>
+          </s-section>
+          {/* [END build-the-ui.add-discount-classes] */}
+          
+          {/* [START build-the-ui.add-discount-configuration] */}
+          <s-section heading="Discount Configuration">
+            <s-stack gap="base">
+              {formState.discountClasses?.includes(
+                DiscountClass.Product,
+              ) ? (
+                <>
+                  <s-number-field
+                    label="Product discount percentage"
+                    autocomplete="on"
+                    min={0}
+                    max={100}
+                    suffix="%"
+                    value={formState.configuration.cartLinePercentage}
+                    onChange={(e: any) =>
+                      setConfigField("cartLinePercentage", e.target.value)
                     }
                   />
-
-                  <Checkbox
-                    label="Product discounts"
-                    checked={formState.combinesWith.productDiscounts}
-                    onChange={(checked) =>
-                      setCombinesWith("productDiscounts", checked)
+                  <CollectionPicker
+                    onSelect={handleCollectionSelect}
+                    selectedCollectionIds={
+                      formState.configuration.collectionIds || []
                     }
-                  />
-
-                  <Checkbox
-                    label="Shipping discounts"
-                    checked={formState.combinesWith.shippingDiscounts}
-                    onChange={(checked) =>
-                      setCombinesWith("shippingDiscounts", checked)
+                    collections={
+                      formState.configuration.collections || collections
                     }
+                    buttonText="Select collections for discount"
                   />
-                </BlockStack>
-              </Box>
-            </Card>
+                </>
+              ) : null}
 
-            {/* Active dates section */}
-            <Card>
-              <Box>
-                <BlockStack gap="100">
-                  <Text variant="headingMd" as="h2">
-                    Active dates
-                  </Text>
+              {formState.discountClasses?.includes(
+                DiscountClass.Order,
+              ) ? (
+                <s-number-field
+                  label="Order discount percentage"
+                  autocomplete="on"
+                  min={0}
+                  max={100}
+                  suffix="%"
+                  value={formState.configuration.orderPercentage}
+                  onChange={(e: any) =>
+                    setConfigField("orderPercentage", e.target.value)
+                  }
+                />
+              ) : null}
 
-                  <BlockStack gap="400">
-                    <InlineStack
-                      gap="400"
-                      align="start"
-                      blockAlign="center"
-                      wrap={false}
-                    >
-                      <Box width="50%">
-                        <DatePickerField
-                          label="Start date"
-                          value={formState.startDate}
-                          onChange={(date) => setField("startDate", date)}
-                          minDate={today}
-                        />
-                      </Box>
+              {formState.discountClasses?.includes(
+                DiscountClass.Shipping,
+              ) ? (
+                <s-number-field
+                  label="Shipping discount percentage"
+                  autocomplete="on"
+                  min={0}
+                  max={100}
+                  suffix="%"
+                  value={formState.configuration.deliveryPercentage}
+                  onChange={(e: any) =>
+                    setConfigField("deliveryPercentage", e.target.value)
+                  }
+                />
+              ) : null}
+            </s-stack>
+          </s-section>
+          {/* [END build-the-ui.add-discount-configuration] */}
+          
+          {/* Usage limits section */}
+          {formState.method === DiscountMethod.Code ? (
+            <s-section heading="Usage limits">
+              <s-number-field
+                label="Usage limit"
+                autocomplete="on"
+                min={0}
+                placeholder="No limit"
+                value={formState.usageLimit}
+                onChange={(e: any) => setField("usageLimit", e.target.value)}
+              />
+              <s-checkbox
+                label="Limit to one use per customer"
+                checked={formState.appliesOncePerCustomer}
+                onChange={(e: any) =>
+                  setField("appliesOncePerCustomer", e.target.checked)
+                }
+              />
+            </s-section>
+          ) : null}
 
-                      <Box width="50%">
-                        {formState.endDate ? (
-                          <DatePickerField
-                            label="End date"
-                            value={formState.endDate}
-                            onChange={handleEndDateChange}
-                            minDate={
-                              formState.startDate
-                                ? new Date(formState.startDate)
-                                : today
-                            }
-                            error={validateEndDate(new Date(formState.endDate))}
-                          />
-                        ) : null}
-                      </Box>
-                    </InlineStack>
+          {/* Combination section */}
+          <s-section heading="Combination">
+            <s-text>
+              Select which discounts can be combined with this discount
+            </s-text>
 
-                    <Checkbox
-                      label="Set end date"
-                      checked={!!formState.endDate}
-                      onChange={handleEndDateCheckboxChange}
-                    />
-                  </BlockStack>
-                </BlockStack>
-              </Box>
-            </Card>
-          </BlockStack>
-          <Layout.Section>
-            <PageActions
-              primaryAction={{
-                content: "Save discount",
-                loading: isLoading,
-                onAction: submit,
-              }}
-              secondaryActions={[
-                {
-                  content: "Discard",
-                  onAction: returnToDiscounts,
-                },
-              ]}
+            <s-checkbox
+              label="Order discounts"
+              checked={formState.combinesWith.orderDiscounts}
+              onChange={(e: any) =>
+                setCombinesWith("orderDiscounts", e.target.checked)
+              }
             />
-          </Layout.Section>
-        </Form>
-      </Layout.Section>
-    </Layout>
+
+            <s-checkbox
+              label="Product discounts"
+              checked={formState.combinesWith.productDiscounts}
+              onChange={(e: any) =>
+                setCombinesWith("productDiscounts", e.target.checked)
+              }
+            />
+
+            <s-checkbox
+              label="Shipping discounts"
+              checked={formState.combinesWith.shippingDiscounts}
+              onChange={(e: any) =>
+                setCombinesWith("shippingDiscounts", e.target.checked)
+              }
+            />
+          </s-section>
+
+          {/* Active dates section */}
+          <s-section heading="Active dates">
+            <s-stack gap="base">
+              <DatePickerField
+                label={formState.endDate ? "Date range" : "Start date"}
+                type={formState.endDate ? "range" : "single"}
+                value={getDatePickerValue()}
+                onChange={handleDateChange}
+                minDate={today}
+              />
+
+              <s-checkbox
+                label="Set end date"
+                checked={!!formState.endDate}
+                onChange={(e: any) => handleEndDateCheckboxChange(e.target.checked)}
+              />
+            </s-stack>
+          </s-section>
+        </s-stack>
+      </s-stack>
+    </Form>
   );
 }

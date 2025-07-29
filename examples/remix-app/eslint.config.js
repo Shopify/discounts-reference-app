@@ -18,7 +18,6 @@ export default [
       "**/node_modules/**",
       "build",
       "public/build",
-      "shopify-app-remix",
       "*.yml",
       ".shopify/**",
       "**/*.generated.{ts,js}",

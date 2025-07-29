@@ -1,4 +1,4 @@
-# Shopify Discount Functions Remix App
+# Shopify Discount Functions React Router App
 
 > [!NOTE]
 > Instead of cloning this repo, you can use the Shopify CLI to create a new app using the following command:
@@ -28,7 +28,7 @@ The discount Function API allows you to create complex discounts by allowing a s
   - Configure combination rules with other discounts
 
 - **Developer Experience**
-  - Built with TypeScript and Remix
+  - Built with TypeScript and React Router
   - Uses Shopify's Polaris design system
   - Shopify GraphQL AdminAPI integration
 
@@ -108,7 +108,7 @@ pnpm run dev --reset
 
 ## Tech Stack
 
-- [Remix](https://remix.run) - Web framework
+- [React Router](https://reactrouter.com/) - Web framework
 - [Shopify App Bridge](https://shopify.dev/docs/apps/tools/app-bridge) - Admin integration
 - [Polaris](https://polaris.shopify.com/) - Design system
 - [TypeScript](https://www.typescriptlang.org/) - Type safety

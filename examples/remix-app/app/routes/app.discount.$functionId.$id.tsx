@@ -1,7 +1,11 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { useActionData, useLoaderData, useNavigation } from "@remix-run/react";
-import { Page } from "@shopify/polaris";
 import { Collection, DiscountClass } from "app/types/admin.types";
+import {
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router";
 
 import { DiscountForm } from "../components/DiscountForm/DiscountForm";
 import { NotFoundPage } from "../components/NotFoundPage";
@@ -175,9 +179,9 @@ export default function VolumeEdit() {
   };
 
   return (
-    <Page>
+    <s-page>
       <ui-title-bar title={`Edit ${rawDiscount.title}`}>
-        <button variant="breadcrumb" onClick={returnToDiscounts}>
+        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
           Discounts
         </button>
       </ui-title-bar>
@@ -190,6 +194,6 @@ export default function VolumeEdit() {
         submitErrors={submitErrors}
         success={actionData?.success}
       />
-    </Page>
+    </s-page>
   );
 }
