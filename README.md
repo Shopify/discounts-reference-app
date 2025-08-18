@@ -16,8 +16,8 @@ This project provides examples and reference implementations for Shopify Discoun
 
 ## Prerequisites
 
-- Node.js >= 20.0.0
-- PNPM >= 8.15.5
+- Node.js >= 22.16.0
+- PNPM >= 9.15.9
 - Rust (for Rust examples)
 
 ## Project Structure

@@ -1,14 +1,5 @@
 {
-  "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "public",
-    "dist",
-    "examples/react-router-app",
-    "examples/mock-http-server",
-    "**/generated"
-  ],
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx", ".react-router/types/**/*"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "strict": true,
@@ -17,7 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": true,
     "noEmit": true,
     "allowJs": true,
     "resolveJsonModule": true,
@@ -26,9 +16,11 @@
     "moduleResolution": "Bundler",
     "target": "ES2022",
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./app/*"]
-    },
-    "types": ["node", "@remix-run/node"]
+    "types": [
+      "@react-router/node",
+      "vite/client",
+      "@shopify/app-bridge-ui-types"
+    ],
+    "rootDirs": [".", "./.react-router/types"]
   }
 }
