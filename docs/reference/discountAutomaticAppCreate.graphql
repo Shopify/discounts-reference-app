@@ -4,7 +4,7 @@ mutation {
     automaticAppDiscount: {
       title: "Cart line, Order, Shipping discount"
       # [START discount-automatic-app-create.add-function-id]
-      functionId: "YOUR_FUNCTION_ID_HERE"
+      functionHandle: "YOUR_FUNCTION_HANDLE_HERE"
       discountClasses: [PRODUCT, ORDER, SHIPPING]
       # [END discount-automatic-app-create.add-function-id]
       startsAt: "2025-01-01T00:00:00"

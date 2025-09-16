@@ -11,6 +11,7 @@ import { DiscountMethod } from "../types/types";
 
 interface BaseDiscount {
   functionId?: string;
+  functionHandle?: string;
   title: string;
   discountClasses: DiscountClass[];
   combinesWith: {
