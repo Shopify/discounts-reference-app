@@ -14,7 +14,7 @@ fn cart_lines_discounts_generate_fetch(
         JsonValue::Array(
             entered_discount_codes
                 .iter()
-                .map(|s| JsonValue::String(s.clone()))
+                .map(|code| JsonValue::String(code.code().to_string()))
                 .collect(),
         ),
     )]));
@@ -56,7 +56,7 @@ mod tests {
     #[test]
     fn adds_entered_discount_codes_to_json_body_for_cart() -> shopify_function::Result<()> {
         let input = json!({
-            "enteredDiscountCodes": [],
+            "enteredDiscountCodes": [{"code": "SUMMER10"}, {"code": "WELCOME20"}],
             "cart": {
                 "lines": []
             }
@@ -66,7 +66,7 @@ mod tests {
         let result = run_function_with_input(cart_lines_discounts_generate_fetch, &input)?;
         let json_body = JsonValue::Object(BTreeMap::from([(
             "enteredDiscountCodes".to_string(),
-            JsonValue::Array(vec![]),
+            JsonValue::Array(vec![JsonValue::String("SUMMER10".to_string()), JsonValue::String("WELCOME20".to_string())]),
         )]));
         let expected = schema::CartLinesDiscountsGenerateFetchResult {
             request: Some(schema::HttpRequest {
