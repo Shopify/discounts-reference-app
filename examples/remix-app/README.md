@@ -47,7 +47,7 @@ To setup your discount function, you can use the Shopify CLI to create a new fun
 shopify app generate extension --template discount
 ```
 
-Then follow the instructions found in the [Build a discount UI with Remix](https://shopify-dev.myshopify.io/docs/apps/build/discounts/build-ui-with-remix?extension=rust#update-the-discount-function-extension-to-read-metafield-data) tutorial.
+Then follow the instructions found in the [Build a discount UI with Remix](https://shopify-dev.shop.dev/docs/apps/build/discounts/build-ui-with-remix?extension=rust#update-the-discount-function-extension-to-read-metafield-data) tutorial.
 
 ## Development
 
