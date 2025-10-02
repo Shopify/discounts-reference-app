@@ -1,0 +1,7 @@
+query CartInput {
+  # [START discount-rejections.graphql]
+  enteredDiscountCodes {
+    code
+  }
+  # [END discount-rejections.graphql]
+}
