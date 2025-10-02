@@ -16,13 +16,11 @@ The discount Function API allows you to create complex discounts by allowing a s
 ### Key Features
 
 - **Multi-class Discounts**
-
   - Combine product, order, and shipping discounts in one Function
   - Target specific product collections
   - Apply percentage-based discounts
 
 - **Flexible Configuration**
-
   - Create automatic discounts or discount codes
   - Set usage limits
   - Configure combination rules with other discounts
