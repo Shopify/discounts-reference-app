@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@shopify/polaris": "13.9.5",
-    "eslint": "9.32.0"
+    "@shopify/polaris-types": "1.0.0",
+    "eslint": "9.30.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "8.37.0",
@@ -20,10 +21,12 @@
     "prettier": "3.6.2"
   },
   "resolutions": {
-    "ws": "8.17.1"
+    "ws": "8.17.1",
+    "esbuild": "0.25.0"
   },
   "overrides": {
-    "ws": "^8.17.1"
+    "ws": "^8.17.1",
+    "esbuild": "^0.25.0"
   },
   "author": "shopify",
   "packageManager": "pnpm@9.15.9"
