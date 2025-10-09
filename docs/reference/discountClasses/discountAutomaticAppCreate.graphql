@@ -3,7 +3,7 @@ mutation {
   discountAutomaticAppCreate(
     automaticAppDiscount: {
       title: "Cart line, Order, Shipping discount"
-      functionId: "YOUR_FUNCTION_ID_HERE"
+      functionHandle: "YOUR_FUNCTION_HANDLE_HERE"
       # [START discount-automatic-app-create.discount-classes]
       discountClasses: [PRODUCT, ORDER, SHIPPING]
       # [END discount-automatic-app-create.discount-classes]
