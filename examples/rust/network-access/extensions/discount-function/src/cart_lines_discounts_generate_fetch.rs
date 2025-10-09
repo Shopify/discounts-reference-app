@@ -66,7 +66,10 @@ mod tests {
         let result = run_function_with_input(cart_lines_discounts_generate_fetch, &input)?;
         let json_body = JsonValue::Object(BTreeMap::from([(
             "enteredDiscountCodes".to_string(),
-            JsonValue::Array(vec![JsonValue::String("SUMMER10".to_string()), JsonValue::String("WELCOME20".to_string())]),
+            JsonValue::Array(vec![
+                JsonValue::String("SUMMER10".to_string()),
+                JsonValue::String("WELCOME20".to_string()),
+            ]),
         )]));
         let expected = schema::CartLinesDiscountsGenerateFetchResult {
             request: Some(schema::HttpRequest {

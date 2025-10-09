@@ -32,3 +32,9 @@ key = "function-configuration"
 [extensions.ui]
 handle = "ui-multiclass-metafield-js"
 # [END discount-function.toml.ui]
+
+# [START discount-function.ui-paths]
+[extensions.ui.paths]
+create = "/app/discount/:functionId/new"
+details = "/app/discount/:functionId/:id"
+# [END discount-function.ui-paths]

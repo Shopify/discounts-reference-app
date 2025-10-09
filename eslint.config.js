@@ -18,6 +18,7 @@ export default [
       "extensions/**/dist/**",
       "extensions/**/dist",
       "**/node_modules/**",
+      "**/target/**",
       "build",
       "public/build",
       "shopify-app-remix",
