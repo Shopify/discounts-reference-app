@@ -1,0 +1,20 @@
+# [START discount-function.graphql.delivery]
+query Input {
+  cart {
+    deliveryGroups {
+      id
+    }
+  }
+  # [START discount-function.graphql.delivery.discount]
+  discount {
+    discountClasses
+    metafield(
+      namespace: "$app:example-discounts--ui-extension"
+      key: "function-configuration"
+    ) {
+      jsonValue
+    }
+  }
+  # [END discount-function.graphql.delivery.discount]
+}
+# [END discount-function.graphql.delivery]

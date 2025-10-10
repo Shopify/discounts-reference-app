@@ -43,6 +43,18 @@ importers:
         specifier: 3.6.2
         version: 3.6.2
 
+  examples/javascript/metafield-preact/extensions/ui-extension:
+    dependencies:
+      "@preact/signals":
+        specifier: 1.3.x
+        version: 1.3.2(preact@10.10.6)
+      "@shopify/ui-extensions":
+        specifier: 2025.10.x
+        version: 2025.10.2(@preact/signals@1.3.2(preact@10.10.6))(preact@10.10.6)
+      preact:
+        specifier: 10.10.x
+        version: 10.10.6
+
   examples/javascript/metafield/extensions/ui-extension:
     dependencies:
       "@shopify/ui-extensions":
@@ -219,6 +231,18 @@ importers:
       vite:
         specifier: 7.0.7
         version: 7.0.7(@types/node@22.2.0)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0)
+
+  examples/rust/metafield-preact/extensions/ui-extension:
+    dependencies:
+      "@preact/signals":
+        specifier: 1.3.x
+        version: 1.3.2(preact@10.10.6)
+      "@shopify/ui-extensions":
+        specifier: 2025.10.x
+        version: 2025.10.2(@preact/signals@1.3.2(preact@10.10.6))(preact@10.10.6)
+      preact:
+        specifier: 10.10.x
+        version: 10.10.6
 
   examples/rust/metafield/extensions/ui-extension:
     dependencies:
@@ -1635,6 +1659,20 @@ packages:
       }
     engines: { node: ">=14" }
 
+  "@preact/signals-core@1.12.1":
+    resolution:
+      {
+        integrity: sha512-BwbTXpj+9QutoZLQvbttRg5x3l5468qaV2kufh+51yha1c53ep5dY4kTuZR35+3pAZxpfQerGJiQqg34ZNZ6uA==,
+      }
+
+  "@preact/signals@1.3.2":
+    resolution:
+      {
+        integrity: sha512-naxcJgUJ6BTOROJ7C3QML7KvwKwCXQJYTc5L/b0eEsdYgPB6SxwoQ1vDGcS0Q7GVjAenVq/tXrybVdFShHYZWg==,
+      }
+    peerDependencies:
+      preact: 10.x
+
   "@prisma/client@6.14.0":
     resolution:
       {
@@ -2253,6 +2291,20 @@ packages:
       "@shopify/ui-extensions": 2025.7.1
       react: ">=18.0.0"
 
+  "@shopify/ui-extensions@2025.10.2":
+    resolution:
+      {
+        integrity: sha512-EEuosfRtxucHgw+lL4c86GPTk2O811Rkc9ITo+YAGzAAihzfd1VCUqza39YoCI8pWE5RHc5jZ5BvFFD58Nu//Q==,
+      }
+    peerDependencies:
+      "@preact/signals": "*"
+      preact: "*"
+    peerDependenciesMeta:
+      "@preact/signals":
+        optional: true
+      preact:
+        optional: true
+
   "@shopify/ui-extensions@2025.7.1":
     resolution:
       {
@@ -2263,6 +2315,12 @@ packages:
     resolution:
       {
         integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==,
+      }
+
+  "@ts-morph/common@0.26.1":
+    resolution:
+      {
+        integrity: sha512-Sn28TGl/4cFpcM+jwsH1wLncYq3FtN/BIpem+HOygfBWPT5pAeS5dB4VFVzV8FbnOKHpDLZmvAl4AjPEev5idA==,
       }
 
   "@tsconfig/node10@1.0.11":
@@ -3338,6 +3396,12 @@ packages:
         integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==,
       }
     engines: { node: ">=0.8" }
+
+  code-block-writer@13.0.3:
+    resolution:
+      {
+        integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==,
+      }
 
   color-convert@2.0.1:
     resolution:
@@ -6578,6 +6642,12 @@ packages:
         integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==,
       }
 
+  path-browserify@1.0.1:
+    resolution:
+      {
+        integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==,
+      }
+
   path-case@3.0.4:
     resolution:
       {
@@ -6808,6 +6878,12 @@ packages:
         integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==,
       }
     engines: { node: ^10 || ^12 || >=14 }
+
+  preact@10.10.6:
+    resolution:
+      {
+        integrity: sha512-w0mCL5vICUAZrh1DuHEdOWBjxdO62lvcO++jbzr8UhhYcTbFkpegLH9XX+7MadjTl/y0feoqwQ/zAnzkc/EGog==,
+      }
 
   prelude-ls@1.2.1:
     resolution:
@@ -7926,6 +8002,12 @@ packages:
     resolution:
       {
         integrity: sha512-320x5Ggei84AxzlXp91QkIGSw5wgaLT6GeAH0KsqDmRZdVWW2OiSeVvElVoatk3f7nicwXlElXsoFkARiGE2yg==,
+      }
+
+  ts-morph@25.0.1:
+    resolution:
+      {
+        integrity: sha512-QJEiTdnz1YjrB3JFhd626gX4rKHDLSjSVMvGGG4v7ONc3RBwa0Eei98G9AT9uNFDMtV54JyuXsFeC+OH0n6bXQ==,
       }
 
   ts-node@10.9.2:
@@ -9744,6 +9826,13 @@ snapshots:
   "@pkgjs/parseargs@0.11.0":
     optional: true
 
+  "@preact/signals-core@1.12.1": {}
+
+  "@preact/signals@1.3.2(preact@10.10.6)":
+    dependencies:
+      "@preact/signals-core": 1.12.1
+      preact: 10.10.6
+
   "@prisma/client@6.14.0(prisma@6.14.0(typescript@5.2.2))(typescript@5.2.2)":
     optionalDependencies:
       prisma: 6.14.0(typescript@5.2.2)
@@ -10277,12 +10366,25 @@ snapshots:
     transitivePeerDependencies:
       - react-reconciler
 
+  "@shopify/ui-extensions@2025.10.2(@preact/signals@1.3.2(preact@10.10.6))(preact@10.10.6)":
+    dependencies:
+      ts-morph: 25.0.1
+    optionalDependencies:
+      "@preact/signals": 1.3.2(preact@10.10.6)
+      preact: 10.10.6
+
   "@shopify/ui-extensions@2025.7.1":
     dependencies:
       "@remote-ui/async-subscription": 2.1.18
       "@remote-ui/core": 2.2.7
 
   "@standard-schema/spec@1.0.0": {}
+
+  "@ts-morph/common@0.26.1":
+    dependencies:
+      fast-glob: 3.3.3
+      minimatch: 9.0.5
+      path-browserify: 1.0.1
 
   "@tsconfig/node10@1.0.11":
     optional: true
@@ -11096,6 +11198,8 @@ snapshots:
       wrap-ansi: 7.0.0
 
   clone@1.0.4: {}
+
+  code-block-writer@13.0.3: {}
 
   color-convert@2.0.1:
     dependencies:
@@ -13349,6 +13453,8 @@ snapshots:
       no-case: 3.0.4
       tslib: 2.8.1
 
+  path-browserify@1.0.1: {}
+
   path-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
@@ -13478,6 +13584,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  preact@10.10.6: {}
 
   prelude-ls@1.2.1: {}
 
@@ -14200,6 +14308,11 @@ snapshots:
       typescript: 5.8.3
 
   ts-log@2.2.7: {}
+
+  ts-morph@25.0.1:
+    dependencies:
+      "@ts-morph/common": 0.26.1
+      code-block-writer: 13.0.3
 
   ts-node@10.9.2(@types/node@24.3.0)(typescript@5.8.3):
     dependencies:

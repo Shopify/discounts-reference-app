@@ -1,0 +1,34 @@
+api_version = "2025-04"
+
+[[extensions]]
+# [START discount-function.name_and_description]
+name = "t:name"
+description = "t:description"
+# [END discount-function.name_and_description]
+handle = "discount-function-js"
+type = "function"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.discounts.generate.run"
+  input_query = "src/cart_delivery_options_discounts_generate_run.graphql"
+  export = "cart-delivery-options-discounts-generate-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"
+
+# [START discount-function.toml.metafield]
+[extensions.input.variables]
+namespace = "$app:example-discounts--ui-extension"
+key = "function-configuration"
+# [END discount-function.toml.metafield]
+
+# [START discount-function.toml.ui]
+[extensions.ui]
+handle = "discount-ui-js"
+# [END discount-function.toml.ui]
