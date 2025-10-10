@@ -1,0 +1,80 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "build": "react-router build",
+    "dev": "shopify app dev",
+    "config:link": "shopify app config link",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "config:use": "shopify app config use",
+    "env": "shopify app env",
+    "start": "react-router-serve ./build/server/index.js",
+    "docker-start": "npm run setup && npm run start",
+    "setup": "prisma generate && prisma migrate deploy",
+    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "shopify": "shopify",
+    "prisma": "prisma",
+    "graphql-codegen": "graphql-codegen",
+    "vite": "vite"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.10"
+  },
+  "dependencies": {
+    "@prisma/client": "6.14.0",
+    "@react-router/dev": "7.8.1",
+    "@react-router/fs-routes": "7.8.1",
+    "@react-router/node": "7.8.1",
+    "@react-router/serve": "7.8.1",
+    "@shopify/app-bridge-react": "4.1.6",
+    "@shopify/cli": "3.63.1",
+    "@shopify/shopify-app-react-router": "0.1.1",
+    "@shopify/shopify-app-session-storage-prisma": "6.0.0",
+    "isbot": "5.1.0",
+    "prisma": "6.14.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router": "7.7.1",
+    "react-router-dom": "7.8.1",
+    "vite-tsconfig-paths": "5.0.1"
+  },
+  "devDependencies": {
+    "@shopify/api-codegen-preset": "1.1.1",
+    "@shopify/polaris-types": "1.0.0",
+    "@types/eslint": "9.6.1",
+    "@types/node": "22.2.0",
+    "@types/react": "18.2.31",
+    "@types/react-dom": "18.2.14",
+    "@typescript-eslint/eslint-plugin": "6.7.4",
+    "@typescript-eslint/parser": "6.7.4",
+    "eslint": "9.30.0",
+    "eslint-import-resolver-typescript": "3.6.1",
+    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "prettier": "3.2.4",
+    "typescript": "5.2.2",
+    "vite": "7.0.7"
+  },
+  "workspaces": {
+    "packages": [
+      "extensions/*"
+    ]
+  },
+  "trustedDependencies": [
+    "@shopify/plugin-cloudflare"
+  ],
+  "resolutions": {
+    "@graphql-tools/url-loader": "8.0.16",
+    "@graphql-codegen/client-preset": "4.7.0",
+    "@graphql-codegen/typescript-operations": "4.5.0"
+  },
+  "overrides": {
+    "@graphql-tools/url-loader": "8.0.16",
+    "@graphql-codegen/client-preset": "4.7.0",
+    "@graphql-codegen/typescript-operations": "4.5.0"
+  }
+}

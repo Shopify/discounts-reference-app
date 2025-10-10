@@ -48,6 +48,7 @@ shopify app init --template https://github.com/Shopify/discounts-reference-app/r
 - [Build a discount UI with Remix](https://shopify.dev/docs/apps/build/discounts/build-ui-with-remix)
 - [Network access](https://shopify.dev/docs/apps/build/discounts/network-access)
 - [Migrate from a legacy discount APIs](https://shopify.dev/docs/apps/build/discounts/migrate-discount-api)
+- [Discount Rejection](https://shopify.dev/docs/apps/build/discounts/discount-code-rejections)
 
 ## Examples
 

@@ -1,0 +1,11 @@
+package.json
+.cache
+.vscode
+build
+node_modules
+prisma
+public
+.github
+tmp
+*.yml
+.shopify
