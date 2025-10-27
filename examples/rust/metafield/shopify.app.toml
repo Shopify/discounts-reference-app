@@ -7,3 +7,9 @@ scopes = "write_discounts,read_products"
 # [START discount-ui-extension-app.app_name]
 name="Example Discount App"
 # [END discount-ui-extension-app.app_name]
+
+# [START discount-ui-extension.metafields-toml]
+[[extensions.metafields]]
+namespace = "$app:example-discounts--ui-extension"
+key = "function-configuration"
+# [END discount-ui-extension.metafields-toml]

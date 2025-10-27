@@ -179,12 +179,10 @@ export default function VolumeEdit() {
   };
 
   return (
-    <s-page>
-      <ui-title-bar title={`Edit ${rawDiscount.title}`}>
-        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
-          Discounts
-        </button>
-      </ui-title-bar>
+    <s-page inlineSize="large" heading={`Edit ${rawDiscount.title}`}>
+      <s-link slot="breadcrumb-actions" onClick={returnToDiscounts}>
+        Discounts
+      </s-link>
 
       <DiscountForm
         initialData={initialData}
