@@ -10,7 +10,7 @@ fn cart_lines_discounts_generate_run(
     let mut influencer_codes: Vec<_> = input
         .entered_discount_codes()
         .iter()
-        .filter(|code| code.code().starts_with("INF-"))
+        .filter(|code| code.code().starts_with("INF-") && code.rejectable())
         .map(|code| code.code().to_string())
         .collect();
 

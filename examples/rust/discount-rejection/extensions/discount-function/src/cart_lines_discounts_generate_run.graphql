@@ -2,6 +2,7 @@ query Input {
   # [START discount-rejections.graphql]
   enteredDiscountCodes {
     code
+    rejectable
   }
   # [END discount-rejections.graphql]
 }

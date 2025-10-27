@@ -10,8 +10,8 @@
 
 export function cartLinesDiscountsGenerateRun(input) {
   // [START discount-rejections.run]
-  const influencerCodes = input.enteredDiscountCodes.filter(({ code }) =>
-    code.startsWith("INF-"),
+  const influencerCodes = input.enteredDiscountCodes.filter(
+    ({ code, rejectable }) => code.startsWith("INF-") && rejectable,
   );
 
   if (influencerCodes.length <= 1) {
@@ -24,8 +24,8 @@ export function cartLinesDiscountsGenerateRun(input) {
     operations: [
       {
         enteredDiscountCodesReject: {
-          codes: codesToReject,
-          message: `Only one influencer code allowed. Rejected: ${codesToReject.join(", ")}`,
+          codes: codesToReject.map(({ code }) => ({ code })),
+          message: `Only one influencer code allowed. Rejected: ${codesToReject.map((c) => c.code).join(", ")}`,
         },
       },
     ],

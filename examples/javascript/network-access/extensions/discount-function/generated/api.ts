@@ -232,7 +232,7 @@ export type CartMetafieldArgs = {
  */
 export type CartCost = {
   __typename?: "CartCost";
-  /** The amount for the customer to pay at checkout, excluding taxes and discounts. */
+  /** The amount, before taxes and cart-level discounts, for the customer to pay. */
   subtotalAmount: MoneyV2;
   /** The total amount for the customer to pay at checkout. */
   totalAmount: MoneyV2;

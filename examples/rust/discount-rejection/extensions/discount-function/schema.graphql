@@ -19,16 +19,6 @@ Requires that exactly one field must be supplied and that field must not be `nul
 directive @oneOf on INPUT_OBJECT
 
 """
-Represents an app.
-"""
-type App {
-  """
-  The ID of the app.
-  """
-  id: ID!
-}
-
-"""
 A discount code that is associated with a discount candidate.
 """
 input AssociatedDiscountCode {
@@ -92,13 +82,6 @@ type BuyerIdentity {
   Used to manage and track purchases made by businesses rather than individual customers.
   """
   purchasingCompany: PurchasingCompany
-
-  """
-  Represents the [Shop User](https://help.shopify.com/en/manual/online-sales-channels/shop/sign-in-features)
-   corresponding to the customer within the shop, if the buyer is a Shop User. Can be used to request [Shop User
-   metafields](https://shopify.dev/docs/api/shop-user-custom-data).
-  """
-  shopUser: ShopUser
 }
 
 """
@@ -205,7 +188,7 @@ the subtotal before taxes and duties, the tax amount, and duty charges.
 """
 type CartCost {
   """
-  The amount for the customer to pay at checkout, excluding taxes and discounts.
+  The amount, before taxes and cart-level discounts, for the customer to pay.
   """
   subtotalAmount: MoneyV2!
 
@@ -1899,11 +1882,6 @@ enum CountryCode {
   UM
 
   """
-  Unknown country code.
-  """
-  UNKNOWN__
-
-  """
   United States.
   """
   US
@@ -3166,6 +3144,12 @@ input DeliveryOperation @oneOf {
   validate discount codes from external systems.
   """
   enteredDiscountCodesAccept: EnteredDiscountCodesAcceptOperation
+
+  """
+  An operation that rejects entered discount codes with a custom message. Use
+  this to conditionally reject discount codes based on business logic.
+  """
+  enteredDiscountCodesReject: EnteredDiscountCodesRejectOperation
 }
 
 """
@@ -3258,6 +3242,11 @@ type EnteredDiscountCode {
   The discount code.
   """
   code: String!
+
+  """
+  Indicates whether the entered discount code can be rejected.
+  """
+  rejectable: Boolean!
 }
 
 """
@@ -3296,16 +3285,6 @@ input FixedAmount {
   The amount must be greater than or equal to 0.
   """
   amount: Decimal!
-}
-
-"""
-Represents a fulfillment service that prepares and ships orders on behalf of the store owner.
-"""
-type FulfillmentService {
-  """
-  The app associated with this fulfillment service.
-  """
-  app: App
 }
 
 """
@@ -4666,11 +4645,6 @@ type Location implements HasMetafields {
   address: LocationAddress!
 
   """
-  The fulfillment service, if any, that's associated with the location.
-  """
-  fulfillmentService: FulfillmentService
-
-  """
   The location handle.
   """
   handle: Handle!
@@ -4877,11 +4851,6 @@ type Market implements HasMetafields {
   id: ID!
 
   """
-  The manager of the market, if the accessing app is the market’s manager. Otherwise, this will be null.
-  """
-  manager: MarketManager
-
-  """
   A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
   about a Shopify resource, such as products, orders, and
   [many more](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
@@ -4908,17 +4877,6 @@ type Market implements HasMetafields {
   A geographic region which comprises a market.
   """
   regions: [MarketRegion!]!
-}
-
-"""
-The entity that manages a particular market.
-"""
-type MarketManager {
-  """
-  The identity of the manager. This can either be `merchant` if the market is
-  manually managed by the merchant or an ID of the app responsible for managing the market.
-  """
-  identifier: String!
 }
 
 """
@@ -5629,34 +5587,6 @@ type Shop implements HasMetafields {
   """
   localTime: LocalTime!
 
-  """
-  A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
-  about a Shopify resource, such as products, orders, and
-  [many more](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
-  Using [metafields with Shopify Functions](https://shopify.dev/docs/apps/build/functions/input-output/metafields-for-input-queries)
-  enables you to customize the checkout experience.
-  """
-  metafield(
-    """
-    The unique identifier for the metafield within its namespace. A metafield is composed of a
-    namespace and a key, in the format `namespace.key`.
-    """
-    key: String!
-
-    """
-    A category that organizes a group of metafields. Namespaces are used to prevent naming conflicts
-    between different apps or different parts of the same app. If omitted, then the
-    [app-reserved namespace](https://shopify.dev/docs/apps/build/custom-data/ownership)
-    is used.
-    """
-    namespace: String
-  ): Metafield
-}
-
-"""
-Represents information about the buyer that is interacting with the cart.
-"""
-type ShopUser implements HasMetafields {
   """
   A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
   about a Shopify resource, such as products, orders, and
