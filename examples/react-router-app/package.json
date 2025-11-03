@@ -23,17 +23,17 @@
     "node": ">=20.10"
   },
   "dependencies": {
-    "@prisma/client": "6.14.0",
+    "@prisma/client": "6.13.0",
     "@react-router/dev": "7.8.1",
     "@react-router/fs-routes": "7.8.1",
     "@react-router/node": "7.8.1",
     "@react-router/serve": "7.8.1",
-    "@shopify/app-bridge-react": "4.1.6",
+    "@shopify/app-bridge-react": "4.2.1",
     "@shopify/cli": "3.63.1",
     "@shopify/shopify-app-react-router": "0.1.1",
     "@shopify/shopify-app-session-storage-prisma": "6.0.0",
-    "isbot": "5.1.0",
-    "prisma": "6.14.0",
+    "isbot": "5.1.29",
+    "prisma": "6.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router": "7.7.1",
@@ -54,7 +54,7 @@
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-hooks": "5.2.0",
     "prettier": "3.2.4",
     "typescript": "5.2.2",
     "vite": "7.0.8"
@@ -66,15 +66,5 @@
   },
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
-  ],
-  "resolutions": {
-    "@graphql-tools/url-loader": "8.0.16",
-    "@graphql-codegen/client-preset": "4.7.0",
-    "@graphql-codegen/typescript-operations": "4.5.0"
-  },
-  "overrides": {
-    "@graphql-tools/url-loader": "8.0.16",
-    "@graphql-codegen/client-preset": "4.7.0",
-    "@graphql-codegen/typescript-operations": "4.5.0"
-  }
+  ]
 }

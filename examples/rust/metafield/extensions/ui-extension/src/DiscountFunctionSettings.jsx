@@ -134,7 +134,9 @@ function App() {
 
   return (
     <s-function-settings
-      onSubmit={(event) => event.waitUntil(applyExtensionMetafieldChange())}
+      onSubmit={(event) => {
+        event.waitUntil?.(applyExtensionMetafieldChange());
+      }}
       onReset={resetForm}
     >
       <s-heading>{i18n.translate("title")}</s-heading>

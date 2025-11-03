@@ -1,7 +1,5 @@
 import { subtle } from "crypto";
 import { TextEncoder } from "util";
-
-import { json } from "@remix-run/node";
 import jwt from "jsonwebtoken";
 
 const selectionStrategy = {
@@ -16,9 +14,9 @@ const SHIPPING_DISCOUNT_CODE = "FREESHIPPING";
 
 export const action = async ({ request }) => {
   if (request.method.toUpperCase() !== "POST") {
-    return json({
+    return {
       error: "Invalid request method. Only POST requests are allowed.",
-    });
+    };
   }
 
   let body;
@@ -26,7 +24,7 @@ export const action = async ({ request }) => {
   try {
     body = await authenticate(request);
   } catch (err) {
-    return json({ error: err.message });
+    return { error: err.message };
   }
   return handle(body);
 };
@@ -204,10 +202,6 @@ const handle = (body) => {
       });
     }
   }
-  return json([
-    ...validationOperations,
-    ...cartOperations,
-    ...deliveryOperations,
-  ]);
+  return [...validationOperations, ...cartOperations, ...deliveryOperations];
   // [END mock-http-server.results]
 };
