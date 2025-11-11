@@ -3,6 +3,7 @@ api_version = "unstable"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-js"
+
 type = "function"
 description = "t:description"
 
@@ -14,3 +15,6 @@ description = "t:description"
   [extensions.build]
   command = ""
   path = "dist/function.wasm"
+
+[extensions.ui]
+handle = "ex-ui-metafield-rejection-js"

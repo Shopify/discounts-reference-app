@@ -6,6 +6,7 @@ api_version = "2025-10"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-rs"
+
 type = "function"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]
@@ -38,3 +39,6 @@ description = "t:description"
   path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 # [END discount-function-shopify.extension.toml-build]
+
+[extensions.ui]
+handle = "ui-ex-network-rs"

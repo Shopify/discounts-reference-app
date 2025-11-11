@@ -3,6 +3,7 @@ api_version = "unstable"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-rs"
+
 type = "function"
 description = "t:description"
 
@@ -15,3 +16,6 @@ description = "t:description"
   command = "cargo build --target=wasm32-wasip1 --release"
   path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
+
+[extensions.ui]
+handle = "ex-ui-metafield-rejection-rs"

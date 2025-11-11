@@ -6,6 +6,7 @@ api_version = "2025-10"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-js"
+
 type = "function"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]
@@ -37,4 +38,7 @@ description = "t:description"
   command = ""
   path = "dist/function.wasm"
 # [END discount-function-shopify.extension.toml-build]
+
+[extensions.ui]
+handle = "ui-ex-network-js"
 

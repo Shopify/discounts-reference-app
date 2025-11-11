@@ -47,7 +47,7 @@
     "@types/node": "24.0.14",
     "@types/react": "18.2.31",
     "@types/react-dom": "18.2.14",
-    "@typescript-eslint/eslint-plugin": "8.38.0",
+    "@typescript-eslint/eslint-plugin": "8.39.0",
     "@typescript-eslint/parser": "8.37.0",
     "eslint": "9.31.0",
     "eslint-import-resolver-typescript": "4.4.4",
@@ -56,8 +56,8 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "5.2.0",
     "prettier": "3.2.4",
-    "typescript": "5.2.2",
-    "vite": "7.0.8"
+    "typescript": "5.9.2",
+    "vite": "7.1.1"
   },
   "workspaces": {
     "packages": [

@@ -4,5 +4,13 @@ query CartInput {
     code
     rejectable
   }
+  discount {
+    metafield(
+      namespace: "$app:example-discounts--ui-extension"
+      key: "function-configuration"
+    ) {
+      value
+    }
+  }
   # [END discount-rejections.graphql]
 }

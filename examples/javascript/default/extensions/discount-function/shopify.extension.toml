@@ -6,6 +6,7 @@ api_version = "2025-04"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-js"
+
 type = "function"
 description = "t:description"
 # [END discount-function.toml.metadata]
@@ -27,3 +28,6 @@ description = "t:description"
   command = ""
   path = "dist/function.wasm"
 # [END discount-function.toml.build]
+
+[extensions.ui]
+handle = "ui-ex-function-js"

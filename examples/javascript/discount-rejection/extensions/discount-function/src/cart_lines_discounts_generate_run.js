@@ -10,25 +10,50 @@
 
 export function cartLinesDiscountsGenerateRun(input) {
   // [START discount-rejections.run]
-  const influencerCodes = input.enteredDiscountCodes.filter(
-    ({ code, rejectable }) => code.startsWith("INF-") && rejectable,
+  // Parse configuration from metafield with fallback defaults
+  const config = parseMetafieldConfig(input.discount?.metafield?.value);
+  const { codePrefix, rejectionMessage } = config;
+
+  const matchingCodes = input.enteredDiscountCodes.filter(
+    ({ code, rejectable }) => code.startsWith(codePrefix) && rejectable,
   );
 
-  if (influencerCodes.length <= 1) {
+  if (matchingCodes.length <= 1) {
     return { operations: [] };
   }
 
-  const codesToReject = influencerCodes.slice(0, -1);
+  const codesToReject = matchingCodes.slice(0, -1);
 
   return {
     operations: [
       {
         enteredDiscountCodesReject: {
           codes: codesToReject.map(({ code }) => ({ code })),
-          message: `Only one influencer code allowed. Rejected: ${codesToReject.map((c) => c.code).join(", ")}`,
+          message: `${rejectionMessage}. Rejected: ${codesToReject.map((c) => c.code).join(", ")}`,
         },
       },
     ],
   };
   // [END discount-rejections.run]
+}
+
+/**
+ * Parse metafield configuration with fallback defaults
+ * @param {string | null | undefined} metafieldValue
+ * @returns {{codePrefix: string, rejectionMessage: string}}
+ */
+function parseMetafieldConfig(metafieldValue) {
+  try {
+    const parsed = JSON.parse(metafieldValue || "{}");
+    return {
+      codePrefix: parsed.codePrefix || "INF-",
+      rejectionMessage:
+        parsed.rejectionMessage || "Only one influencer code allowed",
+    };
+  } catch {
+    return {
+      codePrefix: "INF-",
+      rejectionMessage: "Only one influencer code allowed",
+    };
+  }
 }

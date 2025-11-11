@@ -1,4 +1,4 @@
 {
-  "name": "ex-discount-rejection-js",
-  "description": "ex-discount-rejection-js"
+  "name": "[Example][JavaScript] Discount Rejection Based on Entered Codes",
+  "description": "This extension demonstrates how to reject discounts based on specific discount codes entered by the customer"
 }

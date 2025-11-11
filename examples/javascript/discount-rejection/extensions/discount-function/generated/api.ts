@@ -3241,4 +3241,8 @@ export type CartInput = {
     code: string;
     rejectable: boolean;
   }>;
+  discount: {
+    __typename?: "Discount";
+    metafield?: { __typename?: "Metafield"; value: string } | null;
+  };
 };

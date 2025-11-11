@@ -8,6 +8,7 @@ name = "t:name"
 description = "t:description"
 # [END discount-function.name_and_description]
 handle = "discount-function-rs"
+
 type = "function"
 
   [[extensions.targeting]]

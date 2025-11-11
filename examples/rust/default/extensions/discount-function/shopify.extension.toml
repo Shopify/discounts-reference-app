@@ -8,6 +8,7 @@ api_version = "2025-04"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-rs"
+
 type = "function"
 description = "t:description"
 # [END discount-function.toml.metadata]
@@ -30,3 +31,6 @@ description = "t:description"
   path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 # [END discount-function.toml.build]
+
+[extensions.ui]
+handle = "ui-ex-function-rs"

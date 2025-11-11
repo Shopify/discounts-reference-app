@@ -6,6 +6,7 @@ name = "t:name"
 description = "t:description"
 # [END discount-ui-extension.name_and_description]
 handle = "discount-ui-js"
+
 type = "ui_extension"
 # Only 1 target can be specified for each Admin block extension
 # [START discount-ui-extension.target-configuration]
