@@ -8,6 +8,7 @@ description = "t:description"
 # [END discount-ui-extension.name_and_description]
 handle = "discount-ui-js"
 type = "ui_extension"
+uid = "2edec57b-493e-0ab7-ce82-9c0362fdd4f13bac09df"
 
 
 # Only 1 target can be specified for each Admin block extension
