@@ -9,6 +9,7 @@ description = "t:description"
 # [END discount-function.name_and_description]
 handle = "discount-function-rs"
 type = "function"
+uid = "a1a9900e-8776-2411-a444-bf3a2aff01a7c360e941"
 
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
