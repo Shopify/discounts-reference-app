@@ -32,5 +32,4 @@ key = "function-configuration"
 # [START discount-function.toml.ui]
 [extensions.ui]
 handle = "discount-ui-js"
-uid = "2edec57b-493e-0ab7-ce82-9c0362fdd4f13bac09df"
 # [END discount-function.toml.ui]
