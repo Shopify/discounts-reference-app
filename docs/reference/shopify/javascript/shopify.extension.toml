@@ -32,6 +32,7 @@ key = "function-configuration"
 # [START discount-function.toml.ui]
 [extensions.ui]
 handle = "ui-multiclass-metafield-js"
+uid = "5e900c22-6578-c521-9d62-91cd011a3a7be7b0697c"
 # [END discount-function.toml.ui]
 
 # [START discount-function.ui-paths]
