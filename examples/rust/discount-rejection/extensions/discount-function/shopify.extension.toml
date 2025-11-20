@@ -4,6 +4,7 @@ api_version = "unstable"
 name = "t:name"
 handle = "discount-function-rs"
 type = "function"
+uid = "a1a9900e-8776-2411-a444-bf3a2aff01a7c360e941"
 description = "t:description"
 
   [[extensions.targeting]]
