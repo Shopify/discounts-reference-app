@@ -7,6 +7,7 @@ description = "t:description"
 # [END discount-function.name_and_description]
 handle = "discount-function-js"
 type = "function"
+uid = "9a3ff08f-70a9-f7e8-f33e-b015c1449d54eb22baed"
 
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
@@ -31,4 +32,5 @@ key = "function-configuration"
 # [START discount-function.toml.ui]
 [extensions.ui]
 handle = "discount-ui-js"
+uid = "2edec57b-493e-0ab7-ce82-9c0362fdd4f13bac09df"
 # [END discount-function.toml.ui]
