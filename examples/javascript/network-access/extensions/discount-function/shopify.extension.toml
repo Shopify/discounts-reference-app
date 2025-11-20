@@ -7,6 +7,7 @@ api_version = "2025-10"
 name = "t:name"
 handle = "discount-function-js"
 type = "function"
+uid = "9a3ff08f-70a9-f7e8-f33e-b015c1449d54eb22baed"
 description = "t:description"
 # [END discount-function-shopify.extension.toml-metadata]
 
