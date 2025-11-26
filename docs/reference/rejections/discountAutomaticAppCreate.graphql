@@ -2,10 +2,10 @@
 mutation {
   discountAutomaticAppCreate(
     automaticAppDiscount: {
-      title: "Cart line, Order, Shipping discount"
+      title: "Discount Rejection"
       # [START discount-automatic-app-create.add-function-id]
       functionHandle: "YOUR_FUNCTION_HANDLE_HERE"
-      discountClasses: [PRODUCT, ORDER, SHIPPING]
+      discountClasses: [PRODUCT, ORDER]
       # [END discount-automatic-app-create.add-function-id]
       startsAt: "2025-01-01T00:00:00"
     }
