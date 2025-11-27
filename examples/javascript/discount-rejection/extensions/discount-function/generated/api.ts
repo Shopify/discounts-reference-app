@@ -89,13 +89,6 @@ export type Scalars = {
   Void: { input: any; output: any };
 };
 
-/** Represents an app. */
-export type App = {
-  __typename?: "App";
-  /** The ID of the app. */
-  id: Scalars["ID"]["output"];
-};
-
 /** A discount code that is associated with a discount candidate. */
 export type AssociatedDiscountCode = {
   /** The discount code. */
@@ -143,12 +136,6 @@ export type BuyerIdentity = {
    * Used to manage and track purchases made by businesses rather than individual customers.
    */
   purchasingCompany?: Maybe<PurchasingCompany>;
-  /**
-   * Represents the [Shop User](https://help.shopify.com/en/manual/online-sales-channels/shop/sign-in-features)
-   *  corresponding to the customer within the shop, if the buyer is a Shop User. Can be used to request [Shop User
-   *  metafields](https://shopify.dev/docs/api/shop-user-custom-data).
-   */
-  shopUser?: Maybe<ShopUser>;
 };
 
 /**
@@ -245,7 +232,7 @@ export type CartMetafieldArgs = {
  */
 export type CartCost = {
   __typename?: "CartCost";
-  /** The amount for the customer to pay at checkout, excluding taxes and discounts. */
+  /** The amount, before taxes and cart-level discounts, for the customer to pay. */
   subtotalAmount: MoneyV2;
   /** The total amount for the customer to pay at checkout. */
   totalAmount: MoneyV2;
@@ -1122,8 +1109,6 @@ export enum CountryCode {
   Ug = "UG",
   /** U.S. Outlying Islands. */
   Um = "UM",
-  /** Unknown country code. */
-  Unknown = "UNKNOWN__",
   /** United States. */
   Us = "US",
   /** Uruguay. */
@@ -1737,6 +1722,7 @@ export type DeliveryOperation =
   | {
       deliveryDiscountsAdd: DeliveryDiscountsAddOperation;
       enteredDiscountCodesAccept?: never;
+      enteredDiscountCodesReject?: never;
     } /**
    * An operation that selects which entered discount codes to accept. Use this to
    * validate discount codes from external systems.
@@ -1744,6 +1730,15 @@ export type DeliveryOperation =
   | {
       deliveryDiscountsAdd?: never;
       enteredDiscountCodesAccept: EnteredDiscountCodesAcceptOperation;
+      enteredDiscountCodesReject?: never;
+    } /**
+   * An operation that rejects entered discount codes with a custom message. Use
+   * this to conditionally reject discount codes based on business logic.
+   */
+  | {
+      deliveryDiscountsAdd?: never;
+      enteredDiscountCodesAccept?: never;
+      enteredDiscountCodesReject: EnteredDiscountCodesRejectOperation;
     };
 
 /**
@@ -1813,6 +1808,8 @@ export type EnteredDiscountCode = {
   __typename?: "EnteredDiscountCode";
   /** The discount code. */
   code: Scalars["String"]["output"];
+  /** Indicates whether the entered discount code can be rejected. */
+  rejectable: Scalars["Boolean"]["output"];
 };
 
 /** An operation that selects which entered discount codes to accept. Use this to validate discount codes from external systems. */
@@ -1840,13 +1837,6 @@ export type FixedAmount = {
    * The amount must be greater than or equal to 0.
    */
   amount: Scalars["Decimal"]["input"];
-};
-
-/** Represents a fulfillment service that prepares and ships orders on behalf of the store owner. */
-export type FulfillmentService = {
-  __typename?: "FulfillmentService";
-  /** The app associated with this fulfillment service. */
-  app?: Maybe<App>;
 };
 
 /** Represents information about the metafields associated to the specified resource. */
@@ -2530,8 +2520,6 @@ export type Location = HasMetafields & {
   __typename?: "Location";
   /** The address of this location. */
   address: LocationAddress;
-  /** The fulfillment service, if any, that's associated with the location. */
-  fulfillmentService?: Maybe<FulfillmentService>;
   /** The location handle. */
   handle: Scalars["Handle"]["output"];
   /** The location id. */
@@ -2635,8 +2623,6 @@ export type Market = HasMetafields & {
   handle: Scalars["Handle"]["output"];
   /** A globally-unique identifier. */
   id: Scalars["ID"]["output"];
-  /** The manager of the market, if the accessing app is the market’s manager. Otherwise, this will be null. */
-  manager?: Maybe<MarketManager>;
   /**
    * A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
    * about a Shopify resource, such as products, orders, and
@@ -2660,16 +2646,6 @@ export type Market = HasMetafields & {
 export type MarketMetafieldArgs = {
   key: Scalars["String"]["input"];
   namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** The entity that manages a particular market. */
-export type MarketManager = {
-  __typename?: "MarketManager";
-  /**
-   * The identity of the manager. This can either be `merchant` if the market is
-   * manually managed by the merchant or an ID of the app responsible for managing the market.
-   */
-  identifier: Scalars["String"]["output"];
 };
 
 /** Represents a region. */
@@ -3244,25 +3220,6 @@ export type ShopMetafieldArgs = {
   namespace?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUser = HasMetafields & {
-  __typename?: "ShopUser";
-  /**
-   * A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
-   * about a Shopify resource, such as products, orders, and
-   * [many more](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
-   * Using [metafields with Shopify Functions](https://shopify.dev/docs/apps/build/functions/input-output/metafields-for-input-queries)
-   * enables you to customize the checkout experience.
-   */
-  metafield?: Maybe<Metafield>;
-};
-
-/** Represents information about the buyer that is interacting with the cart. */
-export type ShopUserMetafieldArgs = {
-  key: Scalars["String"]["input"];
-  namespace?: InputMaybe<Scalars["String"]["input"]>;
-};
-
 /** Units of measurement for weight. */
 export enum WeightUnit {
   /** Metric system unit of mass. */
@@ -3282,5 +3239,6 @@ export type CartInput = {
   enteredDiscountCodes: Array<{
     __typename?: "EnteredDiscountCode";
     code: string;
+    rejectable: boolean;
   }>;
 };

@@ -10,22 +10,32 @@
 
 export function cartLinesDiscountsGenerateRun(input) {
   // [START discount-rejections.run]
-  const influencerCodes = input.enteredDiscountCodes.filter(({ code }) =>
-    code.startsWith("INF-"),
+  const allInfluencerCodes = input.enteredDiscountCodes.filter(({ code }) =>
+    code.toLowerCase().startsWith("inf-"),
   );
 
-  if (influencerCodes.length <= 1) {
+  const rejectableInfluencerCodes = allInfluencerCodes.filter(
+    ({ rejectable }) => rejectable,
+  );
+
+  const hasNonRejectable = allInfluencerCodes.some(
+    ({ rejectable }) => !rejectable,
+  );
+
+  const codesToReject = hasNonRejectable
+    ? rejectableInfluencerCodes
+    : rejectableInfluencerCodes.slice(0, -1);
+
+  if (codesToReject.length === 0) {
     return { operations: [] };
   }
-
-  const codesToReject = influencerCodes.slice(0, -1);
 
   return {
     operations: [
       {
         enteredDiscountCodesReject: {
-          codes: codesToReject,
-          message: `Only one influencer code allowed. Rejected: ${codesToReject.join(", ")}`,
+          codes: codesToReject.map(({ code }) => ({ code })),
+          message: `Only one influencer code allowed. Rejected: ${codesToReject.map((c) => c.code).join(", ")}`,
         },
       },
     ],
