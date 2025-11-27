@@ -3,13 +3,16 @@ api_version = "unstable"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-rs"
+uid = "a1a9900e-8776-2411-a444-bf3a2aff01a7c360e941"
 type = "function"
 description = "t:description"
 
+# [START discount-function-rejection.toml.target]
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
   input_query = "src/cart_lines_discounts_generate_run.graphql"
   export = "cart_lines_discounts_generate_run"
+# [END discount-function-rejection.toml.target]
 
   [extensions.build]
   command = "cargo build --target=wasm32-wasip1 --release"

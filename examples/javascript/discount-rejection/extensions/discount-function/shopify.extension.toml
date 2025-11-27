@@ -3,13 +3,16 @@ api_version = "unstable"
 [[extensions]]
 name = "t:name"
 handle = "discount-function-js"
+uid = "9a3ff08f-70a9-f7e8-f33e-b015c1449d54eb22baed"
 type = "function"
 description = "t:description"
 
+# [START discount-function-rejection.toml.target]
   [[extensions.targeting]]
   target = "cart.lines.discounts.generate.run"
   input_query = "src/cart_lines_discounts_generate_run.graphql"
   export = "cart-lines-discounts-generate-run"
+# [END discount-function-rejection.toml.target]
 
   [extensions.build]
   command = ""
