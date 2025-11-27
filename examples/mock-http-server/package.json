@@ -28,7 +28,7 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "postcss": "8.5.6",
     "tailwindcss": "4.1.11",
-    "vite": "7.0.7"
+    "vite": "7.0.8"
   },
   "engines": {
     "node": ">=22.16.0"
