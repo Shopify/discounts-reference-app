@@ -1,58 +1,30 @@
 // [START discount-ui-extension.ui-extension]
 // [START discount-ui-extension.ui-components]
-import {
-  reactExtension,
-  useApi,
-  BlockStack,
-  FunctionSettings,
-  Section,
-  Text,
-  Form,
-  NumberField,
-  Box,
-  InlineStack,
-  Heading,
-  TextField,
-  Button,
-  Icon,
-  Link,
-  Divider,
-  Select,
-} from "@shopify/ui-extensions-react/admin";
+import "@shopify/ui-extensions/preact";
+import { render } from "preact";
+import { useState, useEffect, useMemo } from "preact/hooks";
 // [END discount-ui-extension.ui-components]
-import { useState, useMemo, useEffect } from "react";
 
 // [START discount-ui-extension.target]
-const TARGET = "admin.discount-details.function-settings.render";
+export default async () => {
+  render(<App />, document.body);
+};
 // [END discount-ui-extension.target]
-
-export default reactExtension(TARGET, async (api) => {
-  const existingDefinition = await getMetafieldDefinition(api.query);
-  if (!existingDefinition) {
-    // Create a metafield definition for persistence if no pre-existing definition exists
-    const metafieldDefinition = await createMetafieldDefinition(api.query);
-
-    if (!metafieldDefinition) {
-      throw new Error("Failed to create metafield definition");
-    }
-  }
-  return <App />;
-});
 
 function PercentageField({ label, defaultValue, value, onChange, name }) {
   return (
-    <Box>
-      <BlockStack gap="base">
-        <NumberField
+    <s-box>
+      <s-stack gap="base">
+        <s-number-field
           label={label}
           name={name}
-          value={Number(value)}
-          defaultValue={String(defaultValue)}
-          onChange={(value) => onChange(String(value))}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={(event) => onChange(event.currentTarget.value)}
           suffix="%"
         />
-      </BlockStack>
-    </Box>
+      </s-stack>
+    </s-box>
   );
 }
 // [START discount-ui-extension.collections-section]
@@ -66,49 +38,47 @@ function AppliesToCollections({
   onAppliesToChange,
 }) {
   return (
-    <Section>
+    <s-section>
       {/* [START discount-ui-extension.hidden-box] */}
-      <Box display="none">
-        <TextField
+      <s-box display="none">
+        <s-text-field
           value={value.map(({ id }) => id).join(",")}
           label=""
           name="collectionsIds"
           defaultValue={defaultValue.map(({ id }) => id).join(",")}
         />
-      </Box>
+      </s-box>
       {/* [END discount-ui-extension.hidden-box] */}
-      <BlockStack gap="base">
-        <InlineStack blockAlignment="end" gap="base">
-          <Select
+      <s-stack gap="base">
+        <s-stack direction="inline" alignItems="end" gap="base">
+          <s-select
             label={i18n.translate("collections.appliesTo")}
             name="appliesTo"
             value={appliesTo}
-            onChange={onAppliesToChange}
-            options={[
-              {
-                label: i18n.translate("collections.allProducts"),
-                value: "all",
-              },
-              {
-                label: i18n.translate("collections.collections"),
-                value: "collections",
-              },
-            ]}
-          />
+            onChange={(event) => onAppliesToChange(event.currentTarget.value)}
+          >
+            <s-option value="all">
+              {i18n.translate("collections.allProducts")}
+            </s-option>
+            <s-option value="collections">
+              {i18n.translate("collections.collections")}
+            </s-option>
+          </s-select>
 
           {appliesTo === "all" ? null : (
-            <Box inlineSize={180}>
-              <Button onClick={onClickAdd}>
+            <s-box inlineSize="180px">
+              <s-button onClick={onClickAdd}>
                 {i18n.translate("collections.buttonLabel")}
-              </Button>
-            </Box>
+              </s-button>
+            </s-box>
           )}
-        </InlineStack>
+        </s-stack>
         <CollectionsSection collections={value} onClickRemove={onClickRemove} />
-      </BlockStack>
-    </Section>
+      </s-stack>
+    </s-section>
   );
 }
+// [END discount-ui-extension.collections-section]
 
 function CollectionsSection({ collections, onClickRemove }) {
   if (collections.length === 0) {
@@ -116,24 +86,29 @@ function CollectionsSection({ collections, onClickRemove }) {
   }
 
   return collections.map((collection) => (
-    <BlockStack gap="base" key={collection.id}>
-      <InlineStack blockAlignment="center" inlineAlignment="space-between">
-        <Link
+    <s-stack gap="base" key={collection.id}>
+      <s-stack
+        direction="inline"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <s-link
           href={`shopify://admin/collections/${collection.id.split("/").pop()}`}
-          tone="inherit"
           target="_blank"
         >
           {collection.title}
-        </Link>
-        <Button variant="tertiary" onClick={() => onClickRemove(collection.id)}>
-          <Icon name="CircleCancelMajor" />
-        </Button>
-      </InlineStack>
-      <Divider />
-    </BlockStack>
+        </s-link>
+        <s-button
+          variant="tertiary"
+          onClick={() => onClickRemove(collection.id)}
+        >
+          <s-icon type="x-circle" />
+        </s-button>
+      </s-stack>
+      <s-divider />
+    </s-stack>
   ));
 }
-// [END discount-ui-extension.collections-section]
 
 // [START discount-ui-extension.app-component]
 function App() {
@@ -154,71 +129,75 @@ function App() {
   } = useExtensionData();
 
   if (loading) {
-    return <Text>{i18n.translate("loading")}</Text>;
+    return <s-text>{i18n.translate("loading")}</s-text>;
   }
 
   return (
-    <FunctionSettings onSave={applyExtensionMetafieldChange}>
-      <Heading size={6}>{i18n.translate("title")}</Heading>
-      <Form onReset={resetForm} onSubmit={applyExtensionMetafieldChange}>
-        <Section>
-          <BlockStack gap="base">
-            <BlockStack gap="base">
-              <PercentageField
-                value={String(percentages.product)}
-                defaultValue={String(initialPercentages.product)}
-                onChange={(value) => onPercentageValueChange("product", value)}
-                label={i18n.translate("percentage.Product")}
-                name="product"
-              />
-
-              <AppliesToCollections
-                onClickAdd={onSelectedCollections}
-                onClickRemove={removeCollection}
-                value={collections}
-                defaultValue={initialCollections}
-                i18n={i18n}
-                appliesTo={appliesTo}
-                onAppliesToChange={onAppliesToChange}
-              />
-            </BlockStack>
-            {collections.length === 0 ? <Divider /> : null}
+    <s-function-settings
+      onSubmit={(event) => {
+        event.waitUntil?.(applyExtensionMetafieldChange());
+      }}
+      onReset={resetForm}
+    >
+      <s-heading>{i18n.translate("title")}</s-heading>
+      <s-section>
+        <s-stack gap="base">
+          <s-stack gap="base">
             <PercentageField
-              value={String(percentages.order)}
-              defaultValue={String(initialPercentages.order)}
-              onChange={(value) => onPercentageValueChange("order", value)}
-              label={i18n.translate("percentage.Order")}
-              name="order"
+              value={String(percentages.product)}
+              defaultValue={String(initialPercentages.product)}
+              onChange={(value) => onPercentageValueChange("product", value)}
+              label={i18n.translate("percentage.Product")}
+              name="product"
             />
 
-            <PercentageField
-              value={String(percentages.shipping)}
-              defaultValue={String(initialPercentages.shipping)}
-              onChange={(value) => onPercentageValueChange("shipping", value)}
-              label={i18n.translate("percentage.Shipping")}
-              name="shipping"
+            <AppliesToCollections
+              onClickAdd={onSelectedCollections}
+              onClickRemove={removeCollection}
+              value={collections}
+              defaultValue={initialCollections}
+              i18n={i18n}
+              appliesTo={appliesTo}
+              onAppliesToChange={onAppliesToChange}
             />
-          </BlockStack>
-        </Section>
-      </Form>
-    </FunctionSettings>
+          </s-stack>
+          {collections.length === 0 ? <s-divider /> : null}
+          <PercentageField
+            value={String(percentages.order)}
+            defaultValue={String(initialPercentages.order)}
+            onChange={(value) => onPercentageValueChange("order", value)}
+            label={i18n.translate("percentage.Order")}
+            name="order"
+          />
+
+          <PercentageField
+            value={String(percentages.shipping)}
+            defaultValue={String(initialPercentages.shipping)}
+            onChange={(value) => onPercentageValueChange("shipping", value)}
+            label={i18n.translate("percentage.Shipping")}
+            name="shipping"
+          />
+        </s-stack>
+      </s-section>
+    </s-function-settings>
   );
 }
 // [END discount-ui-extension.app-component]
 
 // [START discount-ui-extension.use-extension-data]
 function useExtensionData() {
-  const { applyMetafieldChange, i18n, data, resourcePicker, query } =
-    useApi(TARGET);
+  const { applyMetafieldChange, i18n, data, resourcePicker, query } = shopify;
+
   const metafieldConfig = useMemo(
     () =>
       parseMetafield(
-        data?.metafields.find(
+        data?.metafields?.find(
           (metafield) => metafield.key === "function-configuration",
         )?.value,
       ),
     [data?.metafields],
   );
+
   const [percentages, setPercentages] = useState(metafieldConfig.percentages);
   const [initialCollections, setInitialCollections] = useState([]);
   const [collections, setCollections] = useState([]);
@@ -312,54 +291,6 @@ function useExtensionData() {
   };
 }
 // [END discount-ui-extension.use-extension-data]
-
-// [START discount-ui-extension.metafields]
-const METAFIELD_NAMESPACE = "$app:example-discounts--ui-extension";
-const METAFIELD_KEY = "function-configuration";
-
-async function getMetafieldDefinition(adminApiQuery) {
-  const query = `#graphql
-    query GetMetafieldDefinition {
-      metafieldDefinitions(first: 1, ownerType: DISCOUNT, namespace: "${METAFIELD_NAMESPACE}", key: "${METAFIELD_KEY}") {
-        nodes {
-          id
-        }
-      }
-    }
-  `;
-
-  const result = await adminApiQuery(query);
-
-  return result?.data?.metafieldDefinitions?.nodes[0];
-}
-async function createMetafieldDefinition(adminApiQuery) {
-  const definition = {
-    access: {
-      admin: "MERCHANT_READ_WRITE",
-    },
-    key: METAFIELD_KEY,
-    name: "Discount Configuration",
-    namespace: METAFIELD_NAMESPACE,
-    ownerType: "DISCOUNT",
-    type: "json",
-  };
-
-  const query = `#graphql
-    mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
-      metafieldDefinitionCreate(definition: $definition) {
-        createdDefinition {
-            id
-          }
-        }
-      }
-  `;
-
-  const variables = { definition };
-  const result = await adminApiQuery(query, { variables });
-
-  return result?.data?.metafieldDefinitionCreate?.createdDefinition;
-}
-// [END discount-ui-extension.metafields]
 
 function parseMetafield(value) {
   try {

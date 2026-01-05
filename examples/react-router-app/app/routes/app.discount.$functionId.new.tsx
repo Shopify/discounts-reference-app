@@ -127,12 +127,13 @@ export default function VolumeNew() {
   };
 
   return (
-    <s-page>
-      <ui-title-bar title="Create product, order, and shipping discount">
-        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
-          Discounts
-        </button>
-      </ui-title-bar>
+    <s-page
+      inlineSize="large"
+      heading="Create product, order, and shipping discount"
+    >
+      <s-link slot="breadcrumb-actions" onClick={returnToDiscounts}>
+        Discounts
+      </s-link>
 
       <DiscountForm
         initialData={initialData}

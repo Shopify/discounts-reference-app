@@ -14,10 +14,10 @@ export default function Index() {
   const { functions } = useLoaderData<typeof loader>();
 
   return (
-    <s-page>
-      <ui-title-bar title="Discount Functions">
-        <button onClick={returnToDiscounts}>View all discounts</button>
-      </ui-title-bar>
+    <s-page heading="Discount Functions">
+      <s-button slot="secondary-actions" onClick={returnToDiscounts}>
+        View all discounts
+      </s-button>
 
       {functions.length === 0 ? (
         <s-section accessibilityLabel="Empty state section">
