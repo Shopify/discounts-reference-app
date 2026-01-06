@@ -128,13 +128,13 @@ export default function VolumeNew() {
 
   return (
     <s-page
-      inlineSize="large"
       heading="Create product, order, and shipping discount"
+      breadcrumb-actions={
+        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
+          Discounts
+        </button>
+      }
     >
-      <s-link slot="breadcrumb-actions" onClick={returnToDiscounts}>
-        Discounts
-      </s-link>
-
       <DiscountForm
         initialData={initialData}
         collections={collections}

@@ -1,5 +1,4 @@
 {
-  "name": "discount-functions-testing",
   "private": true,
   "type": "module",
   "engines": {
@@ -21,14 +20,5 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "prettier": "3.6.2"
   },
-  "resolutions": {
-    "ws": "8.17.1",
-    "esbuild": "0.25.0"
-  },
-  "overrides": {
-    "ws": "^8.17.1",
-    "esbuild": "^0.25.0"
-  },
-  "author": "shopify",
   "packageManager": "pnpm@9.15.9"
 }

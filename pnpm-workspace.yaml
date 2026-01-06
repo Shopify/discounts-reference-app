@@ -1,6 +1,0 @@
-packages:
-  - "extensions/*"
-  - "**/ui-extension"
-  - "examples/mock-http-server"
-  - "scripts/reference-app-builder"
-  - "examples/react-router-app"
