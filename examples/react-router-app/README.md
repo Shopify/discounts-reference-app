@@ -4,7 +4,7 @@
 > Instead of cloning this repo, you can use the Shopify CLI to create a new app using the following command:
 >
 > ```bash
-> shopify app init --template https://github.com/Shopify/discounts-reference-app/examples/remix-app
+> shopify app init --template https://github.com/Shopify/discounts-reference-app/examples/react-router-app
 > ```
 
 This app demonstrates the discount Functions API, which allows merchants to combine multiple discount types (product, order, and shipping) in a single function. It serves as a reference implementation.
