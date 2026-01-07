@@ -2,7 +2,7 @@
 // [START discount-ui-extension.ui-components]
 import "@shopify/ui-extensions/preact";
 import { render } from "preact";
-import { useState, useEffect, useMemo } from "preact/hooks";
+import { useState, useEffect, useMemo, useReducer } from "preact/hooks";
 // [END discount-ui-extension.ui-components]
 
 // [START discount-ui-extension.target]
@@ -128,7 +128,25 @@ function App() {
     loading,
   } = useExtensionData();
 
-  if (loading) {
+  // [START discount-ui-extension.app-component-with-subscribable]
+  const {discount} = shopify;
+
+  const {
+    classes,
+    loading: classesLoading,
+    updateClasses,
+  } = useDiscountClasses(discount);
+
+  const handleToggleDiscountClass = (className) => {
+    const nextClasses = classes.includes(className)
+      ? classes.filter(c => c !== className)
+      : [...classes, className];
+
+    updateClasses(nextClasses);
+  };
+  // [END discount-ui-extension.app-component-with-subscribable]
+
+  if (loading || classesLoading) {
     return <s-text>{i18n.translate("loading")}</s-text>;
   }
 
@@ -143,12 +161,19 @@ function App() {
       <s-section>
         <s-stack gap="base">
           <s-stack gap="base">
+            <s-checkbox
+              checked={classes.includes("product")}
+              onChange={() => handleToggleDiscountClass("product")}
+              label={i18n.translate("discountClasses.product")}
+            />
+
             <PercentageField
               value={String(percentages.product)}
               defaultValue={String(initialPercentages.product)}
               onChange={(value) => onPercentageValueChange("product", value)}
               label={i18n.translate("percentage.Product")}
               name="product"
+              disabled={!classes.includes("product")}
             />
 
             <AppliesToCollections
@@ -162,12 +187,25 @@ function App() {
             />
           </s-stack>
           {collections.length === 0 ? <s-divider /> : null}
+          <s-checkbox
+            checked={classes.includes("order")}
+            onChange={() => handleToggleDiscountClass("order")}
+            label={i18n.translate("discountClasses.order")}
+          />
+
           <PercentageField
             value={String(percentages.order)}
             defaultValue={String(initialPercentages.order)}
             onChange={(value) => onPercentageValueChange("order", value)}
             label={i18n.translate("percentage.Order")}
             name="order"
+            disabled={!classes.includes("order")}
+          />
+
+          <s-checkbox
+            checked={classes.includes("shipping")}
+            onChange={() => handleToggleDiscountClass("shipping")}
+            label={i18n.translate("discountClasses.shipping")}
           />
 
           <PercentageField
@@ -176,6 +214,7 @@ function App() {
             onChange={(value) => onPercentageValueChange("shipping", value)}
             label={i18n.translate("percentage.Shipping")}
             name="shipping"
+            disabled={!classes.includes("shipping")}
           />
         </s-stack>
       </s-section>
@@ -291,6 +330,73 @@ function useExtensionData() {
   };
 }
 // [END discount-ui-extension.use-extension-data]
+
+// [START discount-ui-extension.use-discount-classes]
+export function useDiscountClasses(api) {
+  const {value: classes, loading} = useSubscribable(
+    api?.discountClasses,
+  );
+  const [error, setError] = useState(null);
+
+  const updateClasses = async (newClasses) => {
+    if (!api?.discountClasses) {
+      return false;
+    }
+
+    try {
+      const result = await api.updateDiscountClasses(newClasses);
+
+      if (!result.success) {
+        setError(extractValidationErrors(result));
+        return false;
+      }
+
+      setError(null);
+      return true;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : ERROR_MESSAGES.UPDATE_FAILED;
+      setError(errorMessage);
+      return false;
+    }
+  };
+
+  return {classes: classes ?? [], loading, error, updateClasses};
+}
+
+export function useSubscribable(subscribable) {
+  const [loading, setLoading] = useState(true);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  useEffect(() => {
+    if (!subscribable) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+
+    let cancelled = false;
+
+    const unsubscribe = subscribable.subscribe(() => {
+      if (!cancelled) {
+        forceUpdate();
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, [subscribable]);
+
+  // Always read directly from the subscribable - no local copy
+  return {
+    value: subscribable?.value,
+    loading,
+  };
+}
+// [END discount-ui-extension.use-discount-classes]
 
 function parseMetafield(value) {
   try {

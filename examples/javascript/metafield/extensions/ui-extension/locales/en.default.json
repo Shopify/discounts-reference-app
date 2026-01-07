@@ -13,5 +13,10 @@
     "allProducts": "All products",
     "collections": "Collections",
     "appliesTo": "Applies to"
+  },
+  "discountClasses": {
+    "product": "Product discount",
+    "order": "Order discount",
+    "shipping": "Shipping discount"
   }
 }
