@@ -11,7 +11,7 @@ export default async () => {
 };
 // [END discount-ui-extension.target]
 
-function PercentageField({ label, defaultValue, value, onChange, name }) {
+function PercentageField({ label, defaultValue, value, onChange, name, disabled }) {
   return (
     <s-box>
       <s-stack gap="base">
@@ -22,6 +22,7 @@ function PercentageField({ label, defaultValue, value, onChange, name }) {
           defaultValue={defaultValue}
           onChange={(event) => onChange(event.currentTarget.value)}
           suffix="%"
+          disabled={disabled}
         />
       </s-stack>
     </s-box>
@@ -35,6 +36,7 @@ function AppliesToCollections({
   defaultValue,
   i18n,
   appliesTo,
+  disabled,
   onAppliesToChange,
 }) {
   return (
@@ -55,6 +57,7 @@ function AppliesToCollections({
             label={i18n.translate("collections.appliesTo")}
             name="appliesTo"
             value={appliesTo}
+            disabled={disabled}
             onChange={(event) => onAppliesToChange(event.currentTarget.value)}
           >
             <s-option value="all">
@@ -184,6 +187,7 @@ function App() {
               i18n={i18n}
               appliesTo={appliesTo}
               onAppliesToChange={onAppliesToChange}
+              disabled={!classes.includes("product")}
             />
           </s-stack>
           {collections.length === 0 ? <s-divider /> : null}
