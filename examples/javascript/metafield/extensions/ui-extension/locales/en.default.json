@@ -1,13 +1,9 @@
 {
   "name": "[Example] Discount UI extension",
   "description": "Discount UI extension",
-  "title": "Discount that applies to product, order and shipping",
+  "title": "Choose one or more discount types (product, order, shipping)",
   "loading": "Loading...",
-  "percentage": {
-    "Product": "Product discount",
-    "Order": "Order discount",
-    "Shipping": "Shipping discount"
-  },
+  "label": "Percentage off",
   "collections": {
     "buttonLabel": "Choose collections",
     "allProducts": "All products",

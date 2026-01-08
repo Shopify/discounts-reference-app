@@ -11,23 +11,6 @@ export default async () => {
 };
 // [END discount-ui-extension.target]
 
-function PercentageField({ label, defaultValue, value, onChange, name, disabled }) {
-  return (
-    <s-box>
-      <s-stack gap="base">
-        <s-number-field
-          label={label}
-          name={name}
-          value={value}
-          defaultValue={defaultValue}
-          onChange={(event) => onChange(event.currentTarget.value)}
-          suffix="%"
-          disabled={disabled}
-        />
-      </s-stack>
-    </s-box>
-  );
-}
 // [START discount-ui-extension.collections-section]
 function AppliesToCollections({
   onClickAdd,
@@ -36,7 +19,6 @@ function AppliesToCollections({
   defaultValue,
   i18n,
   appliesTo,
-  disabled,
   onAppliesToChange,
 }) {
   return (
@@ -57,7 +39,6 @@ function AppliesToCollections({
             label={i18n.translate("collections.appliesTo")}
             name="appliesTo"
             value={appliesTo}
-            disabled={disabled}
             onChange={(event) => onAppliesToChange(event.currentTarget.value)}
           >
             <s-option value="all">
@@ -108,7 +89,6 @@ function CollectionsSection({ collections, onClickRemove }) {
           <s-icon type="x-circle" />
         </s-button>
       </s-stack>
-      <s-divider />
     </s-stack>
   ));
 }
@@ -138,7 +118,7 @@ function App() {
     classes,
     loading: classesLoading,
     updateClasses,
-  } = useDiscountClasses(discount);
+  } = useDiscountClasses(discount, i18n);
 
   const handleToggleDiscountClass = (className) => {
     const nextClasses = classes.includes(className)
@@ -153,6 +133,7 @@ function App() {
     return <s-text>{i18n.translate("loading")}</s-text>;
   }
 
+  // [START discount-ui-extension.discount-classes-conditional-rendering]
   return (
     <s-function-settings
       onSubmit={(event) => {
@@ -160,72 +141,88 @@ function App() {
       }}
       onReset={resetForm}
     >
-      <s-heading>{i18n.translate("title")}</s-heading>
+      <s-heading>{i18n.translate("title")}</s-heading>  
       <s-section>
         <s-stack gap="base">
-          <s-stack gap="base">
+          <s-stack gap="none">
             <s-checkbox
               checked={classes.includes("product")}
               onChange={() => handleToggleDiscountClass("product")}
               label={i18n.translate("discountClasses.product")}
+              disabled={classes.length === 1 && classes.includes("product") ? true : false}
             />
 
-            <PercentageField
-              value={String(percentages.product)}
-              defaultValue={String(initialPercentages.product)}
-              onChange={(value) => onPercentageValueChange("product", value)}
-              label={i18n.translate("percentage.Product")}
-              name="product"
-              disabled={!classes.includes("product")}
-            />
-
-            <AppliesToCollections
-              onClickAdd={onSelectedCollections}
-              onClickRemove={removeCollection}
-              value={collections}
-              defaultValue={initialCollections}
-              i18n={i18n}
-              appliesTo={appliesTo}
-              onAppliesToChange={onAppliesToChange}
-              disabled={!classes.includes("product")}
-            />
+            {classes.includes("product") ? (
+              <s-stack gap="none">
+                <s-number-field
+                  label={i18n.translate("label")}
+                  name="product"
+                  value={String(percentages.product)}
+                  defaultValue={String(initialPercentages.product)}
+                  onChange={(event) => onPercentageValueChange("product", event.currentTarget.value)}
+                  suffix="%"
+                />
+                <AppliesToCollections
+                  onClickAdd={onSelectedCollections}
+                  onClickRemove={removeCollection}
+                  value={collections}
+                  defaultValue={initialCollections}
+                  i18n={i18n}
+                  appliesTo={appliesTo}
+                  onAppliesToChange={onAppliesToChange}
+                />
+              </s-stack>
+            ) : null}
           </s-stack>
-          {collections.length === 0 ? <s-divider /> : null}
-          <s-checkbox
-            checked={classes.includes("order")}
-            onChange={() => handleToggleDiscountClass("order")}
-            label={i18n.translate("discountClasses.order")}
-          />
 
-          <PercentageField
-            value={String(percentages.order)}
-            defaultValue={String(initialPercentages.order)}
-            onChange={(value) => onPercentageValueChange("order", value)}
-            label={i18n.translate("percentage.Order")}
-            name="order"
-            disabled={!classes.includes("order")}
-          />
+          <s-divider />
+          
+          <s-stack gap="none">
+            <s-checkbox
+              checked={classes.includes("order")}
+              onChange={() => handleToggleDiscountClass("order")}
+              label={i18n.translate("discountClasses.order")}
+              disabled={classes.length === 1 && classes.includes("order") ? true : false}
+            />
+
+            {classes.includes("order") ? (
+              <s-number-field
+                label={i18n.translate("label")}
+                name="order"
+                value={String(percentages.order)}
+                defaultValue={String(initialPercentages.order)}
+                onChange={(event) => onPercentageValueChange("order", event.currentTarget.value)}
+                suffix="%"
+              />
+            ) : null}
+          </s-stack>
 
           <s-divider />
 
-          <s-checkbox
-            checked={classes.includes("shipping")}
-            onChange={() => handleToggleDiscountClass("shipping")}
-            label={i18n.translate("discountClasses.shipping")}
-          />
+          <s-stack gap="none">
+            <s-checkbox
+              checked={classes.includes("shipping")}
+              onChange={() => handleToggleDiscountClass("shipping")}
+              label={i18n.translate("discountClasses.shipping")}
+              disabled={classes.length === 1 && classes.includes("shipping") ? true : false}
+            />
 
-          <PercentageField
-            value={String(percentages.shipping)}
-            defaultValue={String(initialPercentages.shipping)}
-            onChange={(value) => onPercentageValueChange("shipping", value)}
-            label={i18n.translate("percentage.Shipping")}
-            name="shipping"
-            disabled={!classes.includes("shipping")}
-          />
+            {classes.includes("shipping") ? (
+              <s-number-field
+                label={i18n.translate("label")}
+                name="shipping"
+                value={String(percentages.shipping)}
+                defaultValue={String(initialPercentages.shipping)}
+                onChange={(event) => onPercentageValueChange("shipping", event.currentTarget.value)}
+                suffix="%"
+              />
+            ) : null}
+          </s-stack>
         </s-stack>
       </s-section>
     </s-function-settings>
   );
+  // [END discount-ui-extension.discount-classes-conditional-rendering]
 }
 // [END discount-ui-extension.app-component]
 
@@ -337,32 +334,37 @@ function useExtensionData() {
 }
 // [END discount-ui-extension.use-extension-data]
 
+function extractValidationErrors(result, i18n) {
+  if (result.errors?.length) {
+    return result.errors.map(error => error.message).join(", ");
+  }
+  return i18n.translate("errors.updateFailed");
+}
+
 // [START discount-ui-extension.use-discount-classes]
-export function useDiscountClasses(api) {
+export function useDiscountClasses(api, i18n) {
   const {value: classes, loading} = useSubscribable(
     api?.discountClasses,
   );
   const [error, setError] = useState(null);
 
-  const updateClasses = async (newClasses) => {
+  const updateClasses = async (nextClasses) => {
     if (!api?.discountClasses) {
       return false;
     }
 
     try {
-      const result = await api.updateDiscountClasses(newClasses);
+      const result = await api.updateDiscountClasses(nextClasses);
 
       if (!result.success) {
-        setError(extractValidationErrors(result));
+        setError(extractValidationErrors(result, i18n));
         return false;
       }
 
       setError(null);
       return true;
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : ERROR_MESSAGES.UPDATE_FAILED;
-      setError(errorMessage);
+    } catch {
+      setError(i18n.translate("errors.updateFailed"));
       return false;
     }
   };
@@ -396,7 +398,6 @@ export function useSubscribable(subscribable) {
     };
   }, [subscribable]);
 
-  // Always read directly from the subscribable - no local copy
   return {
     value: subscribable?.value,
     loading,
