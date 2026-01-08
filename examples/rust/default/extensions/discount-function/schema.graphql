@@ -348,7 +348,7 @@ type CartLineCost {
   amountPerQuantity: MoneyV2!
 
   """
-  The cost of a single unit before any discounts are applied. This field is used to calculate and display
+  The `compareAt` price of a single unit before any discounts are applied. This field is used to calculate and display
   savings for customers. For example, if a product's `compareAtAmountPerQuantity` is $25 and its current price
   is $20, then the customer sees a $5 discount. This value can change based on the buyer's identity and is
   `null` when the value is hidden from buyers.
@@ -2906,7 +2906,9 @@ The discount that's eligible to be applied to a delivery.
 """
 input DeliveryDiscountCandidate {
   """
-  The discount code that's eligible to be applied to a delivery.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 
@@ -3083,7 +3085,7 @@ The discount that invoked the [Discount Function](https://shopify.dev/docs/apps/
 """
 type Discount implements HasMetafields {
   """
-  The [discount classes](https://shopify.dev/docs/apps/build/discounts/#discount-classes)) that the [discountNode](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode)) supports.
+  The [discount classes](https://shopify.dev/docs/apps/build/discounts/#discount-classes) that the [discountNode](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode) supports.
   """
   discountClasses: [DiscountClass!]!
 
@@ -4708,7 +4710,9 @@ type Metafield {
 }
 
 """
-A precise monetary value and its associated currency. For example, 12.99 USD.
+A precise monetary value and its associated currency. Combines a decimal amount
+with a three-letter currency code to express prices, costs, and other financial
+values throughout the API. For example, 12.99 USD.
 """
 type MoneyV2 {
   """
@@ -4775,7 +4779,9 @@ A discount candidate to be applied to an eligible order.
 """
 input OrderDiscountCandidate {
   """
-  The discount code associated with this discount candidate, for code-based discounts.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 
@@ -5029,7 +5035,9 @@ The target and value of the discount to be applied to a cart line.
 """
 input ProductDiscountCandidate {
   """
-  The discount code associated with this discount candidate, for code-based discounts.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 

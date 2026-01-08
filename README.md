@@ -27,7 +27,7 @@ This project provides examples and reference implementations for Shopify Discoun
 ├── docs/           # Documentation
 ├── examples/       # Example implementations
 │   ├── javascript/ # JavaScript examples
-│   ├── remix-app/  # Remix application examples
+│   ├── react-router-app/  # React Router application examples
 │   ├── rust/       # Rust examples
 │   └── mock-http-server/ # Mock server for testing
 └── extensions/     # Shopify app extensions
@@ -40,24 +40,24 @@ Examples and apps found in this repo are meant to be used as reference only. **D
 Examples and apps found in this repo are meant to be used with our tutorials on [Shopify Dev](https://shopify.dev/docs/apps/build/discounts). Rather than clone this repo, we recommend following the tutorials and using the code snippets as reference. Each example can be scaffolded using the Shopify CLI. Learn more about [Shopify CLI](https://shopify.dev/docs/api/shopify-cli/app/app-init#flags-propertydetail-templatevalue) template value.
 
 ```bash
-shopify app init --template https://github.com/Shopify/discounts-reference-app/remix-app#[main]
+shopify app init --template https://github.com/Shopify/discounts-reference-app/examples/react-router-app
 ```
 
-- [Build a discount function](https://shopify.dev/docs/apps/build/discounts/build-discount-function)
+- [Build a Discount Function](https://shopify.dev/docs/apps/build/discounts/build-discount-function)
 - [Build a discount UI with UI Extensions](https://shopify.dev/docs/apps/build/discounts/build-ui-extension)
-- [Build a discount UI with Remix](https://shopify.dev/docs/apps/build/discounts/build-ui-with-remix)
+- [Build a discount UI with React Router](https://shopify.dev/docs/apps/build/discounts/build-ui-with-remix)
 - [Network access](https://shopify.dev/docs/apps/build/discounts/network-access)
-- [Migrate from a legacy discount APIs](https://shopify.dev/docs/apps/build/discounts/migrate-discount-api)
-- [Discount Rejection](https://shopify.dev/docs/apps/build/discounts/discount-code-rejections)
+- [Migrate from legacy discount APIs](https://shopify.dev/docs/apps/build/discounts/migrate-discount-api)
+- [Reject invalid discount codes](https://shopify.dev/docs/apps/build/discounts/discount-rejections)
 
 ## Examples
 
 The project includes several example implementations:
 
-- **JavaScript Examples**: JavaScript implementations of discount functions
-- **Rust Examples**: Rust implementations of discount functions
-- **Remix App**: A full Remix application demonstrating discount function integration
-- **Mock HTTP Server**: A server for testing discount functions with network access locally
+- **JavaScript Examples**: JavaScript implementations of Discount Functions
+- **Rust Examples**: Rust implementations of Discount Functions
+- **React Router App**: A full React Router application demonstrating Discount Function integration
+- **Mock HTTP Server**: A server for testing Discount Functions with network access locally
 
 ## Support
 

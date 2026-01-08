@@ -16,7 +16,6 @@ import {
   updateCodeDiscount,
 } from "../models/discounts.server";
 import { DiscountMethod } from "../types/types";
-import { returnToDiscounts } from "../utils/navigation";
 
 interface ActionData {
   errors?: {
@@ -179,8 +178,12 @@ export default function VolumeEdit() {
   };
 
   return (
-    <s-page inlineSize="large" heading={`Edit ${rawDiscount.title}`}>
-      <s-link slot="breadcrumb-actions" onClick={returnToDiscounts}>
+    <s-page heading={`Edit ${rawDiscount.title}`}>
+      <s-link
+        slot="breadcrumb-actions"
+        href="shopify://admin/discounts"
+        target="_top"
+      >
         Discounts
       </s-link>
 

@@ -373,7 +373,8 @@ type CartLine {
   merchandise: Merchandise!
 
   """
-  The relationship between this line and its parent line, if any.
+  The [nested relationship](https://shopify.dev/docs/apps/build/product-merchandising/nested-cart-lines)
+  between this line and its parent line, if any.
   """
   parentRelationship: CartLineParentRelationship
 
@@ -402,7 +403,7 @@ type CartLineCost {
   amountPerQuantity: MoneyV2!
 
   """
-  The cost of a single unit before any discounts are applied. This field is used to calculate and display
+  The `compareAt` price of a single unit before any discounts are applied. This field is used to calculate and display
   savings for customers. For example, if a product's `compareAtAmountPerQuantity` is $25 and its current price
   is $20, then the customer sees a $5 discount. This value can change based on the buyer's identity and is
   `null` when the value is hidden from buyers.
@@ -517,7 +518,8 @@ input CartOperation @oneOf {
 
   """
   An operation that rejects entered discount codes with a custom message. Use
-  this to conditionally reject discount codes based on business logic.
+  this to conditionally reject discount codes based on business logic. This
+  operation can only be used if the function is backed by an automatic discount.
   """
   enteredDiscountCodesReject: EnteredDiscountCodesRejectOperation
 
@@ -2986,7 +2988,9 @@ The discount that's eligible to be applied to a delivery.
 """
 input DeliveryDiscountCandidate {
   """
-  The discount code that's eligible to be applied to a delivery.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 
@@ -3147,7 +3151,8 @@ input DeliveryOperation @oneOf {
 
   """
   An operation that rejects entered discount codes with a custom message. Use
-  this to conditionally reject discount codes based on business logic.
+  this to conditionally reject discount codes based on business logic. This
+  operation can only be used if the function is backed by an automatic discount.
   """
   enteredDiscountCodesReject: EnteredDiscountCodesRejectOperation
 }
@@ -3169,7 +3174,7 @@ The discount that invoked the [Discount Function](https://shopify.dev/docs/apps/
 """
 type Discount implements HasMetafields {
   """
-  The [discount classes](https://shopify.dev/docs/apps/build/discounts/#discount-classes)) that the [discountNode](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode)) supports.
+  The [discount classes](https://shopify.dev/docs/apps/build/discounts/#discount-classes) that the [discountNode](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode) supports.
   """
   discountClasses: [DiscountClass!]!
 
@@ -3245,6 +3250,8 @@ type EnteredDiscountCode {
 
   """
   Indicates whether the entered discount code can be rejected.
+
+  A discount code can't be rejected if it's associated with a discount that has already been applied to the cart.
   """
   rejectable: Boolean!
 }
@@ -3261,7 +3268,8 @@ input EnteredDiscountCodesAcceptOperation {
 
 """
 An operation that rejects entered discount codes with a custom message. Use this
-to conditionally reject discount codes based on business logic.
+to conditionally reject discount codes based on business logic. This operation
+can only be used if the function is backed by an automatic discount.
 """
 input EnteredDiscountCodesRejectOperation {
   """
@@ -4303,16 +4311,6 @@ enum LanguageCode {
 }
 
 """
-Local pickup settings associated with a location.
-"""
-type LocalPickup {
-  """
-  Whether local pickup is enabled for the location.
-  """
-  enabled: Boolean!
-}
-
-"""
 The current time based on the
 [store's timezone setting](https://help.shopify.com/manual/intro-to-shopify/initial-setup/setup-business-settings).
 """
@@ -4655,11 +4653,6 @@ type Location implements HasMetafields {
   id: ID!
 
   """
-  Local pickup settings associated with a location.
-  """
-  localPickup: LocalPickup!
-
-  """
   A [custom field](https://shopify.dev/docs/apps/build/custom-data) that stores additional information
   about a Shopify resource, such as products, orders, and
   [many more](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
@@ -4946,7 +4939,9 @@ type Metafield {
 }
 
 """
-A precise monetary value and its associated currency. For example, 12.99 USD.
+A precise monetary value and its associated currency. Combines a decimal amount
+with a three-letter currency code to express prices, costs, and other financial
+values throughout the API. For example, 12.99 USD.
 """
 type MoneyV2 {
   """
@@ -5013,7 +5008,9 @@ A discount candidate to be applied to an eligible order.
 """
 input OrderDiscountCandidate {
   """
-  The discount code associated with this discount candidate, for code-based discounts.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 
@@ -5267,7 +5264,9 @@ The target and value of the discount to be applied to a cart line.
 """
 input ProductDiscountCandidate {
   """
-  The discount code associated with this discount candidate, for code-based discounts.
+  An optional discount code associated with this discount candidate, for use
+  with automatic discounts. If a code discount is the function trigger, the
+  associated discount code will be overwritten by the triggering discount code.
   """
   associatedDiscountCode: AssociatedDiscountCode
 

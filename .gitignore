@@ -4,4 +4,8 @@ node_modules
 
 yarn.lock
 package-lock.json
-
+pnpm-lock.yaml
+pnpm-workspace.yaml
+Cargo.lock
+target
+.react-router
