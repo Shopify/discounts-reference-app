@@ -89,6 +89,7 @@ function CollectionsSection({ collections, onClickRemove }) {
           <s-icon type="x-circle" />
         </s-button>
       </s-stack>
+      <s-divider />
     </s-stack>
   ));
 }
@@ -112,7 +113,7 @@ function App() {
   } = useExtensionData();
 
   // [START discount-ui-extension.app-component-with-subscribable]
-  const {discount} = shopify;
+  const discount = shopify.discount;
 
   const {
     classes,
@@ -122,7 +123,7 @@ function App() {
 
   const handleToggleDiscountClass = (className) => {
     const nextClasses = classes.includes(className)
-      ? classes.filter(c => c !== className)
+      ? classes.filter((c) => c !== className)
       : [...classes, className];
 
     updateClasses(nextClasses);
@@ -141,7 +142,7 @@ function App() {
       }}
       onReset={resetForm}
     >
-      <s-heading>{i18n.translate("title")}</s-heading>  
+      <s-heading>{i18n.translate("title")}</s-heading>
       <s-section>
         <s-stack gap="base">
           <s-stack gap="none">
@@ -149,7 +150,11 @@ function App() {
               checked={classes.includes("product")}
               onChange={() => handleToggleDiscountClass("product")}
               label={i18n.translate("discountClasses.product")}
-              disabled={classes.length === 1 && classes.includes("product") ? true : false}
+              disabled={
+                classes.length === 1 && classes.includes("product")
+                  ? true
+                  : false
+              }
             />
 
             {classes.includes("product") ? (
@@ -159,9 +164,15 @@ function App() {
                   name="product"
                   value={String(percentages.product)}
                   defaultValue={String(initialPercentages.product)}
-                  onChange={(event) => onPercentageValueChange("product", event.currentTarget.value)}
+                  onChange={(event) =>
+                    onPercentageValueChange(
+                      "product",
+                      event.currentTarget.value,
+                    )
+                  }
                   suffix="%"
                 />
+
                 <AppliesToCollections
                   onClickAdd={onSelectedCollections}
                   onClickRemove={removeCollection}
@@ -176,13 +187,15 @@ function App() {
           </s-stack>
 
           <s-divider />
-          
+
           <s-stack gap="none">
             <s-checkbox
               checked={classes.includes("order")}
               onChange={() => handleToggleDiscountClass("order")}
               label={i18n.translate("discountClasses.order")}
-              disabled={classes.length === 1 && classes.includes("order") ? true : false}
+              disabled={
+                classes.length === 1 && classes.includes("order") ? true : false
+              }
             />
 
             {classes.includes("order") ? (
@@ -191,7 +204,9 @@ function App() {
                 name="order"
                 value={String(percentages.order)}
                 defaultValue={String(initialPercentages.order)}
-                onChange={(event) => onPercentageValueChange("order", event.currentTarget.value)}
+                onChange={(event) =>
+                  onPercentageValueChange("order", event.currentTarget.value)
+                }
                 suffix="%"
               />
             ) : null}
@@ -204,7 +219,11 @@ function App() {
               checked={classes.includes("shipping")}
               onChange={() => handleToggleDiscountClass("shipping")}
               label={i18n.translate("discountClasses.shipping")}
-              disabled={classes.length === 1 && classes.includes("shipping") ? true : false}
+              disabled={
+                classes.length === 1 && classes.includes("shipping")
+                  ? true
+                  : false
+              }
             />
 
             {classes.includes("shipping") ? (
@@ -213,7 +232,9 @@ function App() {
                 name="shipping"
                 value={String(percentages.shipping)}
                 defaultValue={String(initialPercentages.shipping)}
-                onChange={(event) => onPercentageValueChange("shipping", event.currentTarget.value)}
+                onChange={(event) =>
+                  onPercentageValueChange("shipping", event.currentTarget.value)
+                }
                 suffix="%"
               />
             ) : null}
@@ -222,6 +243,7 @@ function App() {
       </s-section>
     </s-function-settings>
   );
+
   // [END discount-ui-extension.discount-classes-conditional-rendering]
 }
 // [END discount-ui-extension.app-component]
@@ -336,16 +358,14 @@ function useExtensionData() {
 
 function extractValidationErrors(result, i18n) {
   if (result.errors?.length) {
-    return result.errors.map(error => error.message).join(", ");
+    return result.errors.map((error) => error.message).join(", ");
   }
   return i18n.translate("errors.updateFailed");
 }
 
 // [START discount-ui-extension.use-discount-classes]
 export function useDiscountClasses(api, i18n) {
-  const {value: classes, loading} = useSubscribable(
-    api?.discountClasses,
-  );
+  const { value: classes, loading } = useSubscribable(api?.discountClasses);
   const [error, setError] = useState(null);
 
   const updateClasses = async (nextClasses) => {
@@ -369,12 +389,12 @@ export function useDiscountClasses(api, i18n) {
     }
   };
 
-  return {classes: classes ?? [], loading, error, updateClasses};
+  return { classes: classes ?? [], loading, error, updateClasses };
 }
 
 export function useSubscribable(subscribable) {
   const [loading, setLoading] = useState(true);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
     if (!subscribable) {
@@ -388,7 +408,7 @@ export function useSubscribable(subscribable) {
 
     const unsubscribe = subscribable.subscribe(() => {
       if (!cancelled) {
-        forceUpdate();
+        forceUpdate({});
       }
     });
 
