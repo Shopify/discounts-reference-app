@@ -2,7 +2,7 @@
 // [START discount-ui-extension.ui-components]
 import "@shopify/ui-extensions/preact";
 import { render } from "preact";
-import { useState, useEffect, useMemo, useReducer } from "preact/hooks";
+import { useState, useEffect, useMemo } from "preact/hooks";
 // [END discount-ui-extension.ui-components]
 
 // [START discount-ui-extension.target]
@@ -70,26 +70,21 @@ function CollectionsSection({ collections, onClickRemove }) {
   }
 
   return collections.map((collection) => (
-    <s-stack gap="base" key={collection.id}>
-      <s-stack
-        direction="inline"
-        alignItems="center"
-        justifyContent="space-between"
+    <s-stack
+      direction="inline"
+      alignItems="center"
+      justifyContent="space-between"
+      key={collection.id}
+    >
+      <s-link
+        href={`shopify://admin/collections/${collection.id.split("/").pop()}`}
+        target="_blank"
       >
-        <s-link
-          href={`shopify://admin/collections/${collection.id.split("/").pop()}`}
-          target="_blank"
-        >
-          {collection.title}
-        </s-link>
-        <s-button
-          variant="tertiary"
-          onClick={() => onClickRemove(collection.id)}
-        >
-          <s-icon type="x-circle" />
-        </s-button>
-      </s-stack>
-      <s-divider />
+        {collection.title}
+      </s-link>
+      <s-button variant="tertiary" onClick={() => onClickRemove(collection.id)}>
+        <s-icon type="x-circle" />
+      </s-button>
     </s-stack>
   ));
 }
@@ -113,24 +108,19 @@ function App() {
   } = useExtensionData();
 
   // [START discount-ui-extension.app-component-with-subscribable]
-  const discount = shopify.discount;
-
-  const {
-    classes,
-    loading: classesLoading,
-    updateClasses,
-  } = useDiscountClasses(discount, i18n);
+  const { discounts } = shopify;
+  const classes = discounts?.discountClasses?.value ?? [];
 
   const handleToggleDiscountClass = (className) => {
     const nextClasses = classes.includes(className)
       ? classes.filter((c) => c !== className)
       : [...classes, className];
 
-    updateClasses(nextClasses);
+    discounts?.updateDiscountClasses?.(nextClasses);
   };
   // [END discount-ui-extension.app-component-with-subscribable]
 
-  if (loading || classesLoading) {
+  if (loading) {
     return <s-text>{i18n.translate("loading")}</s-text>;
   }
 
@@ -326,6 +316,7 @@ function useExtensionData() {
       type: "collection",
       selectionIds: collections.map(({ id }) => ({ id })),
       action: "select",
+      multiple: true,
       filter: {
         archived: true,
         variants: true,
@@ -355,75 +346,6 @@ function useExtensionData() {
   };
 }
 // [END discount-ui-extension.use-extension-data]
-
-function extractValidationErrors(result, i18n) {
-  if (result.errors?.length) {
-    return result.errors.map((error) => error.message).join(", ");
-  }
-  return i18n.translate("errors.updateFailed");
-}
-
-// [START discount-ui-extension.use-discount-classes]
-export function useDiscountClasses(api, i18n) {
-  const { value: classes, loading } = useSubscribable(api?.discountClasses);
-  const [error, setError] = useState(null);
-
-  const updateClasses = async (nextClasses) => {
-    if (!api?.discountClasses) {
-      return false;
-    }
-
-    try {
-      const result = await api.updateDiscountClasses(nextClasses);
-
-      if (!result.success) {
-        setError(extractValidationErrors(result, i18n));
-        return false;
-      }
-
-      setError(null);
-      return true;
-    } catch {
-      setError(i18n.translate("errors.updateFailed"));
-      return false;
-    }
-  };
-
-  return { classes: classes ?? [], loading, error, updateClasses };
-}
-
-export function useSubscribable(subscribable) {
-  const [loading, setLoading] = useState(true);
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  useEffect(() => {
-    if (!subscribable) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(false);
-
-    let cancelled = false;
-
-    const unsubscribe = subscribable.subscribe(() => {
-      if (!cancelled) {
-        forceUpdate({});
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      unsubscribe();
-    };
-  }, [subscribable]);
-
-  return {
-    value: subscribable?.value,
-    loading,
-  };
-}
-// [END discount-ui-extension.use-discount-classes]
 
 function parseMetafield(value) {
   try {
