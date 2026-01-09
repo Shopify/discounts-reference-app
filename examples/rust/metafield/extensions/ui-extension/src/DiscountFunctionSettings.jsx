@@ -107,16 +107,26 @@ function App() {
     loading,
   } = useExtensionData();
 
+  const [error, setError] = useState();
+
   // [START discount-ui-extension.app-component-with-subscribable]
   const { discounts } = shopify;
   const classes = discounts?.discountClasses?.value ?? [];
 
-  const handleToggleDiscountClass = (className) => {
+  const handleToggleDiscountClass = async (className) => {
     const nextClasses = classes.includes(className)
       ? classes.filter((c) => c !== className)
       : [...classes, className];
 
-    discounts?.updateDiscountClasses?.(nextClasses);
+    const result = await discounts?.updateDiscountClasses?.(nextClasses);
+
+    if (!result.success) {
+      setError(i18n.translate("error"));
+    }
+
+    if (result.success && error) {
+      setError(undefined);
+    }
   };
   // [END discount-ui-extension.app-component-with-subscribable]
 
@@ -135,6 +145,7 @@ function App() {
       <s-heading>{i18n.translate("title")}</s-heading>
       <s-section>
         <s-stack gap="base">
+          {error && <s-banner tone="critical">{error}</s-banner>}
           <s-stack gap="none">
             <s-checkbox
               checked={classes.includes("product")}
