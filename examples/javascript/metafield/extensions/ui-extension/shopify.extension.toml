@@ -15,3 +15,9 @@ type = "ui_extension"
 module = "./src/DiscountFunctionSettings.jsx"
 target = "admin.discount-details.function-settings.render"
 # [END discount-ui-extension.target-configuration]
+
+# [START discount-ui-extension.metafields-toml]
+[[extensions.metafields]]
+namespace = "$app"
+key = "function-configuration"
+# [END discount-ui-extension.metafields-toml]
