@@ -1,6 +1,4 @@
-
-
-api_version = "2025-04"
+api_version = "2026-01"
 
 [[extensions]]
 # [START discount-function.name_and_description]
