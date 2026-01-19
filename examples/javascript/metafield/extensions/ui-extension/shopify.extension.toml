@@ -18,6 +18,6 @@ target = "admin.discount-details.function-settings.render"
 
 # [START discount-ui-extension.metafields-toml]
 [[extensions.metafields]]
-namespace = "$app:example-discounts--ui-extension"
+namespace = "$app"
 key = "function-configuration"
 # [END discount-ui-extension.metafields-toml]

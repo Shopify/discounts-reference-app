@@ -237,7 +237,7 @@ function useExtensionData() {
   async function applyExtensionMetafieldChange() {
     await applyMetafieldChange({
       type: "updateMetafield",
-      namespace: "$app:example-discounts--ui-extension",
+      namespace: "$app",
       key: "function-configuration",
       value: JSON.stringify({
         cartLinePercentage: percentages.product,

@@ -1,6 +1,4 @@
-
-
-api_version = "2025-04"
+api_version = "2026-01"
 
 [[extensions]]
 # [START discount-function.name_and_description]
@@ -29,7 +27,7 @@ type = "function"
 
 # [START discount-function.toml.metafield]
 [extensions.input.variables]
-namespace = "$app:example-discounts--ui-extension"
+namespace = "$app"
 key = "function-configuration"
 # [END discount-function.toml.metafield]
 

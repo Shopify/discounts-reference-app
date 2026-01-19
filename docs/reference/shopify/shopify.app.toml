@@ -7,3 +7,11 @@ scopes = "write_discounts"
 # [START discount-ui-extension-app.app_name]
 name="Example Discount App"
 # [END discount-ui-extension-app.app_name]
+
+# [START discount-ui-extension.metafields-toml]
+[discount.metafields.app.function-configuration]
+type = "json"
+name = "Function configuration"
+access.admin = "merchant_read_write"
+access.storefront = "none"
+# [END discount-ui-extension.metafields-toml]

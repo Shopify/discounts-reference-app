@@ -296,7 +296,7 @@ type CartLine {
   gift wrapping requests, or custom product details. Attributes are stored as key-value pairs.
 
   Cart line attributes are equivalent to the
-  [`line_item`](https://shopify.dev/docs/apps/build/purchase-options/subscriptions/selling-plans)
+  [`line_item`](https://shopify.dev/docs/api/liquid/objects/line_item)
   object in Liquid.
   """
   attribute(
@@ -2875,7 +2875,7 @@ type DeliverableCartLine {
   gift wrapping requests, or custom product details. Attributes are stored as key-value pairs.
 
   Cart line attributes are equivalent to the
-  [`line_item`](https://shopify.dev/docs/apps/build/purchase-options/subscriptions/selling-plans)
+  [`line_item`](https://shopify.dev/docs/api/liquid/objects/line_item)
   object in Liquid.
   """
   attribute(
