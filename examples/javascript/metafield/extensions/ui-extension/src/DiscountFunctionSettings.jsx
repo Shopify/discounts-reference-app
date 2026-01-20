@@ -111,14 +111,17 @@ function App() {
 
   // [START discount-ui-extension.app-component-with-subscribable]
   const { discounts } = shopify;
-  const classes = discounts?.discountClasses?.value ?? [];
+  const discountClassesSignalValue = discounts?.discountClasses?.value ?? [];
 
-  const handleToggleDiscountClass = async (className) => {
-    const nextClasses = classes.includes(className)
-      ? classes.filter((c) => c !== className)
-      : [...classes, className];
+  const handleToggleDiscountClass = async (discountClasses) => {
+    const nextDiscountClasses = discountClassesSignalValue.includes(
+      discountClasses,
+    )
+      ? discountClassesSignalValue.filter((c) => c !== discountClasses)
+      : [...discountClassesSignalValue, discountClasses];
 
-    const result = await discounts?.updateDiscountClasses?.(nextClasses);
+    const result =
+      await discounts?.updateDiscountClasses?.(nextDiscountClasses);
 
     if (!result.success) {
       setError(i18n.translate("error"));
@@ -148,17 +151,18 @@ function App() {
           {error && <s-banner tone="critical">{error}</s-banner>}
           <s-stack gap="none">
             <s-checkbox
-              checked={classes.includes("product")}
+              checked={discountClassesSignalValue.includes("product")}
               onChange={() => handleToggleDiscountClass("product")}
               label={i18n.translate("discountClasses.product")}
               disabled={
-                classes.length === 1 && classes.includes("product")
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("product")
                   ? true
                   : false
               }
             />
 
-            {classes.includes("product") ? (
+            {discountClassesSignalValue.includes("product") ? (
               <s-stack gap="none">
                 <s-number-field
                   label={i18n.translate("label")}
@@ -191,15 +195,18 @@ function App() {
 
           <s-stack gap="none">
             <s-checkbox
-              checked={classes.includes("order")}
+              checked={discountClassesSignalValue.includes("order")}
               onChange={() => handleToggleDiscountClass("order")}
               label={i18n.translate("discountClasses.order")}
               disabled={
-                classes.length === 1 && classes.includes("order") ? true : false
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("order")
+                  ? true
+                  : false
               }
             />
 
-            {classes.includes("order") ? (
+            {discountClassesSignalValue.includes("order") ? (
               <s-number-field
                 label={i18n.translate("label")}
                 name="order"
@@ -217,17 +224,18 @@ function App() {
 
           <s-stack gap="none">
             <s-checkbox
-              checked={classes.includes("shipping")}
+              checked={discountClassesSignalValue.includes("shipping")}
               onChange={() => handleToggleDiscountClass("shipping")}
               label={i18n.translate("discountClasses.shipping")}
               disabled={
-                classes.length === 1 && classes.includes("shipping")
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("shipping")
                   ? true
                   : false
               }
             />
 
-            {classes.includes("shipping") ? (
+            {discountClassesSignalValue.includes("shipping") ? (
               <s-number-field
                 label={i18n.translate("label")}
                 name="shipping"
