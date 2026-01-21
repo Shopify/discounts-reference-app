@@ -148,7 +148,7 @@ function App() {
       <s-heading>{i18n.translate("title")}</s-heading>
       <s-section>
         <s-stack gap="base">
-          {error && <s-banner tone="critical">{error}</s-banner>}
+          {error ? <s-banner tone="critical">{error}</s-banner> : null}
           <s-stack gap="none">
             <s-checkbox
               checked={discountClassesSignalValue.includes("product")}
@@ -157,8 +157,6 @@ function App() {
               disabled={
                 discountClassesSignalValue.length === 1 &&
                 discountClassesSignalValue.includes("product")
-                  ? true
-                  : false
               }
             />
 
@@ -169,6 +167,8 @@ function App() {
                   name="product"
                   value={String(percentages.product)}
                   defaultValue={String(initialPercentages.product)}
+                  min={0}
+                  max={100}
                   onChange={(event) =>
                     onPercentageValueChange(
                       "product",
@@ -201,8 +201,6 @@ function App() {
               disabled={
                 discountClassesSignalValue.length === 1 &&
                 discountClassesSignalValue.includes("order")
-                  ? true
-                  : false
               }
             />
 
@@ -212,6 +210,8 @@ function App() {
                 name="order"
                 value={String(percentages.order)}
                 defaultValue={String(initialPercentages.order)}
+                min={0}
+                max={100}
                 onChange={(event) =>
                   onPercentageValueChange("order", event.currentTarget.value)
                 }
@@ -230,8 +230,6 @@ function App() {
               disabled={
                 discountClassesSignalValue.length === 1 &&
                 discountClassesSignalValue.includes("shipping")
-                  ? true
-                  : false
               }
             />
 
@@ -241,6 +239,8 @@ function App() {
                 name="shipping"
                 value={String(percentages.shipping)}
                 defaultValue={String(initialPercentages.shipping)}
+                min={0}
+                max={100}
                 onChange={(event) =>
                   onPercentageValueChange("shipping", event.currentTarget.value)
                 }
