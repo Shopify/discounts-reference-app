@@ -11,22 +11,6 @@ export default async () => {
 };
 // [END discount-ui-extension.target]
 
-function PercentageField({ label, defaultValue, value, onChange, name }) {
-  return (
-    <s-box>
-      <s-stack gap="base">
-        <s-number-field
-          label={label}
-          name={name}
-          value={value}
-          defaultValue={defaultValue}
-          onChange={(event) => onChange(event.currentTarget.value)}
-          suffix="%"
-        />
-      </s-stack>
-    </s-box>
-  );
-}
 // [START discount-ui-extension.collections-section]
 function AppliesToCollections({
   onClickAdd,
@@ -86,26 +70,21 @@ function CollectionsSection({ collections, onClickRemove }) {
   }
 
   return collections.map((collection) => (
-    <s-stack gap="base" key={collection.id}>
-      <s-stack
-        direction="inline"
-        alignItems="center"
-        justifyContent="space-between"
+    <s-stack
+      direction="inline"
+      alignItems="center"
+      justifyContent="space-between"
+      key={collection.id}
+    >
+      <s-link
+        href={`shopify://admin/collections/${collection.id.split("/").pop()}`}
+        target="_blank"
       >
-        <s-link
-          href={`shopify://admin/collections/${collection.id.split("/").pop()}`}
-          target="_blank"
-        >
-          {collection.title}
-        </s-link>
-        <s-button
-          variant="tertiary"
-          onClick={() => onClickRemove(collection.id)}
-        >
-          <s-icon type="x-circle" />
-        </s-button>
-      </s-stack>
-      <s-divider />
+        {collection.title}
+      </s-link>
+      <s-button variant="tertiary" onClick={() => onClickRemove(collection.id)}>
+        <s-icon type="x-circle" />
+      </s-button>
     </s-stack>
   ));
 }
@@ -128,10 +107,37 @@ function App() {
     loading,
   } = useExtensionData();
 
+  const [error, setError] = useState();
+
+  // [START discount-ui-extension.app-component-with-subscribable]
+  const { discounts } = shopify;
+  const discountClassesSignalValue = discounts?.discountClasses?.value ?? [];
+
+  const handleToggleDiscountClass = async (discountClasses) => {
+    const nextDiscountClasses = discountClassesSignalValue.includes(
+      discountClasses,
+    )
+      ? discountClassesSignalValue.filter((c) => c !== discountClasses)
+      : [...discountClassesSignalValue, discountClasses];
+
+    const result =
+      await discounts?.updateDiscountClasses?.(nextDiscountClasses);
+
+    if (!result.success) {
+      setError(i18n.translate("error"));
+    }
+
+    if (result.success && error) {
+      setError(undefined);
+    }
+  };
+  // [END discount-ui-extension.app-component-with-subscribable]
+
   if (loading) {
     return <s-text>{i18n.translate("loading")}</s-text>;
   }
 
+  // [START discount-ui-extension.discount-classes-conditional-rendering]
   return (
     <s-function-settings
       onSubmit={(event) => {
@@ -142,45 +148,112 @@ function App() {
       <s-heading>{i18n.translate("title")}</s-heading>
       <s-section>
         <s-stack gap="base">
-          <s-stack gap="base">
-            <PercentageField
-              value={String(percentages.product)}
-              defaultValue={String(initialPercentages.product)}
-              onChange={(value) => onPercentageValueChange("product", value)}
-              label={i18n.translate("percentage.Product")}
-              name="product"
+          {error ? <s-banner tone="critical">{error}</s-banner> : null}
+          <s-stack gap="none">
+            <s-checkbox
+              checked={discountClassesSignalValue.includes("product")}
+              onChange={() => handleToggleDiscountClass("product")}
+              label={i18n.translate("discountClasses.product")}
+              disabled={
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("product")
+              }
             />
 
-            <AppliesToCollections
-              onClickAdd={onSelectedCollections}
-              onClickRemove={removeCollection}
-              value={collections}
-              defaultValue={initialCollections}
-              i18n={i18n}
-              appliesTo={appliesTo}
-              onAppliesToChange={onAppliesToChange}
-            />
+            {discountClassesSignalValue.includes("product") ? (
+              <s-stack gap="none">
+                <s-number-field
+                  label={i18n.translate("label")}
+                  name="product"
+                  value={String(percentages.product)}
+                  defaultValue={String(initialPercentages.product)}
+                  min={0}
+                  max={100}
+                  onChange={(event) =>
+                    onPercentageValueChange(
+                      "product",
+                      event.currentTarget.value,
+                    )
+                  }
+                  suffix="%"
+                />
+
+                <AppliesToCollections
+                  onClickAdd={onSelectedCollections}
+                  onClickRemove={removeCollection}
+                  value={collections}
+                  defaultValue={initialCollections}
+                  i18n={i18n}
+                  appliesTo={appliesTo}
+                  onAppliesToChange={onAppliesToChange}
+                />
+              </s-stack>
+            ) : null}
           </s-stack>
-          {collections.length === 0 ? <s-divider /> : null}
-          <PercentageField
-            value={String(percentages.order)}
-            defaultValue={String(initialPercentages.order)}
-            onChange={(value) => onPercentageValueChange("order", value)}
-            label={i18n.translate("percentage.Order")}
-            name="order"
-          />
 
-          <PercentageField
-            value={String(percentages.shipping)}
-            defaultValue={String(initialPercentages.shipping)}
-            onChange={(value) => onPercentageValueChange("shipping", value)}
-            label={i18n.translate("percentage.Shipping")}
-            name="shipping"
-          />
+          <s-divider />
+
+          <s-stack gap="none">
+            <s-checkbox
+              checked={discountClassesSignalValue.includes("order")}
+              onChange={() => handleToggleDiscountClass("order")}
+              label={i18n.translate("discountClasses.order")}
+              disabled={
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("order")
+              }
+            />
+
+            {discountClassesSignalValue.includes("order") ? (
+              <s-number-field
+                label={i18n.translate("label")}
+                name="order"
+                value={String(percentages.order)}
+                defaultValue={String(initialPercentages.order)}
+                min={0}
+                max={100}
+                onChange={(event) =>
+                  onPercentageValueChange("order", event.currentTarget.value)
+                }
+                suffix="%"
+              />
+            ) : null}
+          </s-stack>
+
+          <s-divider />
+
+          <s-stack gap="none">
+            <s-checkbox
+              checked={discountClassesSignalValue.includes("shipping")}
+              onChange={() => handleToggleDiscountClass("shipping")}
+              label={i18n.translate("discountClasses.shipping")}
+              disabled={
+                discountClassesSignalValue.length === 1 &&
+                discountClassesSignalValue.includes("shipping")
+              }
+            />
+
+            {discountClassesSignalValue.includes("shipping") ? (
+              <s-number-field
+                label={i18n.translate("label")}
+                name="shipping"
+                value={String(percentages.shipping)}
+                defaultValue={String(initialPercentages.shipping)}
+                min={0}
+                max={100}
+                onChange={(event) =>
+                  onPercentageValueChange("shipping", event.currentTarget.value)
+                }
+                suffix="%"
+              />
+            ) : null}
+          </s-stack>
         </s-stack>
       </s-section>
     </s-function-settings>
   );
+
+  // [END discount-ui-extension.discount-classes-conditional-rendering]
 }
 // [END discount-ui-extension.app-component]
 
@@ -262,6 +335,7 @@ function useExtensionData() {
       type: "collection",
       selectionIds: collections.map(({ id }) => ({ id })),
       action: "select",
+      multiple: true,
       filter: {
         archived: true,
         variants: true,

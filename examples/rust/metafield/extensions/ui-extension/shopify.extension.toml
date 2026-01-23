@@ -1,4 +1,4 @@
-api_version = "2025-10"
+api_version = "2026-01"
 [[extensions]]
 # [START discount-ui-extension.name_and_description]
 # Change the merchant-facing name of the extension in locales/en.default.json
