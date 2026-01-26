@@ -113,12 +113,10 @@ function App() {
   const { discounts } = shopify;
   const discountClassesSignalValue = discounts?.discountClasses?.value ?? [];
 
-  const handleToggleDiscountClass = async (discountClasses) => {
-    const nextDiscountClasses = discountClassesSignalValue.includes(
-      discountClasses,
-    )
-      ? discountClassesSignalValue.filter((c) => c !== discountClasses)
-      : [...discountClassesSignalValue, discountClasses];
+  const handleToggleDiscountClass = async (nextValue) => {
+    const nextDiscountClasses = discountClassesSignalValue.includes(nextValue)
+      ? discountClassesSignalValue.filter((c) => c !== nextValue)
+      : [...discountClassesSignalValue, nextValue];
 
     const result =
       await discounts?.updateDiscountClasses?.(nextDiscountClasses);
