@@ -16,7 +16,7 @@ fn cart_lines_discounts_generate_run(
     input: schema::cart_lines_discounts_generate_run::Input,
 ) -> Result<schema::CartLinesDiscountsGenerateRunResult> {
     // [START discount-function.run.cart.parse-metafield]
-    let discount_configuration = match input.discount().metafield() {
+    let config = match input.discount().metafield() {
         Some(metafield) => metafield.json_value(),
         None => return Err("No metafield provided".into()),
     };
@@ -39,13 +39,13 @@ fn cart_lines_discounts_generate_run(
     let mut operations = vec![];
 
     // Add product discounts first if available and allowed
-    if has_product_discount_class && discount_configuration.cart_line_percentage > 0.0 {
+    if has_product_discount_class && config.cart_line_percentage > 0.0 {
         let mut cart_line_targets = vec![];
         for line in input.cart().lines() {
             // [START discount-function.run.cart.product.in_any_collection]
             if let schema::cart_lines_discounts_generate_run::input::cart::lines::Merchandise::ProductVariant(variant) = &line.merchandise() {
                 if *variant.product().in_any_collection()
-                    || discount_configuration.collection_ids.is_empty()
+                    || config.collection_ids.is_empty()
                 {
                     cart_line_targets.push(schema::ProductDiscountCandidateTarget::CartLine(
                         schema::CartLineTarget {
@@ -64,13 +64,10 @@ fn cart_lines_discounts_generate_run(
                     selection_strategy: schema::ProductDiscountSelectionStrategy::First,
                     candidates: vec![schema::ProductDiscountCandidate {
                         targets: cart_line_targets,
-                        message: Some(format!(
-                            "{}% OFF PRODUCT",
-                            discount_configuration.cart_line_percentage
-                        )),
+                        message: Some(format!("{}% OFF PRODUCT", config.cart_line_percentage)),
                         value: schema::ProductDiscountCandidateValue::Percentage(
                             schema::Percentage {
-                                value: Decimal(discount_configuration.cart_line_percentage),
+                                value: Decimal(config.cart_line_percentage),
                             },
                         ),
                         associated_discount_code: None,
@@ -81,7 +78,7 @@ fn cart_lines_discounts_generate_run(
     }
 
     // Then add order discounts if available and allowed
-    if has_order_discount_class && discount_configuration.order_percentage > 0.0 {
+    if has_order_discount_class && config.order_percentage > 0.0 {
         operations.push(schema::CartOperation::OrderDiscountsAdd(
             schema::OrderDiscountsAddOperation {
                 selection_strategy: schema::OrderDiscountSelectionStrategy::First,
@@ -91,12 +88,9 @@ fn cart_lines_discounts_generate_run(
                             excluded_cart_line_ids: vec![],
                         },
                     )],
-                    message: Some(format!(
-                        "{}% OFF ORDER",
-                        discount_configuration.order_percentage
-                    )),
+                    message: Some(format!("{}% OFF ORDER", config.order_percentage)),
                     value: schema::OrderDiscountCandidateValue::Percentage(schema::Percentage {
-                        value: Decimal(discount_configuration.order_percentage),
+                        value: Decimal(config.order_percentage),
                     }),
                     conditions: None,
                     associated_discount_code: None,
