@@ -21,7 +21,7 @@ type = "function"
   export = "cart_delivery_options_discounts_generate_run"
 
   [extensions.build]
-  command = "cargo build --target=wasm32-wasip1 --release"
+  command = "cargo build --target=wasm32-unknown-unknown --release"
   path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 
