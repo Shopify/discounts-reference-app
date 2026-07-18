@@ -1,0 +1,28 @@
+{
+  "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/shopify-intent.json",
+  "value": {
+    "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/shopify/discount/gid.json",
+    "mapTo": "param",
+    "fieldName": "id"
+  },
+  "inputSchema": {
+    "type": "object",
+    "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/shopify/discount.json",
+    "additionalProperties": true,
+    "properties": {
+      "functionId": {
+        "type": "string",
+        "description": "The deployed Function ID for this metafield-configured discount function.",
+        "matchValue": "YOUR_FUNCTION_ID"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/shopify/discount/gid.json"
+      }
+    }
+  }
+}

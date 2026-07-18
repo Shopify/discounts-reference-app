@@ -38,3 +38,42 @@ handle = "ui-multiclass-metafield-js"
 create = "/app/discount/:functionId/new"
 details = "/app/discount/:functionId/:id"
 # [END discount-function.ui-paths]
+
+# [START discount-function.app-intent-link]
+# Register app intent links so Sidekick can create and edit discounts backed by
+# this app's Function. Each admin.app.intent.link target maps a shopify/Discount
+# action (create or edit) to a page in your app.
+[[extensions]]
+name = "Create discount"
+description = "Create a metafield-configured discount powered by this app's Shopify Function."
+handle = "discount-app-intent-link-create"
+type = "admin_link"
+
+  [[extensions.targeting]]
+  target = "admin.app.intent.link"
+  # Hardcode your deployed Function's ID (see "Set your Function ID" below).
+  url = "/app/discount/YOUR_FUNCTION_ID/new"
+  instructions = "./instructions.md"
+
+  [[extensions.targeting.intents]]
+  type = "shopify/Discount"
+  action = "create"
+  schema = "./create-intent-schema.json"
+
+[[extensions]]
+name = "Edit discount"
+description = "Edit a metafield-configured discount powered by this app's Shopify Function."
+handle = "discount-app-intent-link-edit"
+type = "admin_link"
+
+  [[extensions.targeting]]
+  target = "admin.app.intent.link"
+  # The discount's GID fills {id}; the Function ID stays hardcoded.
+  url = "/app/discount/YOUR_FUNCTION_ID/{id}"
+  instructions = "./instructions.md"
+
+  [[extensions.targeting.intents]]
+  type = "shopify/Discount"
+  action = "edit"
+  schema = "./edit-intent-schema.json"
+# [END discount-function.app-intent-link]
