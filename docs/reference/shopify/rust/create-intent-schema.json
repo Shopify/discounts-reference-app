@@ -6,8 +6,6 @@
     "additionalProperties": true,
     "properties": {
       "functionId": {
-        "type": "string",
-        "description": "The deployed Function ID for this metafield-configured discount function.",
         "matchValue": "YOUR_FUNCTION_ID"
       }
     }
