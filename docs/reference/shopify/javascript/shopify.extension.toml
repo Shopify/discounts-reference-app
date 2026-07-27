@@ -68,7 +68,7 @@ type = "admin_link"
 
   [[extensions.targeting]]
   target = "admin.app.intent.link"
-  # The discount's GID fills {id}; the Function ID stays hardcoded.
+  # {id} receives the discount ID; the Function ID stays hardcoded.
   url = "/app/discount/YOUR_FUNCTION_ID/{id}"
   instructions = "./instructions.md"
 
