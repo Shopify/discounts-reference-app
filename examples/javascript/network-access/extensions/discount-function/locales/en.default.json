@@ -1,4 +1,4 @@
 {
-  "name": "[Example] Discount Function with Network Access (Javascript)",
-  "description": "Discount Function with Network Access (Javascript)"
+  "name": "[Example] Discounts with network access (JavaScript)",
+  "description": "Uses network access to fetch discount operations from an external API using entered discount codes."
 }

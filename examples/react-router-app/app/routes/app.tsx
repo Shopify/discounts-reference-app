@@ -1,6 +1,6 @@
-import { NavMenu } from "@shopify/app-bridge-react";
-import { AppProvider } from "@shopify/shopify-app-react-router/react";
-import { boundary } from "@shopify/shopify-app-react-router/server";
+import {NavMenu} from "@shopify/app-bridge-react";
+import {AppProvider} from "@shopify/shopify-app-react-router/react";
+import {boundary} from "@shopify/shopify-app-react-router/server";
 import {
   type HeadersFunction,
   type LoaderFunctionArgs,
@@ -10,16 +10,16 @@ import {
   useRouteError,
 } from "react-router";
 
-import { authenticate } from "../shopify.server";
+import {authenticate} from "../shopify.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
   await authenticate.admin(request);
 
-  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+  return {apiKey: process.env.SHOPIFY_API_KEY || ""};
 };
 
 export default function App() {
-  const { apiKey } = useLoaderData<typeof loader>();
+  const {apiKey} = useLoaderData<typeof loader>();
 
   return (
     <AppProvider embedded apiKey={apiKey}>
@@ -38,6 +38,6 @@ export function ErrorBoundary() {
   return boundary.error(useRouteError());
 }
 
-export const headers: HeadersFunction = (headersArgs) => {
+export const headers: HeadersFunction = headersArgs => {
   return boundary.headers(headersArgs);
 };

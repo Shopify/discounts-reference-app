@@ -22,7 +22,7 @@ type = "function"
 
   [extensions.build]
   command = "cargo build --target=wasm32-unknown-unknown --release"
-  path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
+  path = "target/wasm32-unknown-unknown/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
 
 # [START discount-function.toml.metafield]

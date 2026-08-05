@@ -18,3 +18,7 @@ description = "t:description"
   [extensions.build]
   command = ""
   path = "dist/function.wasm"
+
+[extensions.ui.paths]
+create = "/app/discount/:functionId/new"
+details = "/app/discount/:functionId/:id"

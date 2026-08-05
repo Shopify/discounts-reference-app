@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
+import {describe, it, expect} from "vitest";
 
 import {
   DeliveryDiscountSelectionStrategy,
   DiscountClass,
 } from "../generated/api";
 
-import { cartDeliveryOptionsDiscountsGenerateRun } from "./cart_delivery_options_discounts_generate_run";
+import {cartDeliveryOptionsDiscountsGenerateRun} from "./cart_delivery_options_discounts_generate_run";
 
 /**
  * @typedef {import("../generated/api").CartDeliveryOptionsDiscountsGenerateRunResult} CartDeliveryOptionsDiscountsGenerateRunResult

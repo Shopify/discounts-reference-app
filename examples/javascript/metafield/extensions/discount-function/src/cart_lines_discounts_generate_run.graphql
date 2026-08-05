@@ -25,7 +25,10 @@ query CartInput($collectionIds: [ID!]) {
   # [START discount-function.graphql.cart.discount]
   discount {
     discountClasses
-    metafield(namespace: "$app", key: "function-configuration") {
+    metafield(
+      namespace: "$app"
+      key: "function-configuration"
+    ) {
       value
     }
   }

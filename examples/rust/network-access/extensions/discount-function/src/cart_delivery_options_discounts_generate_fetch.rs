@@ -49,21 +49,19 @@ fn cart_delivery_options_discounts_generate_fetch(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json::json;
     use shopify_function::run_function_with_input;
 
     #[test]
     fn adds_entered_discount_codes_to_json_body_for_delivery() -> shopify_function::Result<()> {
-        let input = json!({
+        let input = r#"{
             "enteredDiscountCodes": [{"code": "FREESHIP"}],
             "cart": {
                 "lines": []
             }
-        })
-        .to_string();
+        }"#;
 
         let result =
-            run_function_with_input(cart_delivery_options_discounts_generate_fetch, &input)?;
+            run_function_with_input(cart_delivery_options_discounts_generate_fetch, input)?;
         let json_body = JsonValue::Object(BTreeMap::from([(
             "enteredDiscountCodes".to_string(),
             JsonValue::Array(vec![JsonValue::String("FREESHIP".to_string())]),

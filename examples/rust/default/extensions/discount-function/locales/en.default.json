@@ -1,4 +1,4 @@
 {
-  "name": "[Example] Discount Function (Rust)",
-  "description": "Discount Function (Rust)"
+  "name": "[Example] Multiclass discounts (Rust)",
+  "description": "Uses multiclass discounts to apply 10% off the order, 20% off the most expensive product, and free shipping."
 }

@@ -1,0 +1,19 @@
+{
+  "arrowParens": "avoid",
+  "singleQuote": false,
+  "trailingComma": "all",
+  "bracketSpacing": false,
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "jsxSingleQuote": false,
+  "bracketSameLine": false,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/.shopify/**",
+    "**/generated/**",
+    "**/package.json"
+  ]
+}

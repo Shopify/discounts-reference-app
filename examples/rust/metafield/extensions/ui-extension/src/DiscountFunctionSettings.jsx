@@ -1,8 +1,8 @@
 // [START discount-ui-extension.ui-extension]
 // [START discount-ui-extension.ui-components]
 import "@shopify/ui-extensions/preact";
-import { render } from "preact";
-import { useState, useEffect, useMemo } from "preact/hooks";
+import {render} from "preact";
+import {useState, useEffect, useMemo} from "preact/hooks";
 // [END discount-ui-extension.ui-components]
 
 // [START discount-ui-extension.target]
@@ -26,10 +26,10 @@ function AppliesToCollections({
       {/* [START discount-ui-extension.hidden-box] */}
       <s-box display="none">
         <s-text-field
-          value={value.map(({ id }) => id).join(",")}
+          value={value.map(({id}) => id).join(",")}
           label=""
           name="collectionsIds"
-          defaultValue={defaultValue.map(({ id }) => id).join(",")}
+          defaultValue={defaultValue.map(({id}) => id).join(",")}
         />
       </s-box>
       {/* [END discount-ui-extension.hidden-box] */}
@@ -39,7 +39,7 @@ function AppliesToCollections({
             label={i18n.translate("collections.appliesTo")}
             name="appliesTo"
             value={appliesTo}
-            onChange={(event) => onAppliesToChange(event.currentTarget.value)}
+            onChange={event => onAppliesToChange(event.currentTarget.value)}
           >
             <s-option value="all">
               {i18n.translate("collections.allProducts")}
@@ -64,12 +64,12 @@ function AppliesToCollections({
 }
 // [END discount-ui-extension.collections-section]
 
-function CollectionsSection({ collections, onClickRemove }) {
+function CollectionsSection({collections, onClickRemove}) {
   if (collections.length === 0) {
     return null;
   }
 
-  return collections.map((collection) => (
+  return collections.map(collection => (
     <s-stack
       direction="inline"
       alignItems="center"
@@ -110,12 +110,12 @@ function App() {
   const [error, setError] = useState();
 
   // [START discount-ui-extension.app-component-with-subscribable]
-  const { discounts } = shopify;
+  const {discounts} = shopify;
   const discountClassesSignalValue = discounts?.discountClasses?.value ?? [];
 
-  const handleToggleDiscountClass = async (nextValue) => {
+  const handleToggleDiscountClass = async nextValue => {
     const nextDiscountClasses = discountClassesSignalValue.includes(nextValue)
-      ? discountClassesSignalValue.filter((c) => c !== nextValue)
+      ? discountClassesSignalValue.filter(c => c !== nextValue)
       : [...discountClassesSignalValue, nextValue];
 
     const result =
@@ -138,7 +138,7 @@ function App() {
   // [START discount-ui-extension.discount-classes-conditional-rendering]
   return (
     <s-function-settings
-      onSubmit={(event) => {
+      onSubmit={event => {
         event.waitUntil?.(applyExtensionMetafieldChange());
       }}
       onReset={resetForm}
@@ -167,7 +167,7 @@ function App() {
                   defaultValue={String(initialPercentages.product)}
                   min={0}
                   max={100}
-                  onChange={(event) =>
+                  onChange={event =>
                     onPercentageValueChange(
                       "product",
                       event.currentTarget.value,
@@ -210,7 +210,7 @@ function App() {
                 defaultValue={String(initialPercentages.order)}
                 min={0}
                 max={100}
-                onChange={(event) =>
+                onChange={event =>
                   onPercentageValueChange("order", event.currentTarget.value)
                 }
                 suffix="%"
@@ -239,7 +239,7 @@ function App() {
                 defaultValue={String(initialPercentages.shipping)}
                 min={0}
                 max={100}
-                onChange={(event) =>
+                onChange={event =>
                   onPercentageValueChange("shipping", event.currentTarget.value)
                 }
                 suffix="%"
@@ -257,13 +257,13 @@ function App() {
 
 // [START discount-ui-extension.use-extension-data]
 function useExtensionData() {
-  const { applyMetafieldChange, i18n, data, resourcePicker, query } = shopify;
+  const {applyMetafieldChange, i18n, data, resourcePicker, query} = shopify;
 
   const metafieldConfig = useMemo(
     () =>
       parseMetafield(
         data?.metafields?.find(
-          (metafield) => metafield.key === "function-configuration",
+          metafield => metafield.key === "function-configuration",
         )?.value,
       ),
     [data?.metafields],
@@ -291,13 +291,13 @@ function useExtensionData() {
   }, [metafieldConfig.collectionIds, query]);
 
   const onPercentageValueChange = async (type, value) => {
-    setPercentages((prev) => ({
+    setPercentages(prev => ({
       ...prev,
       [type]: Number(value),
     }));
   };
 
-  const onAppliesToChange = (value) => {
+  const onAppliesToChange = value => {
     setAppliesTo(value);
     if (value === "all") {
       setCollections([]);
@@ -314,7 +314,7 @@ function useExtensionData() {
         cartLinePercentage: percentages.product,
         orderPercentage: percentages.order,
         deliveryPercentage: percentages.shipping,
-        collectionIds: collections.map(({ id }) => id),
+        collectionIds: collections.map(({id}) => id),
       }),
       valueType: "json",
     });
@@ -331,7 +331,7 @@ function useExtensionData() {
   const onSelectedCollections = async () => {
     const selection = await resourcePicker({
       type: "collection",
-      selectionIds: collections.map(({ id }) => ({ id })),
+      selectionIds: collections.map(({id}) => ({id})),
       action: "select",
       multiple: true,
       filter: {
@@ -342,8 +342,8 @@ function useExtensionData() {
     setCollections(selection ?? []);
   };
 
-  const removeCollection = (id) => {
-    setCollections((prev) => prev.filter((collection) => collection.id !== id));
+  const removeCollection = id => {
+    setCollections(prev => prev.filter(collection => collection.id !== id));
   };
 
   return {
@@ -377,7 +377,7 @@ function parseMetafield(value) {
     };
   } catch {
     return {
-      percentages: { product: 0, order: 0, shipping: 0 },
+      percentages: {product: 0, order: 0, shipping: 0},
       collectionIds: [],
     };
   }
@@ -394,9 +394,7 @@ async function getCollections(collectionGids, adminApiQuery) {
       }
     }
   `;
-  const result = await adminApiQuery(query, {
-    variables: { ids: collectionGids },
-  });
+  const result = await adminApiQuery(query, {variables: {ids: collectionGids}});
   return result?.data?.collections ?? [];
 }
 // [END discount-ui-extension.ui-extension]
