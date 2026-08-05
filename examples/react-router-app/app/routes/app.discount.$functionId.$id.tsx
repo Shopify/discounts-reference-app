@@ -1,4 +1,4 @@
-import { Collection, DiscountClass } from "app/types/admin.types";
+import {Collection, DiscountClass} from "app/types/admin.types";
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -7,15 +7,15 @@ import {
   useNavigation,
 } from "react-router";
 
-import { DiscountForm } from "../components/DiscountForm/DiscountForm";
-import { NotFoundPage } from "../components/NotFoundPage";
-import { getCollectionsByIds } from "../models/collections.server";
+import {DiscountForm} from "../components/DiscountForm/DiscountForm";
+import {NotFoundPage} from "../components/NotFoundPage";
+import {getCollectionsByIds} from "../models/collections.server";
 import {
   getDiscount,
   updateAutomaticDiscount,
   updateCodeDiscount,
 } from "../models/discounts.server";
-import { DiscountMethod } from "../types/types";
+import {DiscountMethod} from "../types/types";
 
 interface ActionData {
   errors?: {
@@ -52,8 +52,8 @@ interface LoaderData {
   collections: Collection[];
 }
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const { id, functionId } = params;
+export const action = async ({params, request}: ActionFunctionArgs) => {
+  const {id, functionId} = params;
   if (!id) throw new Error("No discount ID provided");
 
   const formData = await request.formData();
@@ -114,16 +114,16 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     );
   }
   if (result.errors?.length > 0) {
-    return { errors: result.errors };
+    return {errors: result.errors};
   }
-  return { success: true };
+  return {success: true};
 };
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const { id } = params;
+export const loader = async ({params, request}: LoaderFunctionArgs) => {
+  const {id} = params;
   if (!id) throw new Error("No discount ID provided");
 
-  const { discount } = await getDiscount(request, id);
+  const {discount} = await getDiscount(request, id);
 
   // Fetch collections if they exist in the configuration
   const collections = discount?.configuration?.collectionIds
@@ -135,16 +135,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       )
     : [];
 
-  return { discount, collections };
+  return {discount, collections};
 };
 
 export default function VolumeEdit() {
   const actionData = useActionData<ActionData>();
-  const { discount: rawDiscount, collections } = useLoaderData<LoaderData>();
+  const {discount: rawDiscount, collections} = useLoaderData<LoaderData>();
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
   const submitErrors =
-    actionData?.errors?.map((error) => ({
+    actionData?.errors?.map(error => ({
       ...error,
       field: error.field || [],
     })) || [];

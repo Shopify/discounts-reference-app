@@ -1,19 +1,19 @@
-import type { ActionFunctionArgs } from "react-router";
+import type {ActionFunctionArgs} from "react-router";
 
 import db from "../db.server";
-import { authenticate } from "../shopify.server";
+import {authenticate} from "../shopify.server";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const { shop, session } = await authenticate.webhook(request);
+export const action = async ({request}: ActionFunctionArgs) => {
+  const {shop, session} = await authenticate.webhook(request);
 
   try {
     // If this webhook already ran, the session may have been deleted previously.
     if (session) {
-      await db.session.deleteMany({ where: { shop } });
+      await db.session.deleteMany({where: {shop}});
     }
 
     return new Response();
   } catch (error) {
-    return { error: `Error processing webhook: ${error}`, status: 500 };
+    return {error: `Error processing webhook: ${error}`, status: 500};
   }
 };

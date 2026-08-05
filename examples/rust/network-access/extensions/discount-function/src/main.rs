@@ -22,7 +22,7 @@ pub mod schema {
     )]
     pub mod cart_delivery_options_discounts_generate_run {}
 
-    #[query (
+    #[query(
         "src/cart_lines_discounts_generate_run.graphql", 
         custom_scalar_overrides = {
             "Input.fetchResult.jsonBody" => super::cart_lines_discounts_generate_run::JsonBody

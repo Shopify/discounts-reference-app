@@ -1,5 +1,5 @@
-import { DiscountClass } from "./admin.types";
-import { DiscountMethod } from "./types";
+import {DiscountClass} from "./admin.types";
+import {DiscountMethod} from "./types";
 
 interface CombinesWith {
   orderDiscounts: boolean;

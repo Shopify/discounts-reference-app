@@ -1,4 +1,4 @@
 {
-  "name": "[Example] Discount Function with Metafield (JavaScript)",
-  "description": "Discount Function with Metafield (JavaScript)"
+  "name": "[Example] Metafield-configured multiclass discounts (JavaScript)",
+  "description": "Uses metafields to configure multiclass product, order, and shipping discounts with collection targeting."
 }

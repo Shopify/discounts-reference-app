@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "dependencies": {
-    "preact": "10.10.x",
-    "@preact/signals": "2.3.x",
-    "@shopify/ui-extensions": "2026.01.0"
+    "@preact/signals": "2.9.0",
+    "@shopify/ui-extensions": "2026.7.0-rc.3",
+    "preact": "10.29.2"
   }
 }

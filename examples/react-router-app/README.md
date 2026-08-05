@@ -16,11 +16,13 @@ The discount Function API allows you to create complex discounts by allowing a s
 ### Key Features
 
 - **Multi-class Discounts**
+
   - Combine product, order, and shipping discounts in one Function
   - Target specific product collections
   - Apply percentage-based discounts
 
 - **Flexible Configuration**
+
   - Create automatic discounts or discount codes
   - Set usage limits
   - Configure combination rules with other discounts
@@ -32,7 +34,7 @@ The discount Function API allows you to create complex discounts by allowing a s
 
 ## Prerequisites
 
-1. Node.js 18.x or later
+1. Node.js 22.12 or later
 2. [Shopify Partner account](https://partners.shopify.com/signup)
 3. Development store or [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store)
 4. [Shopify CLI](https://shopify.dev/docs/apps/tools/cli) installed

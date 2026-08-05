@@ -1,5 +1,5 @@
-import { subtle } from "crypto";
-import { TextEncoder } from "util";
+import {subtle} from "crypto";
+import {TextEncoder} from "util";
 import jwt from "jsonwebtoken";
 
 const selectionStrategy = {
@@ -12,7 +12,7 @@ const PRODUCT_DISCOUNT_CODE = "10OFFPRODUCT";
 const ORDER_DISCOUNT_CODE = "20OFFORDER";
 const SHIPPING_DISCOUNT_CODE = "FREESHIPPING";
 
-export const action = async ({ request }) => {
+export const action = async ({request}) => {
   if (request.method.toUpperCase() !== "POST") {
     return {
       error: "Invalid request method. Only POST requests are allowed.",
@@ -24,12 +24,12 @@ export const action = async ({ request }) => {
   try {
     body = await authenticate(request);
   } catch (err) {
-    return { error: err.message };
+    return {error: err.message};
   }
   return handle(body);
 };
 
-const authenticate = async (request) => {
+const authenticate = async request => {
   const requestJwtHeader = request.headers.get("x-shopify-request-jwt");
   const requestIdHeader = request.headers.get("x-shopify-request-id");
 
@@ -93,21 +93,19 @@ const authenticate = async (request) => {
   return body;
 };
 
-const hashWithSHA256 = async (input) => {
+const hashWithSHA256 = async input => {
   const encoder = new TextEncoder();
   const data = encoder.encode(input);
   const hashBuffer = await subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
   return hashHex;
 };
 
-const handle = (body) => {
-  const { enteredDiscountCodes } = JSON.parse(body);
+const handle = body => {
+  const {enteredDiscountCodes} = JSON.parse(body);
   // [START mock-http-server.results]
-  const validDiscountCodes = enteredDiscountCodes.filter((code) =>
+  const validDiscountCodes = enteredDiscountCodes.filter(code =>
     [
       PRODUCT_DISCOUNT_CODE,
       ORDER_DISCOUNT_CODE,
@@ -123,7 +121,7 @@ const handle = (body) => {
     // Add valid discount codes to cart operations
     validationOperations.push({
       enteredDiscountCodesAccept: {
-        codes: validDiscountCodes.map((code) => ({ code })),
+        codes: validDiscountCodes.map(code => ({code})),
       },
     });
 
@@ -133,7 +131,7 @@ const handle = (body) => {
           selectionStrategy: selectionStrategy.First,
           candidates: [
             {
-              associatedDiscountCode: { code: PRODUCT_DISCOUNT_CODE },
+              associatedDiscountCode: {code: PRODUCT_DISCOUNT_CODE},
               targets: [
                 {
                   cartLine: {
@@ -158,7 +156,7 @@ const handle = (body) => {
           selectionStrategy: selectionStrategy.First,
           candidates: [
             {
-              associatedDiscountCode: { code: ORDER_DISCOUNT_CODE },
+              associatedDiscountCode: {code: ORDER_DISCOUNT_CODE},
               targets: [
                 {
                   orderSubtotal: {
@@ -183,7 +181,7 @@ const handle = (body) => {
           selectionStrategy: selectionStrategy.All,
           candidates: [
             {
-              associatedDiscountCode: { code: SHIPPING_DISCOUNT_CODE },
+              associatedDiscountCode: {code: SHIPPING_DISCOUNT_CODE},
               value: {
                 percentage: {
                   value: "100",

@@ -63,7 +63,7 @@ fn cart_lines_discounts_generate_run(
                 ));
             }
         }
-        // Ignore delivery discounts for cart operations
+        // Ignore shipping discounts for cart operations
     }
 
     Ok(schema::CartLinesDiscountsGenerateRunResult { operations })
@@ -74,12 +74,11 @@ fn cart_lines_discounts_generate_run(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json::json;
     use shopify_function::run_function_with_input;
 
     #[test]
     fn processes_discount_codes_with_product_and_order_classes() -> Result<()> {
-        let input = json!({
+        let input = r#"{
             "cart": {
                 "lines": []
             },
@@ -140,10 +139,9 @@ mod tests {
                     }
                 ]
             }
-        })
-        .to_string();
+        }"#;
 
-        let result = run_function_with_input(cart_lines_discounts_generate_run, &input)?;
+        let result = run_function_with_input(cart_lines_discounts_generate_run, input)?;
 
         // We should have 3 operations: discount codes, product discounts, and order discounts
         assert_eq!(result.operations.len(), 3);
@@ -217,7 +215,7 @@ mod tests {
     #[test]
     fn filters_operations_based_on_discount_classes() -> Result<()> {
         // Only PRODUCT class is enabled, so ORDER discounts should be ignored
-        let input = json!({
+        let input = r#"{
             "cart": {
                 "lines": []
             },
@@ -271,10 +269,9 @@ mod tests {
                     }
                 ]
             }
-        })
-        .to_string();
+        }"#;
 
-        let result = run_function_with_input(cart_lines_discounts_generate_run, &input)?;
+        let result = run_function_with_input(cart_lines_discounts_generate_run, input)?;
 
         // Should only include product discounts and filter out order discounts
         assert_eq!(
@@ -315,13 +312,13 @@ mod tests {
 
     #[test]
     fn returns_empty_operations_with_no_relevant_discount_classes() -> Result<()> {
-        // Only DELIVERY class is set, which isn't relevant for cart operations
-        let input = json!({
+        // Only SHIPPING class is set, which isn't relevant for cart operations
+        let input = r#"{
             "cart": {
                 "lines": []
             },
             "discount": {
-                "discountClasses": ["DELIVERY"]
+                "discountClasses": ["SHIPPING"]
             },
             "fetchResult": {
                 "status": 200,
@@ -349,10 +346,9 @@ mod tests {
                     }
                 ]
             }
-        })
-        .to_string();
+        }"#;
 
-        let result = run_function_with_input(cart_lines_discounts_generate_run, &input)?;
+        let result = run_function_with_input(cart_lines_discounts_generate_run, input)?;
 
         // Should return empty operations since no relevant discount class is set
         assert_eq!(
@@ -367,7 +363,7 @@ mod tests {
     #[test]
     fn always_includes_discount_code_operations() -> Result<()> {
         // Only ORDER class is set, but discount code operations should still be included
-        let input = json!({
+        let input = r#"{
             "cart": {
                 "lines": []
             },
@@ -407,10 +403,9 @@ mod tests {
                     }
                 ]
             }
-        })
-        .to_string();
+        }"#;
 
-        let result = run_function_with_input(cart_lines_discounts_generate_run, &input)?;
+        let result = run_function_with_input(cart_lines_discounts_generate_run, input)?;
 
         // Should only include discount codes and filter out product discounts
         assert_eq!(

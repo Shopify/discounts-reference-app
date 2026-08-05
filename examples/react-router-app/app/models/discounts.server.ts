@@ -5,9 +5,9 @@ import {
   UPDATE_AUTOMATIC_DISCOUNT,
   GET_DISCOUNT,
 } from "../graphql/discounts";
-import { authenticate } from "../shopify.server";
-import type { DiscountClass } from "../types/admin.types";
-import { DiscountMethod } from "../types/types";
+import {authenticate} from "../shopify.server";
+import type {DiscountClass} from "../types/admin.types";
+import {DiscountMethod} from "../types/types";
 
 interface BaseDiscount {
   functionId?: string;
@@ -43,7 +43,7 @@ export async function createCodeDiscount(
   appliesOncePerCustomer: boolean,
   configuration: DiscountConfiguration,
 ) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_CODE_DISCOUNT, {
     variables: {
       discount: {
@@ -82,7 +82,7 @@ export async function createAutomaticDiscount(
   baseDiscount: BaseDiscount,
   configuration: DiscountConfiguration,
 ) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
   const response = await admin.graphql(CREATE_AUTOMATIC_DISCOUNT, {
     variables: {
       discount: {
@@ -126,7 +126,7 @@ export async function updateCodeDiscount(
     collectionIds?: string[];
   },
 ) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
   const discountId = id.includes("gid://")
     ? id
     : `gid://shopify/DiscountCodeNode/${id}`;
@@ -148,7 +148,7 @@ export async function updateCodeDiscount(
               orderPercentage: configuration.orderPercentage,
               deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
-                configuration.collectionIds?.map((id) =>
+                configuration.collectionIds?.map(id =>
                   id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
                 ) || [],
             }),
@@ -176,7 +176,7 @@ export async function updateAutomaticDiscount(
     collectionIds?: string[];
   },
 ) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
   const discountId = id.includes("gid://")
     ? id
     : `gid://shopify/DiscountAutomaticApp/${id}`;
@@ -194,7 +194,7 @@ export async function updateAutomaticDiscount(
               orderPercentage: configuration.orderPercentage,
               deliveryPercentage: configuration.deliveryPercentage,
               collectionIds:
-                configuration.collectionIds?.map((id) =>
+                configuration.collectionIds?.map(id =>
                   id.includes("gid://") ? id : `gid://shopify/Collection/${id}`,
                 ) || [],
             }),
@@ -211,7 +211,7 @@ export async function updateAutomaticDiscount(
 }
 
 export async function getDiscount(request: Request, id: string) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
   const response = await admin.graphql(GET_DISCOUNT, {
     variables: {
       id: `gid://shopify/DiscountNode/${id}`,
@@ -223,7 +223,7 @@ export async function getDiscount(request: Request, id: string) {
     !responseJson.data.discountNode ||
     !responseJson.data.discountNode.discount
   ) {
-    return { discount: null };
+    return {discount: null};
   }
 
   const method =

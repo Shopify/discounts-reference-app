@@ -10,7 +10,7 @@ import {
 import "./app.css";
 
 export const links = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  {rel: "preconnect", href: "https://fonts.googleapis.com"},
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
@@ -22,7 +22,7 @@ export const links = () => [
   },
 ];
 
-export function Layout({ children }) {
+export function Layout({children}) {
   return (
     <html lang="en">
       <head>
@@ -44,7 +44,7 @@ export default function App() {
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }) {
+export function ErrorBoundary({error}) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
   let stack;

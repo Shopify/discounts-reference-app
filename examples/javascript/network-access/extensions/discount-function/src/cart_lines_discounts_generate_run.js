@@ -3,7 +3,7 @@ export function cartLinesDiscountsGenerateRun(input) {
   // [START discount-function.cart.run.body]
   const {
     fetchResult,
-    discount: { discountClasses },
+    discount: {discountClasses},
   } = input;
   const body = fetchResult?.jsonBody;
 
@@ -20,11 +20,11 @@ export function cartLinesDiscountsGenerateRun(input) {
 
   // If no relevant discount classes are set, return an empty operations array
   if (!hasOrderDiscountClass && !hasProductDiscountClass) {
-    return { operations: [] };
+    return {operations: []};
   }
 
   // Filter operations to include appropriate discounts based on set discount classes
-  const filteredOperations = operations.filter((operation) => {
+  const filteredOperations = operations.filter(operation => {
     // Always include discount code operations
     if (operation.enteredDiscountCodesAccept) {
       return true;
@@ -43,7 +43,7 @@ export function cartLinesDiscountsGenerateRun(input) {
     return false;
   });
 
-  return { operations: filteredOperations };
+  return {operations: filteredOperations};
   // [END discount-function.cart.run.body]
 }
 // [END discount-function.cart.run]

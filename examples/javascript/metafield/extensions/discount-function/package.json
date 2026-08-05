@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "license": "UNLICENSED",
   "scripts": {
-    "shopify": "npm exec -- shopify",
-    "typegen": "npm exec -- shopify app function typegen",
-    "build": "npm exec -- shopify app function build",
-    "preview": "npm exec -- shopify app function run",
+    "shopify": "pnpm exec -- shopify",
+    "typegen": "pnpm exec -- shopify app function typegen",
+    "build": "pnpm exec -- shopify app function build",
+    "preview": "pnpm exec -- shopify app function run",
     "test": "vitest run"
   },
   "codegen": {
@@ -25,9 +25,9 @@
     }
   },
   "devDependencies": {
-    "vitest": "4.0.9"
+    "vitest": "4.1.4"
   },
   "dependencies": {
-    "@shopify/shopify_function": "2.0.0"
+    "@shopify/shopify_function": "2.0.1"
   }
 }

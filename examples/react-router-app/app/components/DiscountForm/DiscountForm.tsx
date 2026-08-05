@@ -1,12 +1,12 @@
-import { returnToDiscounts } from "app/utils/navigation";
-import { useCallback, useMemo, useState } from "react";
-import { Form } from "react-router";
+import {returnToDiscounts} from "app/utils/navigation";
+import {useCallback, useMemo, useState} from "react";
+import {Form} from "react-router";
 
-import { useDiscountForm } from "../../hooks/useDiscountForm";
-import { DiscountClass } from "../../types/admin.types.d";
-import { DiscountMethod } from "../../types/types";
-import { CollectionPicker } from "../CollectionPicker/CollectionPicker";
-import { DatePickerField } from "../DatePickerField/DatePickerField";
+import {useDiscountForm} from "../../hooks/useDiscountForm";
+import {DiscountClass} from "../../types/admin.types.d";
+import {DiscountMethod} from "../../types/types";
+import {CollectionPicker} from "../CollectionPicker/CollectionPicker";
+import {DatePickerField} from "../DatePickerField/DatePickerField";
 
 interface SubmitError {
   message: string;
@@ -36,7 +36,7 @@ interface DiscountFormProps {
       collectionIds?: string[];
     };
   };
-  collections: { id: string; title: string }[];
+  collections: {id: string; title: string}[];
   isEditing?: boolean;
   submitErrors?: SubmitError[];
   isLoading?: boolean;
@@ -44,8 +44,8 @@ interface DiscountFormProps {
 }
 
 const methodOptions = [
-  { label: "Discount code", value: DiscountMethod.Code },
-  { label: "Automatic discount", value: DiscountMethod.Automatic },
+  {label: "Discount code", value: DiscountMethod.Code},
+  {label: "Automatic discount", value: DiscountMethod.Automatic},
 ];
 
 export function DiscountForm({
@@ -55,7 +55,7 @@ export function DiscountForm({
   submitErrors = [],
   success = false,
 }: DiscountFormProps) {
-  const { formState, setField, setConfigField, setCombinesWith, submit } =
+  const {formState, setField, setConfigField, setCombinesWith, submit} =
     useDiscountForm({
       initialData,
     });
@@ -75,7 +75,7 @@ export function DiscountForm({
         <s-banner tone="critical">
           <p>There were some issues with your form submission:</p>
           <ul>
-            {submitErrors.map(({ message, field }, index) => (
+            {submitErrors.map(({message, field}, index) => (
               <li key={index}>
                 {field.join(".")} {message}
               </li>
@@ -97,10 +97,10 @@ export function DiscountForm({
   );
 
   const handleCollectionSelect = useCallback(
-    async (selectedCollections: { id: string; title: string }[]) => {
+    async (selectedCollections: {id: string; title: string}[]) => {
       setConfigField(
         "collectionIds",
-        selectedCollections.map((collection) => collection.id),
+        selectedCollections.map(collection => collection.id),
       );
       setCollections(selectedCollections);
     },
@@ -114,7 +114,7 @@ export function DiscountForm({
         checked
           ? [...formState.discountClasses, discountClassValue]
           : formState.discountClasses.filter(
-              (discountClass) => discountClass !== discountClassValue,
+              discountClass => discountClass !== discountClassValue,
             ),
       );
     },
@@ -192,7 +192,7 @@ export function DiscountForm({
           endsAt: formState.endDate,
           configuration: {
             ...(formState.configuration.metafieldId
-              ? { metafieldId: formState.configuration.metafieldId }
+              ? {metafieldId: formState.configuration.metafieldId}
               : {}),
             cartLinePercentage: parseFloat(
               formState.configuration.cartLinePercentage,
@@ -222,7 +222,7 @@ export function DiscountForm({
               }
               disabled={isEditing}
             >
-              {methodOptions.map((option) => (
+              {methodOptions.map(option => (
                 <s-option key={option.value} value={option.value}>
                   {option.label}
                 </s-option>

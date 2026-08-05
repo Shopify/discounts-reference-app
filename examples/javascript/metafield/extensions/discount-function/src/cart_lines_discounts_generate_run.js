@@ -10,7 +10,7 @@ export function cartLinesDiscountsGenerateRun(input) {
     throw new Error("No cart lines found");
   }
 
-  const { cartLinePercentage, orderPercentage, collectionIds } = parseMetafield(
+  const {cartLinePercentage, orderPercentage, collectionIds} = parseMetafield(
     input.discount.metafield,
   );
 
@@ -22,7 +22,7 @@ export function cartLinesDiscountsGenerateRun(input) {
   );
 
   if (!hasOrderDiscountClass && !hasProductDiscountClass) {
-    return { operations: [] };
+    return {operations: []};
   }
 
   const operations = [];
@@ -92,7 +92,7 @@ export function cartLinesDiscountsGenerateRun(input) {
     // [END discount-function.run.cart.add-operations]
   }
 
-  return { operations };
+  return {operations};
 }
 
 // [START discount-function.run.cart.parse-metafield]

@@ -1,5 +1,5 @@
-import { GET_COLLECTIONS } from "../graphql/collections";
-import { authenticate } from "../shopify.server";
+import {GET_COLLECTIONS} from "../graphql/collections";
+import {authenticate} from "../shopify.server";
 
 interface Collection {
   id: string;
@@ -10,7 +10,7 @@ export async function getCollectionsByIds(
   request: Request,
   collectionIds: string[],
 ) {
-  const { admin } = await authenticate.admin(request);
+  const {admin} = await authenticate.admin(request);
 
   const response = await admin.graphql(GET_COLLECTIONS, {
     variables: {
@@ -20,6 +20,6 @@ export async function getCollectionsByIds(
     },
   });
 
-  const { data } = await response.json();
+  const {data} = await response.json();
   return data.nodes.filter(Boolean) as Collection[];
 }

@@ -10,12 +10,12 @@ export function cartDeliveryOptionsDiscountsGenerateRun(input) {
     throw new Error("No delivery groups found");
   }
 
-  const { deliveryPercentage } = parseMetafield(input.discount.metafield);
+  const {deliveryPercentage} = parseMetafield(input.discount.metafield);
   const hasShippingDiscountClass = input.discount.discountClasses.includes(
     DiscountClass.Shipping,
   );
   if (!hasShippingDiscountClass) {
-    return { operations: [] };
+    return {operations: []};
   }
 
   const operations = [];
@@ -45,17 +45,17 @@ export function cartDeliveryOptionsDiscountsGenerateRun(input) {
     });
   }
   // [END discount-function.run.delivery.add-operations]
-  return { operations };
+  return {operations};
 }
 
 // [START discount-function.run.delivery.parse-metafield]
 function parseMetafield(metafield) {
   try {
     const value = JSON.parse(metafield.value);
-    return { deliveryPercentage: value.deliveryPercentage || 0 };
+    return {deliveryPercentage: value.deliveryPercentage || 0};
   } catch (error) {
     console.error("Error parsing metafield", error);
-    return { deliveryPercentage: 0 };
+    return {deliveryPercentage: 0};
   }
 }
 // [END discount-function.run.delivery.parse-metafield]

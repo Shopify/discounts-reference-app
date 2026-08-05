@@ -5,22 +5,22 @@ import {
   useNavigation,
 } from "react-router";
 
-import { DiscountForm } from "../components/DiscountForm/DiscountForm";
+import {DiscountForm} from "../components/DiscountForm/DiscountForm";
 import {
   createCodeDiscount,
   createAutomaticDiscount,
 } from "../models/discounts.server";
-import { DiscountMethod } from "../types/types";
-import { returnToDiscounts } from "../utils/navigation";
+import {DiscountMethod} from "../types/types";
+import {returnToDiscounts} from "../utils/navigation";
 
 export const loader = async () => {
   // Initially load with empty collections since none are selected yet
-  return { collections: [] };
+  return {collections: []};
 };
 
 // [START build-the-ui.add-action]
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const { functionId } = params;
+export const action = async ({params, request}: ActionFunctionArgs) => {
+  const {functionId} = params;
   const formData = await request.formData();
   const discountData = formData.get("discount");
   if (!discountData || typeof discountData !== "string")
@@ -74,9 +74,9 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   }
 
   if (result.errors?.length > 0) {
-    return { errors: result.errors };
+    return {errors: result.errors};
   }
-  return { success: true };
+  return {success: true};
 };
 // [END build-the-ui.add-action]
 
@@ -90,12 +90,12 @@ interface ActionData {
 }
 
 interface LoaderData {
-  collections: { id: string; title: string }[];
+  collections: {id: string; title: string}[];
 }
 
 export default function VolumeNew() {
   const actionData = useActionData<ActionData>();
-  const { collections } = useLoaderData<LoaderData>();
+  const {collections} = useLoaderData<LoaderData>();
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
   const submitErrors = actionData?.errors || [];
