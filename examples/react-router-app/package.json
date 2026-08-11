@@ -28,7 +28,8 @@
     "@react-router/fs-routes": "7.9.3",
     "@react-router/node": "7.9.3",
     "@react-router/serve": "7.9.3",
-    "@shopify/app-bridge-react": "4.2.7",
+    "@shopify/app-bridge-react": "4.2.10",
+    "@shopify/app-bridge-types": "0.7.2",
     "@shopify/cli": "3.87.4",
     "@shopify/shopify-app-react-router": "1.0.2",
     "@shopify/shopify-app-session-storage-prisma": "7.0.1",
@@ -63,6 +64,11 @@
     "packages": [
       "extensions/*"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@shopify/app-bridge-types": "0.7.2"
+    }
   },
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"

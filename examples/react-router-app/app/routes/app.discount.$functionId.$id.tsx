@@ -1,4 +1,5 @@
 import { Collection, DiscountClass } from "app/types/admin.types";
+import { useEffect, useRef } from "react";
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -16,6 +17,10 @@ import {
   updateCodeDiscount,
 } from "../models/discounts.server";
 import { DiscountMethod } from "../types/types";
+import {
+  completeDiscountWorkflow,
+  returnToDiscounts,
+} from "../utils/navigation";
 
 interface ActionData {
   errors?: {
@@ -24,6 +29,7 @@ interface ActionData {
     field?: string[];
   }[];
   success?: boolean;
+  discountId?: string;
 }
 
 interface LoaderData {
@@ -116,7 +122,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   if (result.errors?.length > 0) {
     return { errors: result.errors };
   }
-  return { success: true };
+  if (!result.discountId) {
+    throw new Error("No discount ID returned");
+  }
+  return { success: true, discountId: result.discountId };
 };
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -148,6 +157,17 @@ export default function VolumeEdit() {
       ...error,
       field: error.field || [],
     })) || [];
+  const completedDiscountId = useRef<string | null>(null);
+
+  // [START build-the-ui.resolve-edit-intent]
+  useEffect(() => {
+    const discountId = actionData?.discountId;
+    if (!discountId || completedDiscountId.current === discountId) return;
+
+    completedDiscountId.current = discountId;
+    void completeDiscountWorkflow(discountId);
+  }, [actionData?.discountId]);
+  // [END build-the-ui.resolve-edit-intent]
 
   if (!rawDiscount) {
     return <NotFoundPage />;
@@ -178,15 +198,14 @@ export default function VolumeEdit() {
   };
 
   return (
-    <s-page heading={`Edit ${rawDiscount.title}`}>
-      <s-link
-        slot="breadcrumb-actions"
-        href="shopify://admin/discounts"
-        target="_top"
-      >
-        Discounts
-      </s-link>
-
+    <s-page
+      heading={`Edit ${rawDiscount.title}`}
+      breadcrumb-actions={
+        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
+          Discounts
+        </button>
+      }
+    >
       <DiscountForm
         initialData={initialData}
         collections={collections}
