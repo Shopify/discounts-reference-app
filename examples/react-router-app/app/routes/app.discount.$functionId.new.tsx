@@ -142,14 +142,15 @@ export default function VolumeNew() {
   };
 
   return (
-    <s-page
-      heading="Create product, order, and shipping discount"
-      breadcrumb-actions={
-        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
-          Discounts
-        </button>
-      }
-    >
+    <s-page heading="Create product, order, and shipping discount">
+      <button
+        slot="breadcrumb-actions"
+        type="button"
+        variant="breadcrumb"
+        onClick={returnToDiscounts}
+      >
+        Discounts
+      </button>
       <DiscountForm
         initialData={initialData}
         collections={collections}

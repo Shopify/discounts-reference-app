@@ -198,14 +198,15 @@ export default function VolumeEdit() {
   };
 
   return (
-    <s-page
-      heading={`Edit ${rawDiscount.title}`}
-      breadcrumb-actions={
-        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
-          Discounts
-        </button>
-      }
-    >
+    <s-page heading={`Edit ${rawDiscount.title}`}>
+      <button
+        slot="breadcrumb-actions"
+        type="button"
+        variant="breadcrumb"
+        onClick={returnToDiscounts}
+      >
+        Discounts
+      </button>
       <DiscountForm
         initialData={initialData}
         collections={collections}
