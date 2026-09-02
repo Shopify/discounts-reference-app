@@ -50,6 +50,9 @@ export const GET_DISCOUNT = `
 export const UPDATE_CODE_DISCOUNT = `
   mutation UpdateCodeDiscount($id: ID!, $discount: DiscountCodeAppInput!) {
     discountUpdate: discountCodeAppUpdate(id: $id, codeAppDiscount: $discount) {
+      codeAppDiscount {
+        discountId
+      }
       userErrors {
         code
         message
@@ -68,6 +71,9 @@ export const UPDATE_AUTOMATIC_DISCOUNT = `
       id: $id
       automaticAppDiscount: $discount
     ) {
+      automaticAppDiscount {
+        discountId
+      }
       userErrors {
         code
         message

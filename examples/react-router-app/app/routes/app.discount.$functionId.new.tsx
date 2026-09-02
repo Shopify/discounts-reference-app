@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   type ActionFunctionArgs,
   useActionData,
@@ -11,7 +12,10 @@ import {
   createAutomaticDiscount,
 } from "../models/discounts.server";
 import { DiscountMethod } from "../types/types";
-import { returnToDiscounts } from "../utils/navigation";
+import {
+  completeDiscountWorkflow,
+  returnToDiscounts,
+} from "../utils/navigation";
 
 export const loader = async () => {
   // Initially load with empty collections since none are selected yet
@@ -76,7 +80,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   if (result.errors?.length > 0) {
     return { errors: result.errors };
   }
-  return { success: true };
+  if (!result.discountId) {
+    throw new Error("No discount ID returned");
+  }
+  return { success: true, discountId: result.discountId };
 };
 // [END build-the-ui.add-action]
 
@@ -87,6 +94,7 @@ interface ActionData {
     field: string[];
   }[];
   success?: boolean;
+  discountId?: string;
 }
 
 interface LoaderData {
@@ -99,10 +107,17 @@ export default function VolumeNew() {
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
   const submitErrors = actionData?.errors || [];
+  const completedDiscountId = useRef<string | null>(null);
 
-  if (actionData?.success) {
-    returnToDiscounts();
-  }
+  // [START build-the-ui.resolve-create-intent]
+  useEffect(() => {
+    const discountId = actionData?.discountId;
+    if (!discountId || completedDiscountId.current === discountId) return;
+
+    completedDiscountId.current = discountId;
+    void completeDiscountWorkflow(discountId);
+  }, [actionData?.discountId]);
+  // [END build-the-ui.resolve-create-intent]
 
   const initialData = {
     title: "",
@@ -127,14 +142,15 @@ export default function VolumeNew() {
   };
 
   return (
-    <s-page
-      heading="Create product, order, and shipping discount"
-      breadcrumb-actions={
-        <button type="button" variant="breadcrumb" onClick={returnToDiscounts}>
-          Discounts
-        </button>
-      }
-    >
+    <s-page heading="Create product, order, and shipping discount">
+      <button
+        slot="breadcrumb-actions"
+        type="button"
+        variant="breadcrumb"
+        onClick={returnToDiscounts}
+      >
+        Discounts
+      </button>
       <DiscountForm
         initialData={initialData}
         collections={collections}
