@@ -81,7 +81,9 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     return { errors: result.errors };
   }
   if (!result.discountId) {
-    throw new Error("No discount ID returned");
+    return {
+      errors: [{ message: "Unable to save discount.", field: [] }],
+    };
   }
   return { success: true, discountId: result.discountId };
 };

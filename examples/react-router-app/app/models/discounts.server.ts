@@ -73,8 +73,7 @@ export async function createCodeDiscount(
 
   return {
     errors: responseJson.data.discountCreate?.userErrors as UserError[],
-    discountId: responseJson.data.discountCreate?.codeAppDiscount
-      ?.discountId as string | undefined,
+    discountId: responseJson.data.discountCreate?.codeAppDiscount?.discountId,
   };
 }
 
@@ -109,8 +108,8 @@ export async function createAutomaticDiscount(
 
   return {
     errors: responseJson.data.discountCreate?.userErrors as UserError[],
-    discountId: responseJson.data.discountCreate?.automaticAppDiscount
-      ?.discountId as string | undefined,
+    discountId:
+      responseJson.data.discountCreate?.automaticAppDiscount?.discountId,
   };
 }
 
@@ -164,8 +163,7 @@ export async function updateCodeDiscount(
   const responseJson = await response.json();
   return {
     errors: responseJson.data.discountUpdate?.userErrors as UserError[],
-    discountId: responseJson.data.discountUpdate?.codeAppDiscount
-      ?.discountId as string | undefined,
+    discountId: responseJson.data.discountUpdate?.codeAppDiscount?.discountId,
   };
 }
 
@@ -212,8 +210,8 @@ export async function updateAutomaticDiscount(
   const responseJson = await response.json();
   return {
     errors: responseJson.data.discountUpdate?.userErrors as UserError[],
-    discountId: responseJson.data.discountUpdate?.automaticAppDiscount
-      ?.discountId as string | undefined,
+    discountId:
+      responseJson.data.discountUpdate?.automaticAppDiscount?.discountId,
   };
 }
 
