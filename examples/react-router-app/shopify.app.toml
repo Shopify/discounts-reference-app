@@ -3,6 +3,12 @@
 # [START react-router-app.scopes]
 scopes = "write_discounts,read_products"
 # [END react-router-app.scopes]
+
+# [START react-router-app.sidekick-summary]
+[sidekick]
+extensions_summary = "Create and edit discounts powered by Shopify Functions"
+# [END react-router-app.sidekick-summary]
+
 [webhooks]
 api_version = "2024-10"
 

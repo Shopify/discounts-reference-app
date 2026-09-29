@@ -73,7 +73,7 @@ export async function createCodeDiscount(
 
   return {
     errors: responseJson.data.discountCreate?.userErrors as UserError[],
-    discount: responseJson.data.discountCreate?.codeAppDiscount,
+    discountId: responseJson.data.discountCreate?.codeAppDiscount?.discountId,
   };
 }
 
@@ -108,6 +108,8 @@ export async function createAutomaticDiscount(
 
   return {
     errors: responseJson.data.discountCreate?.userErrors as UserError[],
+    discountId:
+      responseJson.data.discountCreate?.automaticAppDiscount?.discountId,
   };
 }
 
@@ -161,6 +163,7 @@ export async function updateCodeDiscount(
   const responseJson = await response.json();
   return {
     errors: responseJson.data.discountUpdate?.userErrors as UserError[],
+    discountId: responseJson.data.discountUpdate?.codeAppDiscount?.discountId,
   };
 }
 
@@ -207,6 +210,8 @@ export async function updateAutomaticDiscount(
   const responseJson = await response.json();
   return {
     errors: responseJson.data.discountUpdate?.userErrors as UserError[],
+    discountId:
+      responseJson.data.discountUpdate?.automaticAppDiscount?.discountId,
   };
 }
 
