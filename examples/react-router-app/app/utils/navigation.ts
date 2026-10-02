@@ -1,7 +1,7 @@
 // [START build-the-ui.resolve-intent]
 export async function completeDiscountWorkflow(discountId: string) {
   if (shopify.intents.request.value) {
-    await getIntentResponse().ok({ id: discountId });
+    await getIntentResponse().ok({id: discountId});
     return;
   }
 

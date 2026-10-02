@@ -47,7 +47,7 @@ export default [
           jsx: true,
         },
         project: "./tsconfig.json",
-        tsconfigRootDir: ".",
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
@@ -60,7 +60,7 @@ export default [
       // React specific rules
       "react/jsx-uses-react": ERROR,
       "react/jsx-uses-vars": ERROR,
-      "react/jsx-no-leaked-render": [ERROR, { validStrategies: ["ternary"] }],
+      "react/jsx-no-leaked-render": [ERROR, {validStrategies: ["ternary"]}],
       "react/prop-types": OFF,
       "react/react-in-jsx-scope": OFF,
 
@@ -70,7 +70,7 @@ export default [
 
       // General JavaScript/TypeScript rules
       "prefer-const": WARN,
-      "no-console": [ERROR, { allow: ["error"] }],
+      "no-console": [ERROR, {allow: ["error"]}],
       "no-debugger": ERROR,
       "no-duplicate-imports": ERROR,
 
@@ -78,7 +78,7 @@ export default [
       "import/order": [
         WARN,
         {
-          alphabetize: { caseInsensitive: true, order: "asc" },
+          alphabetize: {caseInsensitive: true, order: "asc"},
           groups: ["builtin", "external", "internal", "parent", "sibling"],
           "newlines-between": "always",
         },

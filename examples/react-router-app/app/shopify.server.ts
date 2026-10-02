@@ -5,7 +5,7 @@ import {
   shopifyApp,
   ApiVersion,
 } from "@shopify/shopify-app-react-router/server";
-import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+import {PrismaSessionStorage} from "@shopify/shopify-app-session-storage-prisma";
 
 import prisma from "./db.server";
 
@@ -25,12 +25,12 @@ const shopify = shopifyApp({
     },
   },
   hooks: {
-    afterAuth: async ({ session }) => {
-      shopify.registerWebhooks({ session });
+    afterAuth: async ({session}) => {
+      shopify.registerWebhooks({session});
     },
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
-    ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
+    ? {customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN]}
     : {}),
 });
 

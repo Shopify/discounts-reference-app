@@ -6,6 +6,8 @@ Reference applications and examples demonstrating how to implement Shopify Disco
 >
 > This repository is read-only. All examples and code samples contained here are generated and maintained by Shopify.
 >
+> Shopify employees should make source changes in [Discount Functions Testing](https://github.com/Shopify/discount-functions-testing) and run `dev generate-reference-app` rather than editing generated files here directly.
+>
 > If you encounter any issues or have questions about the implementations, please submit them through the GitHub Issues section of this repository.
 >
 > We encourage you to use these examples as a learning resource while following the official tutorials on [Shopify Dev](https://shopify.dev/docs/apps/build/discounts).

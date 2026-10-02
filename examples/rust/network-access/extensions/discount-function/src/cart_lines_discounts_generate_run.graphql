@@ -21,4 +21,4 @@ query Input {
   }
 }
 
-# [END discount-function.graphql.run.cart]
+# [END discount-function.graphql.cart.run]

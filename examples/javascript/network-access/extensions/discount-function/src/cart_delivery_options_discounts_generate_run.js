@@ -3,7 +3,7 @@ export function cartDeliveryOptionsDiscountsGenerateRun(input) {
   // [START discount-function.delivery.run.body]
   const {
     fetchResult,
-    discount: { discountClasses },
+    discount: {discountClasses},
   } = input;
   const body = fetchResult?.jsonBody;
 
@@ -19,17 +19,17 @@ export function cartDeliveryOptionsDiscountsGenerateRun(input) {
 
   // If shipping discount class is not set, return an empty operations array
   if (!hasShippingDiscountClass) {
-    return { operations: [] };
+    return {operations: []};
   }
 
   // Filter operations to only include enteredDiscountCodesAccept and delivery operations
-  const filteredOperations = operations.filter((operation) => {
+  const filteredOperations = operations.filter(operation => {
     return (
       operation.enteredDiscountCodesAccept || operation.deliveryDiscountsAdd
     );
   });
 
-  return { operations: filteredOperations };
+  return {operations: filteredOperations};
   // [END discount-function.delivery.run.body]
 }
 // [END discount-function.delivery.run]

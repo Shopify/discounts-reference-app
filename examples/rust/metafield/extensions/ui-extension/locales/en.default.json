@@ -1,6 +1,6 @@
 {
-  "name": "[Example] Discount UI extension",
-  "description": "Discount UI extension",
+  "name": "[Example] Metafield multiclass discounts (Rust function)",
+  "description": "Configures metafield-driven multiclass discounts, including percentages and collection targeting.",
   "title": "Select which discount types to apply at checkout",
   "loading": "Loading...",
   "label": "Percentage off",
