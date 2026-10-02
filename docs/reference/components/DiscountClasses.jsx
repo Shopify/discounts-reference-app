@@ -1,5 +1,5 @@
-import { Card, Checkbox, Text, BlockStack, Box } from "@shopify/polaris";
-import React, { useState, useCallback } from "react";
+import {Card, Checkbox, Text, BlockStack, Box} from "@shopify/polaris";
+import React, {useState, useCallback} from "react";
 
 const DiscountClass = {
   Product: "PRODUCT",
@@ -25,7 +25,7 @@ const DISCOUNT_CLASS_LABELS = {
  * @returns A Polaris Card containing discount class selection checkboxes
  */
 function DiscountClasses(props) {
-  const { discountClasses = [DiscountClass.Product], onChange } = props;
+  const {discountClasses = [DiscountClass.Product], onChange} = props;
 
   const [selectedClasses, setSelectedClasses] = useState(
     discountClasses.length > 0 ? discountClasses : [DiscountClass.Product],
@@ -35,7 +35,7 @@ function DiscountClasses(props) {
     (checked, discountClass) => {
       const updatedClasses = checked
         ? [...selectedClasses, discountClass]
-        : selectedClasses.filter((cls) => cls !== discountClass);
+        : selectedClasses.filter(cls => cls !== discountClass);
 
       if (updatedClasses.length === 0) {
         return;
@@ -62,7 +62,7 @@ function DiscountClasses(props) {
 
       <Box paddingBlockStart="400">
         <BlockStack gap="200">
-          {Object.values(DiscountClass).map((discountClass) => {
+          {Object.values(DiscountClass).map(discountClass => {
             const isChecked = selectedClasses.includes(discountClass);
             const isDisabled = isChecked && selectedClasses.length === 1;
             return (
@@ -71,7 +71,7 @@ function DiscountClasses(props) {
                 label={DISCOUNT_CLASS_LABELS[discountClass]}
                 checked={isChecked}
                 disabled={isDisabled}
-                onChange={(checked) => handleChange(checked, discountClass)}
+                onChange={checked => handleChange(checked, discountClass)}
               />
             );
           })}

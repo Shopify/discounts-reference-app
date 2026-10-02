@@ -1,5 +1,5 @@
 ---
-name: "How to build a Discount Function that retrieves external data through network requests"
+name: 'How to build a Discount Function that retrieves external data through network requests'
 api_name: discount
 api_version: 2025-04
 api_type: functions

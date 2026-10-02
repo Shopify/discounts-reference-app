@@ -1,17 +1,17 @@
-import { type LoaderFunctionArgs, useLoaderData } from "react-router";
+import {type LoaderFunctionArgs, useLoaderData} from "react-router";
 
-import { getFunctions } from "../models/functions.server";
-import { returnToDiscounts } from "../utils/navigation";
+import {getFunctions} from "../models/functions.server";
+import {returnToDiscounts} from "../utils/navigation";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
   const functions = await getFunctions(request);
-  return { functions };
+  return {functions};
 };
 
 export async function action() {}
 
 export default function Index() {
-  const { functions } = useLoaderData<typeof loader>();
+  const {functions} = useLoaderData<typeof loader>();
 
   return (
     <s-page heading="Discount Functions">
@@ -50,7 +50,7 @@ export default function Index() {
 
           <s-section>
             <s-grid gap="small-200">
-              {functions.map((item) => (
+              {functions.map(item => (
                 <s-box key={item.id} padding="base" borderRadius="base">
                   <s-grid
                     gridTemplateColumns="1fr auto"

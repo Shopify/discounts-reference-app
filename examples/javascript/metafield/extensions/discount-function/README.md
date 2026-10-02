@@ -1,5 +1,5 @@
 ---
-name: "How to build a configurable Discount Function using metafields for flexible promotions"
+name: 'How to build a configurable Discount Function using metafields for flexible promotions'
 api_name: discount
 api_version: 2025-04
 api_type: functions

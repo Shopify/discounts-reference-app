@@ -101,4 +101,4 @@ fn cart_lines_discounts_generate_run(
     // [END discount-function.run.cart.add-operations]
     Ok(schema::CartLinesDiscountsGenerateRunResult { operations })
 }
-// [END discount_function.run.cart]
+// [END discount-function.run.cart]

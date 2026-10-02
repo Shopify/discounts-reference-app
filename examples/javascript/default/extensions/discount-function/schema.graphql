@@ -3528,13 +3528,7 @@ type Input {
   `cart.lines.discounts.generate.run` and
   `cart.delivery-options.discounts.generate.run` extension targets.
   """
-  fetchResult: HttpResponse
-    @restrictTarget(
-      only: [
-        "cart.lines.discounts.generate.run"
-        "cart.delivery-options.discounts.generate.run"
-      ]
-    )
+  fetchResult: HttpResponse @restrictTarget(only: ["cart.lines.discounts.generate.run", "cart.delivery-options.discounts.generate.run"])
 
   """
   The regional and language settings that determine how the Function
@@ -3563,13 +3557,7 @@ type Input {
   This input is only available in the `cart.lines.discounts.generate.run` and
   `cart.delivery-options.discounts.generate.run` extension targets.
   """
-  triggeringDiscountCode: String
-    @restrictTarget(
-      only: [
-        "cart.lines.discounts.generate.run"
-        "cart.delivery-options.discounts.generate.run"
-      ]
-    )
+  triggeringDiscountCode: String @restrictTarget(only: ["cart.lines.discounts.generate.run", "cart.delivery-options.discounts.generate.run"])
 }
 
 """
@@ -4414,10 +4402,7 @@ type Localization {
   """
   The market of the active localized experience.
   """
-  market: Market!
-    @deprecated(
-      reason: "This `market` field will be removed in a future version of the API."
-    )
+  market: Market! @deprecated(reason: "This `market` field will be removed in a future version of the API.")
 }
 
 """
@@ -4798,10 +4783,7 @@ type MailingAddress {
   """
   The market of the address.
   """
-  market: Market
-    @deprecated(
-      reason: "This `market` field will be removed in a future version of the API."
-    )
+  market: Market @deprecated(reason: "This `market` field will be removed in a future version of the API.")
 
   """
   The full name of the customer, based on firstName and lastName.
