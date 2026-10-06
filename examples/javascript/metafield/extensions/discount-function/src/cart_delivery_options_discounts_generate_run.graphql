@@ -8,7 +8,10 @@ query DeliveryInput {
   # [START discount-function.graphql.delivery.discount]
   discount {
     discountClasses
-    metafield(namespace: "$app", key: "function-configuration") {
+    metafield(
+      namespace: "$app"
+      key: "function-configuration"
+    ) {
       value
     }
   }

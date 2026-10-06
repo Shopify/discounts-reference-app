@@ -1,5 +1,5 @@
 ---
-name: "How to build a combined Discount Function applying 10% off orders, 20% off the most expensive product, and free shipping"
+name: 'How to build a combined Discount Function applying 10% off orders, 20% off the most expensive product, and free shipping'
 api_name: discount
 api_version: 2025-04
 api_type: functions

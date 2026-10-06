@@ -1,10 +1,10 @@
-import { HttpRequestMethod } from "../generated/api";
+import {HttpRequestMethod} from "../generated/api";
 
 // [START discount-function.delivery.fetch]
 export function cartDeliveryOptionsDiscountsGenerateFetch(input) {
-  const { enteredDiscountCodes } = input;
+  const {enteredDiscountCodes} = input;
   const jsonBody = {
-    enteredDiscountCodes: enteredDiscountCodes.map(({ code }) => code),
+    enteredDiscountCodes: enteredDiscountCodes.map(({code}) => code),
   };
 
   const request = {
@@ -29,6 +29,6 @@ export function cartDeliveryOptionsDiscountsGenerateFetch(input) {
     jsonBody,
   };
 
-  return { request };
+  return {request};
 }
 // [END discount-function.delivery.fetch]

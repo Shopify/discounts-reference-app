@@ -18,7 +18,7 @@ export function cartLinesDiscountsGenerateRun(input) {
   );
 
   if (!hasOrderDiscountClass && !hasProductDiscountClass) {
-    return { operations: [] };
+    return {operations: []};
   }
 
   const maxCartLine = input.cart.lines.reduce((maxLine, line) => {

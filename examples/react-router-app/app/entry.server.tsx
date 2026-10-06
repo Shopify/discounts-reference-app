@@ -1,11 +1,11 @@
-import { PassThrough } from "stream";
+import {PassThrough} from "stream";
 
-import { createReadableStreamFromReadable } from "@react-router/node";
-import { isbot } from "isbot";
-import { renderToPipeableStream } from "react-dom/server";
-import { ServerRouter, type EntryContext } from "react-router";
+import {createReadableStreamFromReadable} from "@react-router/node";
+import {isbot} from "isbot";
+import {renderToPipeableStream} from "react-dom/server";
+import {ServerRouter, type EntryContext} from "react-router";
 
-import { addDocumentResponseHeaders } from "./shopify.server";
+import {addDocumentResponseHeaders} from "./shopify.server";
 
 export const streamTimeout = 5000;
 
@@ -20,7 +20,7 @@ export default async function handleRequest(
   const callbackName = isbot(userAgent ?? "") ? "onAllReady" : "onShellReady";
 
   return new Promise((resolve, reject) => {
-    const { pipe, abort } = renderToPipeableStream(
+    const {pipe, abort} = renderToPipeableStream(
       <ServerRouter context={reactRouterContext} url={request.url} />,
       {
         [callbackName]: () => {

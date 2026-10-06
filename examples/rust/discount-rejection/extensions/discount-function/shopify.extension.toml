@@ -16,6 +16,10 @@ description = "t:description"
 # [END discount-function-rejection.toml.target]
 
   [extensions.build]
-  command = "cargo build --target=wasm32-wasip1 --release"
-  path = "target/wasm32-wasip1/release/discount-function-rs.wasm"
+  command = "cargo build --target=wasm32-unknown-unknown --release"
+  path = "target/wasm32-unknown-unknown/release/discount-function-rs.wasm"
   watch = [ "src/**/*.rs" ]
+
+[extensions.ui.paths]
+create = "/app/discount/:functionId/new"
+details = "/app/discount/:functionId/:id"

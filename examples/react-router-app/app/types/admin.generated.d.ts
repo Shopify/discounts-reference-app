@@ -3,7 +3,7 @@
 /* eslint-disable */
 import type * as AdminTypes from "./admin.types";
 
-export type GetShopQueryVariables = AdminTypes.Exact<{ [key: string]: never }>;
+export type GetShopQueryVariables = AdminTypes.Exact<{[key: string]: never}>;
 
 export type GetShopQuery = {
   shop: Pick<AdminTypes.Shop, "id" | "name" | "email">;
@@ -46,7 +46,7 @@ export type GetDiscountQuery = {
         Pick<AdminTypes.Metafield, "id" | "value">
       >;
       discount:
-        | ({ __typename: "DiscountAutomaticApp" } & Pick<
+        | ({__typename: "DiscountAutomaticApp"} & Pick<
             AdminTypes.DiscountAutomaticApp,
             "title" | "discountClass" | "startsAt" | "endsAt"
           > & {
@@ -64,7 +64,7 @@ export type GetDiscountQuery = {
               | "DiscountCodeBxgy"
               | "DiscountCodeFreeShipping";
           }
-        | ({ __typename: "DiscountCodeApp" } & Pick<
+        | ({__typename: "DiscountCodeApp"} & Pick<
             AdminTypes.DiscountCodeApp,
             | "title"
             | "discountClass"

@@ -1,4 +1,4 @@
 {
-  "name": "ex-discount-rejection-rs",
-  "description": "ex-discount-rejection-rs"
+  "name": "[Example] Discount code rejection (Rust)",
+  "description": "Uses discount code rejection to allow one INF- influencer code and reject additional rejectable influencer codes."
 }

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import {useCallback} from "react";
 
 interface Collection {
   id: string;
@@ -11,7 +11,7 @@ interface ResourcePickerResponse {
 }
 
 interface CollectionPickerProps {
-  onSelect: (selectedCollections: { id: string; title: string }[]) => void;
+  onSelect: (selectedCollections: {id: string; title: string}[]) => void;
   selectedCollectionIds: string[];
   collections: Collection[];
   buttonText?: string;
@@ -28,7 +28,7 @@ export function CollectionPicker({
       type: "collection",
       action: "select",
       multiple: true,
-      selectionIds: selectedCollectionIds.map((id) => ({
+      selectionIds: selectedCollectionIds.map(id => ({
         id: id,
         type: "collection",
       })),
@@ -48,7 +48,7 @@ export function CollectionPicker({
   const handleRemove = useCallback(
     (collectionId: string) => {
       onSelect(
-        collections.filter((collection) => collection.id !== collectionId),
+        collections.filter(collection => collection.id !== collectionId),
       );
     },
     [onSelect, collections],
@@ -66,7 +66,7 @@ export function CollectionPicker({
       </s-button>
       {collections?.length > 0 ? (
         <s-stack direction="block" gap="small">
-          {collections.map((collection) => (
+          {collections.map(collection => (
             <s-stack direction="block" gap="small" key={collection.id}>
               <s-stack direction="inline" justifyContent="space-between">
                 <s-link

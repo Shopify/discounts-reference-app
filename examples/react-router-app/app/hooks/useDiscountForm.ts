@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react";
-import { useSubmit } from "react-router";
+import {useCallback, useState} from "react";
+import {useSubmit} from "react-router";
 
-import { DiscountClass } from "../types/admin.types";
-import { DiscountMethod } from "../types/types";
+import {DiscountClass} from "../types/admin.types";
+import {DiscountMethod} from "../types/types";
 
 interface Collection {
   id: string;
@@ -63,7 +63,7 @@ interface UseDiscountFormProps {
   onSubmit?: () => void;
 }
 
-export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
+export function useDiscountForm({initialData}: UseDiscountFormProps = {}) {
   const submit = useSubmit();
   const todaysDate = new Date();
 
@@ -95,7 +95,7 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
 
   const setField = useCallback(
     <K extends keyof FormState>(field: K, value: FormState[K]) => {
-      setFormState((prev) => ({ ...prev, [field]: value }));
+      setFormState(prev => ({...prev, [field]: value}));
     },
     [],
   );
@@ -105,9 +105,9 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
       field: keyof DiscountConfiguration,
       value: string | string[] | Collection[],
     ) => {
-      setFormState((prev) => ({
+      setFormState(prev => ({
         ...prev,
-        configuration: { ...prev.configuration, [field]: value },
+        configuration: {...prev.configuration, [field]: value},
       }));
     },
     [],
@@ -115,9 +115,9 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
 
   const setCombinesWith = useCallback(
     (field: keyof CombinesWith, value: boolean) => {
-      setFormState((prev) => ({
+      setFormState(prev => ({
         ...prev,
-        combinesWith: { ...prev.combinesWith, [field]: value },
+        combinesWith: {...prev.combinesWith, [field]: value},
       }));
     },
     [],
@@ -142,7 +142,7 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         endsAt: formState.endDate,
         configuration: {
           ...(formState.configuration.metafieldId
-            ? { metafieldId: formState.configuration.metafieldId }
+            ? {metafieldId: formState.configuration.metafieldId}
             : {}),
           cartLinePercentage: parseFloat(
             formState.configuration.cartLinePercentage,
@@ -155,7 +155,7 @@ export function useDiscountForm({ initialData }: UseDiscountFormProps = {}) {
         },
       }),
     );
-    submit(formData, { method: "post" });
+    submit(formData, {method: "post"});
   }, [formState, submit]);
 
   return {

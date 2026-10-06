@@ -1,4 +1,4 @@
 {
-  "name": "[Example] Discount Function with Metafield (Rust)",
-  "description": "Discount Function with Metafield (Rust)"
+  "name": "[Example] Metafield-configured multiclass discounts (Rust)",
+  "description": "Uses metafields to configure multiclass product, order, and shipping discounts with collection targeting."
 }
