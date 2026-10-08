@@ -16,7 +16,6 @@ export async function returnToDiscounts() {
 
   openDiscountsPage();
 }
-// [END build-the-ui.resolve-intent]
 
 function getIntentResponse() {
   const response = shopify.intents.response;
@@ -27,3 +26,4 @@ function getIntentResponse() {
 function openDiscountsPage() {
   window.open("shopify://admin/discounts", "_top");
 }
+// [END build-the-ui.resolve-intent]
