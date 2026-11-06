@@ -3,6 +3,9 @@ query Input {
   cart {
     deliveryGroups {
       id
+      deliveryOptions {
+        deliveryMethodType
+      }
     }
   }
   discount {
