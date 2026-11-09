@@ -3,6 +3,9 @@ query DeliveryInput {
   cart {
     deliveryGroups {
       id
+      deliveryOptions {
+        deliveryMethodType
+      }
     }
   }
   # [START discount-function.graphql.delivery.discount]
