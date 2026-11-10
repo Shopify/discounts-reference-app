@@ -18,8 +18,8 @@ description = "t:description"
   export = "generate_delivery_run"
 
   [extensions.build]
-  command = "cargo build --target=wasm32-wasip1 --release"
-  path = "target/wasm32-wasip1/release/discount-function.wasm"
+  command = "cargo build --target=wasm32-unknown-unknown --release"
+  path = "target/wasm32-unknown-unknown/release/discount-function.wasm"
   watch = [ "src/**/*.rs" ]
 
 # [START discount-function.toml.metafield]
